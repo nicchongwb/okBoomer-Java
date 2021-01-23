@@ -41,4 +41,9 @@ public class Display {
         frame.pack(); // Resize frame so that we can see all of the canvas without issues/ cutoffs
 
     }
+
+    // Getters
+    public Canvas getCanvas(){
+        return canvas;
+    }
 }

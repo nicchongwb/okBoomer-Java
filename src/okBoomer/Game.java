@@ -3,6 +3,8 @@ package okBoomer;
 import display.Display;
 import gfx.Assets;
 import gfx.ImageLoader;
+import states.*;
+import states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -30,8 +32,11 @@ public class Game implements Runnable{
     // Variables for rendering
     private BufferStrategy bs; // Buffer = hidden screen, to buffer number images before rendering them out to screen
     private Graphics g; // Allows us to draw things(shapes,lines,images) to canvas, basically our paintbrush
-
     int x = 0; // Test variable for game tick/update refresh rate
+
+    // States
+    private State gameState;
+    private State menuState;
 
 
     // Constructors
@@ -47,12 +52,21 @@ public class Game implements Runnable{
     private void init(){
         display = new Display(title, width, height); // Initialise Display object for Game instance
         Assets.init(); // Load in all of our assets
+
+        // States | Initialise states and set desiredcurrent state
+        gameState = new GameState();
+        menuState = new MenuState();
+        State.setCurrentState(gameState); // gameState to test gameState
     }
 
     // tick method a.k.a update all game variables, positions of objects, etc
     // during game loop.
     private void tick(){
-        x += 1;
+        // State | if any state exist then we call the currentState's tick function
+        if (State.getState() != null){
+            State.getState().tick();
+        }
+
     }
 
     // render method to render during game loop
@@ -73,7 +87,11 @@ public class Game implements Runnable{
 
         /*-----------------------------Draw to canvas below:-----------------------------*/
 
-        g.drawImage(Assets.grass, x, 10, null);
+        // State | if any state exist then we pass in g to state to render
+        // respective state
+        if (State.getState() != null){
+            State.getState().render(g);
+        }
 
         /*--------------------------------End of drawing---------------------------------*/
 

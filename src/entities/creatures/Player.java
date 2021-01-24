@@ -1,6 +1,7 @@
 package entities.creatures;
 
 import gfx.Assets;
+import okBoomer.Game;
 
 import java.awt.*;
 
@@ -13,14 +14,15 @@ GameState render() -> player.render(g);
 
 public class Player extends Creature{
     private static int playerCount = 0;
+
     // Player characteristics/attributes
-
     private String name;
-    private int pid; // Player ID
+    private final int pid; // Player ID
+    private Game game;
 
-
-    public Player(int x, int y) {
+    public Player(Game game, int x, int y) {
         super(x, y);
+        this.game = game; // Help us access KeyManager
         pid = playerCount;
         playerCount++;
     }
@@ -35,6 +37,26 @@ public class Player extends Creature{
 
     @Override
     public void tick() {
+        if (pid == 0){ // If pid == 0 for player 1
+            if (game.getKeyManager().p1Up)
+                y -= 3;
+            if (game.getKeyManager().p1Down)
+                y += 3;
+            if (game.getKeyManager().p1Left)
+                x -= 3;
+            if (game.getKeyManager().p1Right)
+                x += 3;
+        }
+        else if (pid == 1){ // It pid == 1 for player 2
+            if (game.getKeyManager().p2Up)
+                y -= 3;
+            if (game.getKeyManager().p2Down)
+                y += 3;
+            if (game.getKeyManager().p2Left)
+                x -= 3;
+            if (game.getKeyManager().p2Right)
+                x += 3;
+        }
 
     }
 

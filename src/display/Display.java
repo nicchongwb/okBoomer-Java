@@ -36,7 +36,10 @@ public class Display {
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height)); // Ensure that canvas always stay within the width and height
 
-        // Add canvas onto our JFrame
+        // KeyManager Input
+        canvas.setFocusable(false); // So that JFrame will focus on itself
+
+        // Final Step to Add canvas,etc onto our JFrame
         frame.add(canvas);
         frame.pack(); // Resize frame so that we can see all of the canvas without issues/ cutoffs
 
@@ -45,5 +48,9 @@ public class Display {
     // Getters
     public Canvas getCanvas(){
         return canvas;
+    }
+
+    public JFrame getFrame(){
+        return frame;
     }
 }

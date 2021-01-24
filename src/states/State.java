@@ -1,5 +1,7 @@
 package states;
 
+import okBoomer.Game;
+
 import java.awt.Graphics;
 
 /* This class is an abstract class to hold the necessary characteristics of what
@@ -29,6 +31,13 @@ public abstract class State {
 
     // State Manager logic | utilises polymorphism concept
     private static State currentState = null; // Hold what state we want to hold in our game
+
+    // Game State
+    protected Game game; // This is to unify the game instance between different states
+    // Constructor to take in game instance
+    public State(Game game){
+        this.game = game;
+    }
 
     public static void setCurrentState(State state){
         currentState = state;

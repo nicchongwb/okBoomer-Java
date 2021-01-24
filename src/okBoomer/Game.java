@@ -1,5 +1,6 @@
 package okBoomer;
 
+import Input.KeyManager;
 import display.Display;
 import gfx.Assets;
 import gfx.ImageLoader;
@@ -9,6 +10,7 @@ import states.State;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.security.Key;
 
 /* Game class, not to be mistaken with Launcher class
 This class will be the main class of our game that holds all of our
@@ -38,12 +40,16 @@ public class Game implements Runnable{
     private State gameState;
     private State menuState;
 
+    // Input
+    private KeyManager keyManager;
+
 
     // Constructors
     public Game(String title, int width, int height){
         this.width = width;
         this.height = height;
         this.title = title;
+        keyManager = new KeyManager();
     }
 
     // Other methods
@@ -51,17 +57,21 @@ public class Game implements Runnable{
     // init method to initialise assets in our game before we process to run our game
     private void init(){
         display = new Display(title, width, height); // Initialise Display object for Game instance
+        display.getFrame().addKeyListener(keyManager); // Add keyListener to JFrame so that GUI updates based on key input
         Assets.init(); // Load in all of our assets
 
         // States | Initialise states and set desiredcurrent state
-        gameState = new GameState();
-        menuState = new MenuState();
+        gameState = new GameState(this); // Pass in this current instance of game class
+        menuState = new MenuState(this); // Pass in this current instance of game class
         State.setCurrentState(gameState); // gameState to test gameState
     }
 
     // tick method a.k.a update all game variables, positions of objects, etc
     // during game loop.
     private void tick(){
+        // Update KeyManager
+        keyManager.tick();
+
         // State | if any state exist then we call the currentState's tick function
         if (State.getState() != null){
             State.getState().tick();
@@ -151,6 +161,11 @@ public class Game implements Runnable{
         }
 
         stop(); // Stop threading once game loop terminates
+    }
+
+    // KeyManager Method for players in the game
+    public KeyManager getKeyManager(){
+        return keyManager;
     }
 
 

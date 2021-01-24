@@ -13,9 +13,10 @@ public class GameState extends State {
 
 
     // Constructors
-    public GameState(){
-        player1 = new Player(100,100);
-        player2 = new Player(200, 200);
+    public GameState(Game game){
+        super(game); // This is to look at the same game object
+        player1 = new Player(game, 100,100);
+        player2 = new Player(game, 200, 200);
 
     }
 

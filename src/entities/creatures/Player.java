@@ -14,6 +14,7 @@ GameState render() -> player.render(g);
 
 public class Player extends Creature{
     private static int playerCount = 0;
+    private static int pixToMove = 16; // Amount of pixels to move
 
     // Player characteristics/attributes
     private String name;
@@ -39,23 +40,23 @@ public class Player extends Creature{
     public void tick() {
         if (pid == 0){ // If pid == 0 for player 1
             if (game.getKeyManager().p1Up)
-                y -= 3;
+                y -= pixToMove;
             if (game.getKeyManager().p1Down)
-                y += 3;
+                y += pixToMove;
             if (game.getKeyManager().p1Left)
-                x -= 3;
+                x -= pixToMove;
             if (game.getKeyManager().p1Right)
-                x += 3;
+                x += pixToMove;
         }
         else if (pid == 1){ // It pid == 1 for player 2
             if (game.getKeyManager().p2Up)
-                y -= 3;
+                y -= pixToMove;
             if (game.getKeyManager().p2Down)
-                y += 3;
+                y += pixToMove;
             if (game.getKeyManager().p2Left)
-                x -= 3;
+                x -= pixToMove;
             if (game.getKeyManager().p2Right)
-                x += 3;
+                x += pixToMove;
         }
 
     }

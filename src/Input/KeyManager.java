@@ -43,16 +43,22 @@ public class KeyManager implements KeyListener {
     // KeyPressed is called whenever user presses a key
     @Override
     public void keyPressed(KeyEvent e) {
-        keys[e.getKeyCode()] = true; // Update boolean Array
-
-        // Debug print statement to see if key is pressed
-        System.out.println("Key is pressed");
+        // Check if key is previously pressed
+        if (keys[e.getKeyCode()] != true){
+            keys[e.getKeyCode()] = true; // Update boolean Array
+            // Debug print statement to see if key is pressed
+            System.out.println("Key is pressed");
+        }
+        else {
+            keys[e.getKeyCode()] = false;
+        }
     }
 
     // KeyReleased is called whenever user releases a key
     @Override
     public void keyReleased(KeyEvent e) {
         keys[e.getKeyCode()] = false; // Update boolean Array
+        System.out.println("Key is released");
     }
 
     @Override

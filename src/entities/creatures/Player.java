@@ -14,7 +14,7 @@ GameState render() -> player.render(g);
 
 public class Player extends Creature{
     private static int playerCount = 0;
-    private static int pixToMove = 16; // Amount of pixels to move
+    private static int pixToMove = 32; // Amount of pixels to move
 
     // Player characteristics/attributes
     private String name;
@@ -22,7 +22,7 @@ public class Player extends Creature{
     private Game game;
 
     public Player(Game game, int x, int y) {
-        super(x, y);
+        super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.game = game; // Help us access KeyManager
         pid = playerCount;
         playerCount++;
@@ -36,35 +36,60 @@ public class Player extends Creature{
         this.name = name;
     }
 
-    @Override
-    public void tick() {
+    private void getInput() {
+        // Everytime we call getInput method, we have to reset xMove and yMove
+        xMove = 0;
+        yMove = 0;
+
         if (pid == 0){ // If pid == 0 for player 1
-            if (game.getKeyManager().p1Up)
-                y -= pixToMove;
-            if (game.getKeyManager().p1Down)
-                y += pixToMove;
-            if (game.getKeyManager().p1Left)
-                x -= pixToMove;
-            if (game.getKeyManager().p1Right)
-                x += pixToMove;
+            if (game.getKeyManager().p1Up) {
+                yMove = -speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
+            if (game.getKeyManager().p1Down) {
+                yMove = speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
+            if (game.getKeyManager().p1Left) {
+                xMove = -speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
+            if (game.getKeyManager().p1Right) {
+                xMove = speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
         }
         else if (pid == 1){ // It pid == 1 for player 2
-            if (game.getKeyManager().p2Up)
-                y -= pixToMove;
-            if (game.getKeyManager().p2Down)
-                y += pixToMove;
-            if (game.getKeyManager().p2Left)
-                x -= pixToMove;
-            if (game.getKeyManager().p2Right)
-                x += pixToMove;
+            if (game.getKeyManager().p2Up) {
+                yMove = -speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
+            if (game.getKeyManager().p2Down) {
+                yMove = speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
+            if (game.getKeyManager().p2Left) {
+                xMove = -speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
+            if (game.getKeyManager().p2Right) {
+                xMove = -speed;
+                System.out.printf("X: %d\tY: %d%n", x, y);
+            }
         }
 
     }
 
     @Override
+    public void tick() {
+        getInput();
+        move();
+    }
+
+    @Override
     public void render(Graphics g) {
         // Insert g.draw method to draw out player
-        g.drawImage(Assets.player, x, y, null);
+        g.drawImage(Assets.player, x, y, width, height,null);
     }
 
 }

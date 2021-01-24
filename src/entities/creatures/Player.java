@@ -63,8 +63,17 @@ public class Player extends Creature{
 
     @Override
     public void render(Graphics g) {
-        // Insert g.draw method to draw out player
-        g.drawImage(Assets.player, x, y, null);
+
+        // player 1 sprite
+        if(pid == 0){
+            // Insert g.draw method to draw out player
+            g.drawImage(Assets.player, x, y, null);
+        }
+
+        // player 2 sprite
+        else if (pid == 1){
+            g.drawImage(Assets.tree, x, y, null);
+        }
     }
 
 }

@@ -1,5 +1,8 @@
 package Input;
 
+import entities.creatures.Player;
+
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -17,6 +20,7 @@ public class KeyManager implements KeyListener {
     public boolean p1Up, p1Down, p1Left, p1Right;
     // Player 2 up, down, left, right
     public boolean p2Up, p2Down, p2Left, p2Right;
+
 
     // Constructor
     public KeyManager(){
@@ -43,6 +47,7 @@ public class KeyManager implements KeyListener {
     // KeyPressed is called whenever user presses a key
     @Override
     public void keyPressed(KeyEvent e) {
+
         // Check if key is previously pressed
         if (keys[e.getKeyCode()] != true){
             keys[e.getKeyCode()] = true; // Update boolean Array
@@ -59,6 +64,12 @@ public class KeyManager implements KeyListener {
     public void keyReleased(KeyEvent e) {
         keys[e.getKeyCode()] = false; // Update boolean Array
         System.out.println("Key is released");
+
+        // set variable for checking if key is already pressed to false.
+        Player.alrPressedp1 = false;
+        Player.alrPressedp2 = false;
+
+
     }
 
     @Override

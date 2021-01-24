@@ -21,6 +21,10 @@ public class Player extends Creature{
     private final int pid; // Player ID
     private Game game;
 
+    // declare variables to check if key is already pressed
+    public static boolean alrPressedp1 = false;
+    public static boolean alrPressedp2 = false;
+
     public Player(Game game, int x, int y) {
         super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.game = game; // Help us access KeyManager
@@ -42,39 +46,78 @@ public class Player extends Creature{
         yMove = 0;
 
         if (pid == 0){ // If pid == 0 for player 1
-            if (game.getKeyManager().p1Up) {
-                yMove = -speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+            if (game.getKeyManager().p1Up) { // if keyPressed is true
+
+                if(!alrPressedp1){ // check if alrPressed is true
+                    yMove = -speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
+                                        // Note: alrPressed is set to false inside KeyManager.java on keyRelease
+                }
             }
             if (game.getKeyManager().p1Down) {
-                yMove = speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp1){
+                    yMove = speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp1 = true;
+                }
+
             }
             if (game.getKeyManager().p1Left) {
-                xMove = -speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp1){
+                    xMove = -speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp1 = true;
+                }
+
             }
             if (game.getKeyManager().p1Right) {
-                xMove = speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp1){
+                    xMove = speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp1 = true;
+                }
+
             }
         }
         else if (pid == 1){ // It pid == 1 for player 2
             if (game.getKeyManager().p2Up) {
-                yMove = -speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp2){
+                    yMove = -speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp2 = true;
+                }
+
             }
             if (game.getKeyManager().p2Down) {
-                yMove = speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp2){
+                    yMove = speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp2 = true;
+                }
+
             }
             if (game.getKeyManager().p2Left) {
-                xMove = -speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp2){
+                    xMove = -speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp2 = true;
+                }
+
             }
             if (game.getKeyManager().p2Right) {
-                xMove = -speed;
-                System.out.printf("X: %d\tY: %d%n", x, y);
+
+                if(!alrPressedp2){
+                    xMove = speed;
+                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    alrPressedp2 = true;
+                }
             }
         }
 

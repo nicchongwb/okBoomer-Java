@@ -21,8 +21,8 @@ public class GameState extends State {
     public GameState(Game game){
         super(game); // This is to look at the same game object
         world = new World("src/res/worlds/world1.txt");
-        player1 = new Player(game, 100,100);
-        player2 = new Player(game, 200, 200);
+        player1 = new Player(game, 0,0); // spawn player 1 at the start
+        player2 = new Player(game, 576, 576); // spawn player 2 at the end
 
     }
 

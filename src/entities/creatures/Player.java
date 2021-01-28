@@ -22,8 +22,8 @@ public class Player extends Creature{
     private Game game;
 
     // declare variables to check if key is already pressed
-    public static boolean alrPressedp1 = false;
-    public static boolean alrPressedp2 = false;
+    private static boolean alrPressedp1 = false;
+    private static boolean alrPressedp2 = false;
 
     public Player(Game game, int x, int y) {
         super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -121,6 +121,22 @@ public class Player extends Creature{
             }
         }
 
+    }
+
+    public static void setIfPressed1(boolean bool){
+        alrPressedp1 = bool;
+    }
+
+    public static void setIfPressed2(boolean bool){
+        alrPressedp2 = bool;
+    }
+
+    public static boolean getIfPressed1(){
+        return alrPressedp1;
+    }
+
+    public static boolean getIfPressed2(){
+        return alrPressedp2;
     }
 
     @Override

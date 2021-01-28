@@ -1,5 +1,6 @@
 package entities.items;
 
+import gfx.Assets;
 import okBoomer.Game;
 
 import java.awt.*;
@@ -37,6 +38,8 @@ public class Bomb extends Item{
 
     @Override
     public void render(Graphics g) {
-
+        // Insert g.draw method to draw out player
+        g.setColor(Color.darkGray);
+        g.fillOval(x, y, width, height);
     }
 }

@@ -52,7 +52,7 @@ public class KeyManager implements KeyListener {
         if (keys[e.getKeyCode()] != true){
             keys[e.getKeyCode()] = true; // Update boolean Array
             // Debug print statement to see if key is pressed
-            System.out.println("Key is pressed");
+            //System.out.println("Key is pressed");
         }
         else {
             keys[e.getKeyCode()] = false;
@@ -63,7 +63,7 @@ public class KeyManager implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
-        System.out.println("Key is released");
+        //System.out.println("Key is released");
 
         // check if the key released was player1's key or player2's key
 

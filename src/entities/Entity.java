@@ -11,12 +11,18 @@ public abstract class Entity {
 
     protected int width, height; // Size of entity
 
+    protected int prevX, prevY; // Previous position of entity, these variables help
+    // to update the 2D board array
+
     // Constructors
     public Entity(int x, int y, int width, int height){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.prevX = this.x;
+        this.prevY = this.y;
+
     }
 
     public abstract void tick();
@@ -56,4 +62,19 @@ public abstract class Entity {
         this.height = height;
     }
 
+    public int getPrevX() {
+        return prevX;
+    }
+
+    public void setPrevX(int prevX) {
+        this.prevX = prevX;
+    }
+
+    public int getPrevY() {
+        return prevY;
+    }
+
+    public void setPrevY(int prevY) {
+        this.prevY = prevY;
+    }
 }

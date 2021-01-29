@@ -52,7 +52,7 @@ public class KeyManager implements KeyListener {
         if (keys[e.getKeyCode()] != true){
             keys[e.getKeyCode()] = true; // Update boolean Array
             // Debug print statement to see if key is pressed
-            System.out.println("Key is pressed");
+            //System.out.println("Key is pressed");
         }
         else {
             keys[e.getKeyCode()] = false;
@@ -62,13 +62,32 @@ public class KeyManager implements KeyListener {
     // KeyReleased is called whenever user releases a key
     @Override
     public void keyReleased(KeyEvent e) {
+
+        //System.out.println("Key is released");
+
+        // check if the key released was player1's key or player2's key
+
+        // player 1's keys
+        if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_A ||
+            e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_D){
+
+            // set variable for checking if key is already pressed to false.
+            if(Player.getIfPressed1()){
+                Player.setIfPressed1(false);
+            }
+        }
+
+        // player 2's keys
+        if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN ||
+                e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT){
+            
+            // set variable for checking if key is already pressed to false.
+            if(Player.getIfPressed2()){
+                Player.setIfPressed2(false);
+            }
+        }
+
         keys[e.getKeyCode()] = false; // Update boolean Array
-        System.out.println("Key is released");
-
-        // set variable for checking if key is already pressed to false.
-        Player.alrPressedp1 = false;
-        Player.alrPressedp2 = false;
-
 
     }
 

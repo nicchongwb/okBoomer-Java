@@ -1,6 +1,7 @@
 package display;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 // Display class to create window display/etc in Launcher
@@ -8,6 +9,8 @@ public class Display {
     // Declare local variables
     private JFrame frame; // JFrame for window display of application
     private Canvas canvas; // Canvas object let us draw graphics(sprite,rect,etc) on our window/JFrame in this case
+    private InventoryDisplay inventory; // JPanel for Inventory
+    private ScoreboardDisplay scoreboard; // JPanel for Scoreboard
 
     private String title;
     private int width, height;
@@ -18,11 +21,24 @@ public class Display {
         this.width = width;
         this.height = height;
 
-        createDisplay(); // Create Display/ Initialise JFrame
+        // create inventory panel
+        inventory = new InventoryDisplay();
+        inventory.setPreferredSize(new Dimension(640, 60));
+        JLabel invText = new JLabel("Inventory");
+        inventory.add(invText);
+
+        // create scoreboard
+        scoreboard = new ScoreboardDisplay();
+        //scoreboard.setLayout(new BorderLayout()); //uncomment to use borderlayout
+        scoreboard.setPreferredSize(new Dimension(640,60));
+        JLabel scoreText = new JLabel("Scoreboard");
+        scoreboard.add(scoreText);
+
+        createDisplay(inventory, scoreboard); // Create Display/ Initialise JFrame
     }
 
     // Other methods
-    private void createDisplay(){
+    private void createDisplay(JPanel inventory, JPanel scoreboard){
         frame = new JFrame(title);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure process is killed upon closing
@@ -41,8 +57,48 @@ public class Display {
 
         // Final Step to Add canvas,etc onto our JFrame
         frame.add(canvas);
+        frame.add(scoreboard, BorderLayout.NORTH);
+        frame.add(inventory, BorderLayout.SOUTH);
         frame.pack(); // Resize frame so that we can see all of the canvas without issues/ cutoffs
 
+    }
+
+
+
+    // Jpanel for inventory display
+    class InventoryDisplay extends JPanel{
+        // Constructor
+        public InventoryDisplay() {
+            setFocusable(false);  // so that this can receive key-events
+            requestFocus();
+        }
+
+        // Override paintComponent to do custom drawing.
+        // Called back by repaint().
+        @Override
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D)g;  // if using Java 2D
+            super.paintComponent(g2d);       // paint background
+            setBackground(Color.LIGHT_GRAY);      // may use an image for background
+        }
+
+    }
+
+    // Jpanel for scoreboard display
+    class ScoreboardDisplay extends JPanel{
+        // Constructor
+        public ScoreboardDisplay() {
+
+        }
+
+        // Override paintComponent to do custom drawing.
+        // Called back by repaint().
+        @Override
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D)g;  // if using Java 2D
+            super.paintComponent(g2d);       // paint background
+            setBackground(Color.ORANGE);      // may use an image for background
+        }
     }
 
     // Getters

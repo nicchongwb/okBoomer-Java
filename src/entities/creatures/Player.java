@@ -22,8 +22,8 @@ public class Player extends Creature{
     private Game game;
 
     // declare variables to check if key is already pressed
-    public static boolean alrPressedp1 = false;
-    public static boolean alrPressedp2 = false;
+    private static boolean alrPressedp1 = false;
+    private static boolean alrPressedp2 = false;
 
     public Player(Game game, int x, int y) {
         super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -50,7 +50,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp1){ // check if alrPressed is true
                     yMove = -speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P1: %d\tY: %d%n", x, y);
                     alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
                                         // Note: alrPressed is set to false inside KeyManager.java on keyRelease
                 }
@@ -59,7 +59,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp1){
                     yMove = speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P1: %d\tY: %d%n", x, y);
                     alrPressedp1 = true;
                 }
 
@@ -68,7 +68,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp1){
                     xMove = -speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P1: %d\tY: %d%n", x, y);
                     alrPressedp1 = true;
                 }
 
@@ -77,7 +77,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp1){
                     xMove = speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P1: %d\tY: %d%n", x, y);
                     alrPressedp1 = true;
                 }
 
@@ -88,7 +88,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp2){
                     yMove = -speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P2: %d\tY: %d%n", x, y);
                     alrPressedp2 = true;
                 }
 
@@ -97,7 +97,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp2){
                     yMove = speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P2: %d\tY: %d%n", x, y);
                     alrPressedp2 = true;
                 }
 
@@ -106,7 +106,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp2){
                     xMove = -speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P2: %d\tY: %d%n", x, y);
                     alrPressedp2 = true;
                 }
 
@@ -115,7 +115,7 @@ public class Player extends Creature{
 
                 if(!alrPressedp2){
                     xMove = speed;
-                    System.out.printf("X: %d\tY: %d%n", x, y);
+                    //System.out.printf("P2: %d\tY: %d%n", x, y);
                     alrPressedp2 = true;
                 }
             }
@@ -123,8 +123,29 @@ public class Player extends Creature{
 
     }
 
+    public static void setIfPressed1(boolean bool){
+        alrPressedp1 = bool;
+    }
+
+    public static void setIfPressed2(boolean bool){
+        alrPressedp2 = bool;
+    }
+
+    public static boolean getIfPressed1(){
+        return alrPressedp1;
+    }
+
+    public static boolean getIfPressed2(){
+        return alrPressedp2;
+    }
+
     @Override
     public void tick() {
+        // Print out player position if key is not pressed
+        /*if (alrPressedp1){
+            System.out.printf("P%d: X: %d\tY: %d%n", getPid()+1, x, y);
+        }
+        */
         getInput();
         move();
     }
@@ -135,4 +156,8 @@ public class Player extends Creature{
         g.drawImage(Assets.player, x, y, width, height,null);
     }
 
+    // Getter and Setter
+    public int getPid() {
+        return pid;
+    }
 }

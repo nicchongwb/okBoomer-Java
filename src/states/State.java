@@ -52,4 +52,8 @@ public abstract class State {
     public abstract void tick();
     public abstract void render(Graphics g);
 
+    // Methods for scoreboard
+    public abstract int getP1Health();
+    public abstract int getP2Health();
+
 }

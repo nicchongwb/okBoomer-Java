@@ -13,10 +13,14 @@ import java.util.Arrays;
 public class GameState extends State {
 
     // World
-    private World world;
+    private static World world;
+    private static int maxWorldX;
+    private static int maxWorldY;
+    private static int minWorldX = -1;
+    private static int minWorldY = -1;
 
     // 2D Array to keep track of entities if player touch bomb | for game logic (process damage, etc)
-    private int[][] board;
+    private static int[][] board;
 
     // Players
     private Player player1;
@@ -31,6 +35,9 @@ public class GameState extends State {
     public GameState(Game game){
         super(game); // This is to look at the same game object
         world = new World("src/res/worlds/world1.txt");
+        maxWorldX = (world.getWidth()-1);
+        maxWorldY = (world.getWidth()-1);
+
         board = new int[world.getWidth()][world.getHeight()];
 
         /* 2D array Board usage:
@@ -47,6 +54,8 @@ public class GameState extends State {
         player2 = new Player(game, 576, 576); // spawn player 2 at the end
         bomb = new Bomb(game, 256,256); // spawn bomb in middle
 
+        // Set static variables for collision logic in Player class getInput()
+
         // Update board with player(s) and bomb coordinate
         board[player1.getX()/64][player1.getY()/64] = 1; // set player 1 in board [0][0] = 0,0
         board[player2.getX()/64][player2.getY()/64] = 2; // set player 2 in board [9][9] = 576,576
@@ -59,7 +68,6 @@ public class GameState extends State {
     @Override
     public void tick() {
         // Insert logic to update all variables related to Game
-        updateBoard();
         world.tick();
         player1.tick();
         player2.tick();
@@ -76,62 +84,96 @@ public class GameState extends State {
 
     }
 
+    public static boolean canPlayerMove(int pid, int prevX, int prevY, int newX, int newY, Player targetPlayer){
+
+        prevX = prevX/64;
+        prevY = prevY/64;
+        newX = newX/64;
+        newY = newY/64;
+
+        // if newX and newY is more than world edges, do not let player move
+        if((newY > (maxWorldY)) || newY <= minWorldY){
+            return false;
+        }
+        else if ((newX > (maxWorldX)) || newX <= minWorldX){
+            return false;
+        }
+        else{
+
+            // get the tileid of the next tile the player is stepping on
+            int tid = getTileId(newX, newY);
+            /* 2D array Board usage:
+            0 = empty, no entity occupying
+            1 = player1 occupying
+            2 = player2 occupying
+            3 = bomb occupying
+            */
+            switch (tid){
+
+                // if next tile is empty
+                case 0:
+                    updateBoard(pid, prevX, prevY, newX, newY);
+
+                    /* Testing section for bomb | this will make unlimited bomb in the center to test bomb damage */
+                    board[prevX][prevY] = 3;
+
+                    return true; // let player move
+
+                // if next tile is bomb
+                case 3:
+                    updateBoard(pid, prevX, prevY, newX, newY);
+                    bombPlayer(targetPlayer);
+                    System.out.println("bomb");
+                    return true;
+
+                // if next tile is player
+                default:
+                    return false;
+
+            }
+
+        }
+
+    }
+
     /* Method to update board 2d array and call updateEntity method inside */
-    public void updateBoard(){
-        // Update 2D Board array
-        // Note that debug section print statements will churn out the first set of correct value and then subsequent
-        // sets of duplicated/not update output. This is due to the way GameState.tick() is run. So just ignore the
-        // Subsequent sets
+    public static void updateBoard(int pid, int prevX, int prevY, int newX, int newY){
 
-        if (player1.getIfPressed1()){
-            // Variables of Current/Previous -> X,Y divided by 64 | to help us access board indices
-            int p1PrevX = player1.getPrevX()/64;
-            int p1PrevY = player1.getPrevY()/64;
-            int p1CurrX = player1.getX()/64;
-            int p1CurrY = player1.getY()/64;
-            // As long as current player's X,Y >= 0, proceed to update the 2D board array
-            if (p1CurrX >= 0 | p1CurrX >= 0) {
-                /*  1. Target index(s) of 2D board array where player resides, make it empty
-                    2. Target index(x) of 2D board array based on player's current X, Y and update it
-                */
-                board[p1PrevX][p1PrevY] = 0; // Step 1
-                board[p1CurrX][p1CurrY] = 1; // Step 2
+        // the coordinates are passed into this method as pixels.
+        // divide them by 64 to get the coordinates in rows and cols
 
-                // Debug section
-                System.out.printf("Graphics: P1: X: %d\tY: %d%n", player1.getX(), player1.getY());
-                System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
-                                "Board: P1: CurrXY: [%d][%d] = %d%n%n",
-                        p1PrevX, p1PrevY, board[p1PrevX][p1PrevY], p1CurrX, p1CurrY, board[p1CurrX][p1CurrY]);
-            }
+        /*  1. Target index(s) of 2D board array where player resides, make it empty
+            2. Target index(x) of 2D board array based on player's current X, Y and update it
+        */
+
+        // player 1
+        if (pid == 0){
+            board[prevX][prevY] = 0; // Step 1
+            board[newX][newY] = 1; // Step 2
+
+            System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
+                            "Board: P1: CurrXY: [%d][%d] = %d%n%n",
+                    prevX, prevY, board[prevX][prevY], newX, newY, board[newX][newY]);
+        }
+        // player 2
+        else if (pid == 1){
+
+            board[prevX][prevY] = 0; // Step 1
+            board[newX][newY] = 2; // Step 2
+
+            System.out.printf("Board: P2: PrevXY: [%d][%d] = %d%n" +
+                            "Board: P2: CurrXY: [%d][%d] = %d%n%n",
+                    prevX, prevY, board[prevX][prevY], newX, newY, board[newX][newY]);
+
         }
 
-        if (player2.getIfPressed2()){
-            // Variables of Current/Previous -> X,Y divided by 64 | to help us access board indices
-            int p2PrevX = player2.getPrevX()/64;
-            int p2PrevY = player2.getPrevY()/64;
-            int p2CurrX = player2.getX()/64;
-            int p2CurrY = player2.getY()/64;
-            // As long as current player's X,Y >= 0, proceed to update the 2D board array
-            if (p2CurrX >= 0 | p2CurrX >= 0) {
-                /*  1. Target index(s) of 2D board array where player resides, make it empty
-                    2. Target index(x) of 2D board array based on player's current X, Y and update it
-                */
-                board[p2PrevX][p2PrevY] = 0; // Step 1
-                board[p2CurrX][p2CurrY] = 2; // Step 2
-
-                // Debug section
-                System.out.printf("Graphics: P2: X: %d\tY: %d%n", player2.getX(), player2.getY());
-                System.out.printf("Board: P2: PrevXY: [%d][%d] = %d%n" +
-                                "Board: P2: CurrXY: [%d][%d] = %d%n%n",
-                        p2PrevX, p2PrevY, board[p2PrevX][p2PrevY], p2CurrX, p2CurrY, board[p2CurrX][p2CurrY]);
-            }
-        }
     }
 
-    /* Method to update entity (eg. player health after touching bomb based on 2d array */
-    public void updateEntity(){
-
+    /* Method to bomb player */
+    public static void bombPlayer(Player targetPlayer){
+        targetPlayer.setHealth(targetPlayer.getHealth() - 1);
     }
+
 
     // Getters and Setters
 
@@ -139,8 +181,35 @@ public class GameState extends State {
         return board;
     }
 
+    public static int getTileId(int newX, int newY){
+
+        int tid = board[newX][newY];
+        return tid;
+
+    }
+
     public Player getPlayer1() {
         return player1;
     }
 
+    public Player getPlayer2(){
+        return player2;
+    }
+
+    public static World getWorld(){ return world; }
+
+    public Bomb getBomb() {
+        return bomb;
+    }
+
+    // Update Scoreboard Methods
+    @Override
+    public int getP1Health(){
+        return player1.getHealth();
+    }
+
+    @Override
+    public int getP2Health(){
+        return player2.getHealth();
+    }
 }

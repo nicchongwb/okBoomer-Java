@@ -23,12 +23,21 @@ public class Bomb extends Item{
         bombCount++;
     }
 
+    // Getter and Setter
     public String getName(){
         return name;
     }
 
     private void setName(String name){
         this.name = name;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     @Override

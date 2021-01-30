@@ -15,6 +15,8 @@ public class Display {
     private String title;
     private int width, height;
 
+    private int counter = 0;
+
     // Constructor
     public Display(String title, int width, int height){
         this.title = title;
@@ -74,7 +76,6 @@ public class Display {
         }
 
         // Override paintComponent to do custom drawing.
-        // Called back by repaint().
         @Override
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D)g;  // if using Java 2D
@@ -87,18 +88,62 @@ public class Display {
     // Jpanel for scoreboard display
     class ScoreboardDisplay extends JPanel{
         // Constructor
-        public ScoreboardDisplay() {
+        private int p1Health, p2Health;
 
+        public ScoreboardDisplay() {
+            p1Health = 0;
+            p2Health = 0;
         }
 
         // Override paintComponent to do custom drawing.
-        // Called back by repaint().
         @Override
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D)g;  // if using Java 2D
             super.paintComponent(g2d);       // paint background
             setBackground(Color.ORANGE);      // may use an image for background
+
         }
+
+        // Paint function to update scoreboard. This is called via repaint()
+        @Override
+        public void paint(Graphics g){
+            g.clearRect(0, 0, 640, 60);
+
+            Graphics2D g2d = (Graphics2D)g;  // if using Java 2D
+            super.paintComponent(g2d);       // paint background
+            setBackground(Color.ORANGE);      // may use an image for background
+
+            // Player(s) information includes: playerID/name, health
+            g.drawString("Player 1: " + String.valueOf(p1Health) + "/10", 32, 30);
+            g.drawString("Points: 0", 32, 45);
+
+
+            g.drawString("Player 2: " + String.valueOf(p2Health) + "/10", 512, 30);
+            g.drawString("Points: 0", 512, 45);
+
+            // To see if scoreboard is updating
+            g.drawString(String.valueOf(counter), 300, 45);
+            counter += 1;
+
+        }
+
+        // Getter and Setter
+        public int getP1Health() {
+            return p1Health;
+        }
+
+        public void setP1Health(int p1Health) {
+            this.p1Health = p1Health;
+        }
+
+        public int getP2Health() {
+            return p2Health;
+        }
+
+        public void setP2Health(int p2Health) {
+            this.p2Health = p2Health;
+        }
+
     }
 
     // Getters
@@ -108,5 +153,15 @@ public class Display {
 
     public JFrame getFrame(){
         return frame;
+    }
+
+    public ScoreboardDisplay getScoreboard() {
+        return scoreboard;
+    }
+
+    public void updateScoreboard(int p1Health, int p2Health) {
+        this.scoreboard.setP1Health(p1Health);
+        this.scoreboard.setP2Health(p2Health);
+        this.scoreboard.repaint(); // calls the paint() in scoreboard
     }
 }

@@ -21,8 +21,6 @@ public class GameState extends State {
 
     // 2D Array to keep track of entities if player touch bomb | for game logic (process damage, etc)
     private static int[][] board;
-    private boolean checkIfCollide1 = false;
-    private boolean checkIfCollide2 = false;
 
     // Players
     private Player player1;
@@ -37,8 +35,8 @@ public class GameState extends State {
     public GameState(Game game){
         super(game); // This is to look at the same game object
         world = new World("src/res/worlds/world1.txt");
-        maxWorldX = (world.getWidth()-1) * 64;
-        maxWorldY = (world.getWidth()-1) * 64;
+        maxWorldX = (world.getWidth()-1);
+        maxWorldY = (world.getWidth()-1);
 
         board = new int[world.getWidth()][world.getHeight()];
 
@@ -88,6 +86,11 @@ public class GameState extends State {
 
     public static boolean canPlayerMove(int pid, int prevX, int prevY, int newX, int newY, Player targetPlayer){
 
+        prevX = prevX/64;
+        prevY = prevY/64;
+        newX = newX/64;
+        newY = newY/64;
+
         // if newX and newY is more than world edges, do not let player move
         if((newY > (maxWorldY)) || newY <= minWorldY){
             return false;
@@ -96,11 +99,6 @@ public class GameState extends State {
             return false;
         }
         else{
-
-            prevX = prevX/64;
-            prevY = prevY/64;
-            newX = newX/64;
-            newY = newY/64;
 
             // get the tileid of the next tile the player is stepping on
             int tid = getTileId(newX, newY);
@@ -199,22 +197,6 @@ public class GameState extends State {
     }
 
     public static World getWorld(){ return world; }
-
-    public boolean checkIfCollide1() {
-        return checkIfCollide1;
-    }
-
-    public void checkIfCollide1(boolean checkIfCollide1) {
-        this.checkIfCollide1 = checkIfCollide1;
-    }
-
-    public boolean checkIfCollide2() {
-        return checkIfCollide2;
-    }
-
-    public void checkIfCollide2(boolean checkIfCollide2) {
-        this.checkIfCollide2 = checkIfCollide2;
-    }
 
     public Bomb getBomb() {
         return bomb;

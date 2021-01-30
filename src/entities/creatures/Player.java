@@ -15,8 +15,6 @@ GameState render() -> player.render(g);
  */
 
 public class Player extends Creature{
-    // Access current board information about player1/2 currX, currY from GameState static variables
-    private World world = GameState.getWorld();
 
     private static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move

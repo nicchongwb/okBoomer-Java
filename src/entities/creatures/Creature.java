@@ -25,6 +25,8 @@ public abstract class Creature extends Entity {
 
     // Move method
     public void move() {
+        prevX = x; // Set prevX before updating x
+        prevY = y; // Set prevY before updating y
         x += xMove;
         y += yMove;
     }

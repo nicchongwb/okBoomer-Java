@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.security.Key;
+import java.util.Arrays;
 
 /* Game class, not to be mistaken with Launcher class
 This class will be the main class of our game that holds all of our
@@ -101,6 +102,14 @@ public class Game implements Runnable{
         // respective state
         if (State.getState() != null){
             State.getState().render(g);
+
+            // If we are in GameState, then we update scoreboard
+            if (State.getState() instanceof GameState){
+                int p1Health = gameState.getP1Health();
+                int p2Health = gameState.getP2Health();
+
+                display.updateScoreboard(p1Health, p2Health);
+            }
         }
 
         /*--------------------------------End of drawing---------------------------------*/
@@ -153,7 +162,7 @@ public class Game implements Runnable{
 
             // [Optional] Check if timer has been running for 1 sec (1 bil nanoSecond)
             if (timer >= 1000000000){
-                System.out.println("FPS: " + ticks);
+                //System.out.println("FPS: " + ticks);
                 ticks = 0;
                 timer = 0;
             }

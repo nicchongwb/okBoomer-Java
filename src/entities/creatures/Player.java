@@ -4,8 +4,10 @@ import gfx.Assets;
 import okBoomer.Game;
 import states.GameState;
 import worlds.World;
+import gfx.Animation;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /* Usage: GameState class -> private Player player;
 GameState constructor -> player = new Player(x,y);
@@ -18,6 +20,9 @@ public class Player extends Creature{
 
     private static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
+    private Animation p1animDown, p1animUp, p1animLeft, p1animRight, p2animDown, p2animUp, p2animLeft, p2animRight;
+    private static int p1facing = 1; // 0: face up, 1: down, 2: left, 3:right
+    private static int p2facing = 0;
 
     // Player characteristics/attributes
     private String name;
@@ -37,6 +42,17 @@ public class Player extends Creature{
         this.game = game; // Help us access KeyManager
         pid = playerCount;
         playerCount++;
+
+        //Animations
+        p1animDown = new Animation(500, Assets.player1_down);
+        p1animUp = new Animation(500, Assets.player1_up);
+        p1animLeft = new Animation(500, Assets.player1_left);
+        p1animRight = new Animation(500, Assets.player1_right);
+
+        p2animDown = new Animation(500, Assets.player2_down);
+        p2animUp = new Animation(500, Assets.player2_up);
+        p2animLeft = new Animation(500, Assets.player2_left);
+        p2animRight = new Animation(500, Assets.player2_right);
     }
 
     public String getName(){
@@ -74,6 +90,7 @@ public class Player extends Creature{
                     }
                     alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
                                         // Note: alrPressed is set to false inside KeyManager.java on keyRelease
+                    p1facing = 0 ;
                 }
             }
             if (game.getKeyManager().p1Down) {
@@ -88,6 +105,7 @@ public class Player extends Creature{
                         System.out.println("No move pls");
                     }
                     alrPressedp1 = true;
+                    p1facing = 1;
                 }
 
             }
@@ -104,6 +122,7 @@ public class Player extends Creature{
                         System.out.println("No move pls");
                     }
                     alrPressedp1 = true;
+                    p1facing = 2;
                 }
 
             }
@@ -119,6 +138,7 @@ public class Player extends Creature{
                         System.out.println("No move pls");
                     }
                     alrPressedp1 = true;
+                    p1facing = 3;
                 }
 
             }
@@ -138,6 +158,7 @@ public class Player extends Creature{
                     }
 
                     alrPressedp2 = true;
+                    p2facing = 0;
                 }
 
             }
@@ -155,6 +176,7 @@ public class Player extends Creature{
                     }
 
                     alrPressedp2 = true;
+                    p2facing = 1;
                 }
 
             }
@@ -171,6 +193,7 @@ public class Player extends Creature{
                         System.out.println("No move pls");
                     }
                     alrPressedp2 = true;
+                    p2facing = 2;
                 }
 
             }
@@ -187,6 +210,7 @@ public class Player extends Creature{
                         System.out.println("No move pls");
                     }
                     alrPressedp2 = true;
+                    p2facing = 3;
                 }
             }
         }
@@ -216,6 +240,16 @@ public class Player extends Creature{
             System.out.printf("P%d: X: %d\tY: %d%n", getPid()+1, x, y);
         }
         */
+        //Animations
+        p1animDown.tick();
+        p1animUp.tick();
+        p1animLeft.tick();
+        p1animRight.tick();
+        p2animDown.tick();
+        p2animUp.tick();
+        p2animLeft.tick();
+        p2animRight.tick();
+
         getInput();
         move();
     }
@@ -223,7 +257,60 @@ public class Player extends Creature{
     @Override
     public void render(Graphics g) {
         // Insert g.draw method to draw out player
-        g.drawImage(Assets.player, x, y, width, height,null);
+        //g.drawImage(Assets.player, x, y, width, height,null);
+        g.drawImage(getCurrentAnimationFrame(), x, y, width, height,null);
+    }
+
+    private BufferedImage getCurrentAnimationFrame(){
+        if (pid ==0){
+            if (game.getKeyManager().p1Left){
+                return p1animLeft.getCurrentFrame();
+            }else if (game.getKeyManager().p1Right){
+                return p1animRight.getCurrentFrame();
+            }else if (game.getKeyManager().p1Up){
+                return p1animUp.getCurrentFrame();
+            } else if (game.getKeyManager().p1Down){
+                return p1animDown.getCurrentFrame();
+            }else{
+                return getFacing();
+            }
+        }
+        else {
+            if (game.getKeyManager().p2Left){
+                return p2animLeft.getCurrentFrame();
+            }else if (game.getKeyManager().p2Right){
+                return p2animRight.getCurrentFrame();
+            }else if (game.getKeyManager().p2Down){
+                return p2animDown.getCurrentFrame();
+            } else {
+                return getFacing();
+            }
+        }
+    }
+
+    private BufferedImage getFacing(){
+        if (pid ==0) {
+            if (p1facing == 0) {
+                return p1animUp.getCurrentFrame();
+            } else if (p1facing == 1) {
+                return p1animDown.getCurrentFrame();
+            } else if (p1facing == 2) {
+                return p1animLeft.getCurrentFrame();
+            } else {
+                return p1animRight.getCurrentFrame();
+            }
+        }
+        else{
+            if (p2facing == 0) {
+                return p2animUp.getCurrentFrame();
+            } else if (p2facing == 1) {
+                return p2animDown.getCurrentFrame();
+            } else if (p2facing == 2) {
+                return p2animLeft.getCurrentFrame();
+            } else {
+                return p2animRight.getCurrentFrame();
+            }
+        }
     }
 
     // Getter and Setter

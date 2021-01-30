@@ -19,16 +19,53 @@ public class Assets {
     // We can utilise ArrayList to manage collections of BufferedImages
     // eg. Character animation
     private static final int width = 32, height = 32; // This is the size of each sprite(grid space) in sheet.png
-    public static BufferedImage player, dirt, grass, stone, tree; // Eg. of game asset
+    public static BufferedImage dirt, grass, stone, tree; // Eg. of game asset
+    public static BufferedImage[] player1_down, player1_left, player1_right, player1_up, player2_down, player2_left, player2_right, player2_up ;
 
     public static void init(){
         // Test spritesheet
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/res/sprites/sheet.png"));
         // Set BufferedImage objects to be targets sprites in SpriteSheet
-        player = sheet.crop(0, 0, width, height);
         dirt = sheet.crop(width, 0, width, height);
         grass = sheet.crop(width * 2, 0 , width, height);
         stone = sheet.crop(width * 3, 0 , width, height);
         tree = sheet.crop(0, height, width, height);
+
+        SpriteSheet character = new SpriteSheet(ImageLoader.loadImage("/res/sprites/charactersheet.png"));
+        player1_down = new BufferedImage[3];
+        player1_left = new BufferedImage[3];
+        player1_right = new BufferedImage[3];
+        player1_up = new BufferedImage[3];
+
+        player2_down = new BufferedImage[3];
+        player2_left = new BufferedImage[3];
+        player2_right = new BufferedImage[3];
+        player2_up = new BufferedImage[3];
+
+        player1_down[0] = character.crop(width * 3,height * 4, width, height);
+        player1_down[1] = character.crop(width * 4,height * 4, width, height);
+        player1_down[2] = character.crop(width * 5,height * 4, width, height);
+        player1_left[0] = character.crop(width * 3,height * 5, width, height);
+        player1_left[1] = character.crop(width * 4,height * 5, width, height);
+        player1_left[2] = character.crop(width * 5,height * 5, width, height);
+        player1_right[0] = character.crop(width * 3,height * 6, width, height);
+        player1_right[1] = character.crop(width * 4,height * 6, width, height);
+        player1_right[2] = character.crop(width * 5,height * 6, width, height);
+        player1_up[0] = character.crop(width * 3,height * 7, width, height);
+        player1_up[1] = character.crop(width * 4,height * 7, width, height);
+        player1_up[2] = character.crop(width * 5,height * 7, width, height);
+
+        player2_down[0] = character.crop(0,0, width, height);
+        player2_down[1] = character.crop(width,0, width, height);
+        player2_down[2] = character.crop(width * 2,0, width, height);
+        player2_left[0] = character.crop(0, height , width, height);
+        player2_left[1] = character.crop(width, height , width, height);
+        player2_left[2] = character.crop(width * 2, height , width, height);
+        player2_right[0] = character.crop(0,height * 2, width, height);
+        player2_right[1] = character.crop(width,height * 2, width, height);
+        player2_right[2] = character.crop(width * 2,height * 2, width, height);
+        player2_up[0] = character.crop(0,height * 3, width, height);
+        player2_up[1] = character.crop(width,height * 3, width, height);
+        player2_up[2] = character.crop(width * 2,height * 3, width, height);
     }
 }

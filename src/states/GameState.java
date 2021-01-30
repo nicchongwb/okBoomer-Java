@@ -86,7 +86,7 @@ public class GameState extends State {
 
     }
 
-    public static boolean canPlayerMove(int pid, int prevX, int prevY, int newX, int newY){
+    public static boolean canPlayerMove(int pid, int prevX, int prevY, int newX, int newY, Player targetPlayer){
 
         // if newX and newY is more than world edges, do not let player move
         if((newY > (maxWorldY)) || newY <= minWorldY){
@@ -115,11 +115,16 @@ public class GameState extends State {
                 // if next tile is empty
                 case 0:
                     updateBoard(pid, prevX, prevY, newX, newY);
+
+                    /* Testing section for bomb | this will make unlimited bomb in the center to test bomb damage */
+                    board[prevX][prevY] = 3;
+
                     return true; // let player move
 
                 // if next tile is bomb
                 case 3:
                     updateBoard(pid, prevX, prevY, newX, newY);
+                    bombPlayer(targetPlayer);
                     System.out.println("bomb");
                     return true;
 
@@ -166,9 +171,9 @@ public class GameState extends State {
 
     }
 
-    /* Method to update entity (eg. player health after touching bomb based on 2d array */
-    public void updateEntity(){
-
+    /* Method to bomb player */
+    public static void bombPlayer(Player targetPlayer){
+        targetPlayer.setHealth(targetPlayer.getHealth() - 1);
     }
 
 
@@ -189,6 +194,10 @@ public class GameState extends State {
         return player1;
     }
 
+    public Player getPlayer2(){
+        return player2;
+    }
+
     public static World getWorld(){ return world; }
 
     public boolean checkIfCollide1() {
@@ -205,5 +214,20 @@ public class GameState extends State {
 
     public void checkIfCollide2(boolean checkIfCollide2) {
         this.checkIfCollide2 = checkIfCollide2;
+    }
+
+    public Bomb getBomb() {
+        return bomb;
+    }
+
+    // Update Scoreboard Methods
+    @Override
+    public int getP1Health(){
+        return player1.getHealth();
+    }
+
+    @Override
+    public int getP2Health(){
+        return player2.getHealth();
     }
 }

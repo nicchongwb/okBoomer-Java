@@ -102,6 +102,14 @@ public class Game implements Runnable{
         // respective state
         if (State.getState() != null){
             State.getState().render(g);
+
+            // If we are in GameState, then we update scoreboard
+            if (State.getState() instanceof GameState){
+                int p1Health = gameState.getP1Health();
+                int p2Health = gameState.getP2Health();
+
+                display.updateScoreboard(p1Health, p2Health);
+            }
         }
 
         /*--------------------------------End of drawing---------------------------------*/

@@ -2,6 +2,7 @@ package entities.creatures;
 
 import gfx.Assets;
 import okBoomer.Game;
+import okBoomer.Handler;
 import states.GameState;
 import worlds.World;
 
@@ -22,7 +23,7 @@ public class Player extends Creature{
     // Player characteristics/attributes
     private String name;
     private final int pid; // Player ID
-    private Game game;
+    private Handler handler;
 
     // declare variables to check if key is already pressed
     private static boolean alrPressedp1 = false;
@@ -32,9 +33,9 @@ public class Player extends Creature{
     private static int newX;
     private static int newY;
 
-    public Player(Game game, int x, int y) {
-        super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
-        this.game = game; // Help us access KeyManager
+    public Player(Handler handler, int x, int y) {
+        super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+        this.handler = handler; // Help us access KeyManager
         pid = playerCount;
         playerCount++;
     }
@@ -56,7 +57,7 @@ public class Player extends Creature{
         newY = y;
 
         if (pid == 0){ // If pid == 0 for player 1
-            if (game.getKeyManager().p1Up) { // if keyPressed is true
+            if (handler.getKeyManager().p1Up) { // if keyPressed is true
 
                 if(!alrPressedp1){ // check if alrPressed is true
 
@@ -76,7 +77,7 @@ public class Player extends Creature{
                                         // Note: alrPressed is set to false inside KeyManager.java on keyRelease
                 }
             }
-            if (game.getKeyManager().p1Down) {
+            if (handler.getKeyManager().p1Down) {
 
                 if(!alrPressedp1){
 
@@ -91,7 +92,7 @@ public class Player extends Creature{
                 }
 
             }
-            if (game.getKeyManager().p1Left) {
+            if (handler.getKeyManager().p1Left) {
 
                 if(!alrPressedp1){
 
@@ -107,7 +108,7 @@ public class Player extends Creature{
                 }
 
             }
-            if (game.getKeyManager().p1Right) {
+            if (handler.getKeyManager().p1Right) {
 
                 if(!alrPressedp1){
 
@@ -125,7 +126,7 @@ public class Player extends Creature{
         }
         else if (pid == 1){ // It pid == 1 for player 2
 
-            if (game.getKeyManager().p2Up) {
+            if (handler.getKeyManager().p2Up) {
 
                 if(!alrPressedp2){
                     newY = y - speed;
@@ -141,7 +142,7 @@ public class Player extends Creature{
                 }
 
             }
-            if (game.getKeyManager().p2Down) {
+            if (handler.getKeyManager().p2Down) {
 
                 if(!alrPressedp2){
 
@@ -158,7 +159,7 @@ public class Player extends Creature{
                 }
 
             }
-            if (game.getKeyManager().p2Left) {
+            if (handler.getKeyManager().p2Left) {
 
                 if(!alrPressedp2){
 
@@ -174,7 +175,7 @@ public class Player extends Creature{
                 }
 
             }
-            if (game.getKeyManager().p2Right) {
+            if (handler.getKeyManager().p2Right) {
 
                 if(!alrPressedp2){
 

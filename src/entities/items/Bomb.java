@@ -2,6 +2,7 @@ package entities.items;
 
 import gfx.Assets;
 import okBoomer.Game;
+import okBoomer.Handler;
 
 import java.awt.*;
 
@@ -15,9 +16,9 @@ public class Bomb extends Item{
     private Game game;
     private int damage;
 
-    public Bomb(Game game, int x, int y){
-        super(x, y, Item.DEFAULT_ITEM_WIDTH, Item.DEFAULT_ITEM_HEIGHT);
-        this.game = game; // Help us access KeyManager
+    public Bomb(Handler handler, int x, int y){
+        super(handler, x, y, Item.DEFAULT_ITEM_WIDTH, Item.DEFAULT_ITEM_HEIGHT);
+        this.handler = handler; // Help us access KeyManager
         this.damage = DEFAULT_DAMAGE;
         bombID = bombCount;
         bombCount++;

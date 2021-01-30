@@ -20,6 +20,7 @@ public class Assets {
     // eg. Character animation
     private static final int width = 32, height = 32; // This is the size of each sprite(grid space) in sheet.png
     public static BufferedImage player, dirt, grass, stone, tree; // Eg. of game asset
+    public static BufferedImage[] btn_start;
 
     public static void init(){
         // Test spritesheet
@@ -30,5 +31,15 @@ public class Assets {
         grass = sheet.crop(width * 2, 0 , width, height);
         stone = sheet.crop(width * 3, 0 , width, height);
         tree = sheet.crop(0, height, width, height);
+
+        //start button
+        btn_start = new BufferedImage[2];
+        btn_start[0] = sheet.crop(0, height*2, width*2, height);
+        btn_start[1] = sheet.crop(0, height*3, width*2, height);
+
+        //start button
+        //btn_start = new BufferedImage[2];
+        //btn_start[0] = sheet.crop(width*6, height*4, width*2, height);
+        //btn_start[1] = sheet.crop(width*6, height*4, width*2, height);
     }
 }

@@ -2,9 +2,7 @@ package states;
 
 import entities.creatures.Player;
 import entities.items.Bomb;
-import gfx.Assets;
-import okBoomer.Game;
-import tiles.Tile;
+import okBoomer.Handler;
 import worlds.World;
 
 import java.awt.*;
@@ -32,8 +30,8 @@ public class GameState extends State {
 
 
     // Constructors
-    public GameState(Game game){
-        super(game); // This is to look at the same game object
+    public GameState(Handler handler){
+        super(handler); // This is to look at the same game object
         world = new World("src/res/worlds/world1.txt");
         maxWorldX = (world.getWidth()-1);
         maxWorldY = (world.getWidth()-1);
@@ -50,9 +48,9 @@ public class GameState extends State {
             Arrays.fill(columns, 0); // Fills all element in board with 0
         }
 
-        player1 = new Player(game, 0,0); // spawn player 1 at the start
-        player2 = new Player(game, 576, 576); // spawn player 2 at the end
-        bomb = new Bomb(game, 256,256); // spawn bomb in middle
+        player1 = new Player(handler, 0,0); // spawn player 1 at the start
+        player2 = new Player(handler, 576, 576); // spawn player 2 at the end
+        bomb = new Bomb(handler, 256,256); // spawn bomb in middle
 
         // Set static variables for collision logic in Player class getInput()
 

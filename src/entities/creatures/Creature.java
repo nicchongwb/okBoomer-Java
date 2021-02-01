@@ -1,6 +1,7 @@
 package entities.creatures;
 
 import entities.Entity;
+import okBoomer.Handler;
 
 public abstract class Creature extends Entity {
 
@@ -15,8 +16,8 @@ public abstract class Creature extends Entity {
     protected int xMove, yMove; // Movement in pixels to add to x, y
 
 
-    public Creature(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public Creature(Handler handler, int x, int y, int width, int height) {
+        super(handler, x, y, width, height);
         health = DEFAULT_HEALTH; // Set default health
         speed = DEFAULT_SPEED; // Set default speed
         xMove = 0;

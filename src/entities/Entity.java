@@ -1,9 +1,12 @@
 package entities;
 
+import okBoomer.Handler;
+
 import java.awt.*;
 
 // Entity aka Game Actors, this can be used to implement creatures/items
 public abstract class Entity {
+    protected Handler handler;
     // Entity characteristics/attributes
     protected int x, y; // Position of entity, We use int since our x,y are
                         // whole numbers, float can be used too but depends
@@ -15,7 +18,8 @@ public abstract class Entity {
     // to update the 2D board array
 
     // Constructors
-    public Entity(int x, int y, int width, int height){
+    public Entity(Handler handler, int x, int y, int width, int height){
+        this.handler = handler;
         this.x = x;
         this.y = y;
         this.width = width;

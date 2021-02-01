@@ -1,7 +1,7 @@
 package states;
 
 import okBoomer.Game;
-
+import okBoomer.Handler;
 import java.awt.Graphics;
 
 /* This class is an abstract class to hold the necessary characteristics of what
@@ -33,10 +33,10 @@ public abstract class State {
     private static State currentState = null; // Hold what state we want to hold in our game
 
     // Game State
-    protected Game game; // This is to unify the game instance between different states
+    protected Handler handler; // This is to unify the game instance between different states
     // Constructor to take in game instance
-    public State(Game game){
-        this.game = game;
+    public State(Handler handler){
+        this.handler = handler;
     }
 
     public static void setCurrentState(State state){

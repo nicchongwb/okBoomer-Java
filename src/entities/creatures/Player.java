@@ -258,30 +258,29 @@ public class Player extends Creature{
     @Override
     public void render(Graphics g) {
         // Insert g.draw method to draw out player
-        //g.drawImage(Assets.player, x, y, width, height,null);
         g.drawImage(getCurrentAnimationFrame(), x, y, width, height,null);
     }
 
     private BufferedImage getCurrentAnimationFrame(){
         if (pid ==0){
-            if (game.getKeyManager().p1Left){
+            if (handler.getKeyManager().p1Left){
                 return p1animLeft.getCurrentFrame();
-            }else if (game.getKeyManager().p1Right){
+            }else if (handler.getKeyManager().p1Right){
                 return p1animRight.getCurrentFrame();
-            }else if (game.getKeyManager().p1Up){
+            }else if (handler.getKeyManager().p1Up){
                 return p1animUp.getCurrentFrame();
-            } else if (game.getKeyManager().p1Down){
+            } else if (handler.getKeyManager().p1Down){
                 return p1animDown.getCurrentFrame();
             }else{
                 return getFacing();
             }
         }
         else {
-            if (game.getKeyManager().p2Left){
+            if (handler.getKeyManager().p2Left){
                 return p2animLeft.getCurrentFrame();
-            }else if (game.getKeyManager().p2Right){
+            }else if (handler.getKeyManager().p2Right){
                 return p2animRight.getCurrentFrame();
-            }else if (game.getKeyManager().p2Down){
+            }else if (handler.getKeyManager().p2Down){
                 return p2animDown.getCurrentFrame();
             } else {
                 return getFacing();

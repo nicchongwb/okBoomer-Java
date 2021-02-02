@@ -4,8 +4,10 @@ import Input.KeyManager;
 import display.Display;
 import gfx.Assets;
 import gfx.ImageLoader;
+import gfx.MouseManager;
 import states.*;
 import states.State;
+import okBoomer.Handler;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -38,11 +40,15 @@ public class Game implements Runnable{
     int x = 0; // Test variable for game tick/update refresh rate
 
     // States
-    private State gameState;
-    private State menuState;
+    public State gameState;
+    public State menuState;
 
     // Input
     private KeyManager keyManager;
+    private MouseManager mouseManager;
+
+    //Handler
+    private Handler handler;
 
 
     // Constructors
@@ -51,6 +57,7 @@ public class Game implements Runnable{
         this.height = height;
         this.title = title;
         keyManager = new KeyManager();
+        mouseManager = new MouseManager();
     }
 
     // Other methods
@@ -59,12 +66,19 @@ public class Game implements Runnable{
     private void init(){
         display = new Display(title, width, height); // Initialise Display object for Game instance
         display.getFrame().addKeyListener(keyManager); // Add keyListener to JFrame so that GUI updates based on key input
+        display.getFrame().addMouseListener(mouseManager);
+        display.getFrame().addMouseMotionListener(mouseManager);
+        display.getCanvas().addMouseListener(mouseManager);
+        display.getCanvas().addMouseMotionListener(mouseManager);
         Assets.init(); // Load in all of our assets
 
+        handler = new Handler(this);
+
         // States | Initialise states and set desiredcurrent state
-        gameState = new GameState(this); // Pass in this current instance of game class
-        menuState = new MenuState(this); // Pass in this current instance of game class
-        State.setCurrentState(gameState); // gameState to test gameState
+        gameState = new GameState(handler); // Pass in this current instance of game class
+        menuState = new MenuState(handler); // Pass in this current instance of game class
+        State.setCurrentState(menuState); // gameState to test gameState
+        //State.setCurrentState(gameState);
     }
 
     // tick method a.k.a update all game variables, positions of objects, etc
@@ -100,15 +114,24 @@ public class Game implements Runnable{
 
         // State | if any state exist then we pass in g to state to render
         // respective state
-        if (State.getState() != null){
-            State.getState().render(g);
+        if (State.getState() != null) {
+            if (State.getState() instanceof MenuState) {
+                State.getState().render(g);
+                Font fnt0 = new Font("arial", Font.BOLD, 50);
+                g.setFont(fnt0);
+                g.setColor(Color.red);
+                g.drawString("OK BOOMER", width/4, 100);
+            }
+            else if (State.getState() instanceof GameState) {
+                State.getState().render(g);
 
-            // If we are in GameState, then we update scoreboard
-            if (State.getState() instanceof GameState){
+                // If we are in GameState, then we update scoreboard
+                //if (State.getState() instanceof GameState) {
                 int p1Health = gameState.getP1Health();
                 int p2Health = gameState.getP2Health();
 
                 display.updateScoreboard(p1Health, p2Health);
+                //}
             }
         }
 
@@ -175,6 +198,10 @@ public class Game implements Runnable{
     // KeyManager Method for players in the game
     public KeyManager getKeyManager(){
         return keyManager;
+    }
+
+    public MouseManager getMouseManager(){
+        return mouseManager;
     }
 
 

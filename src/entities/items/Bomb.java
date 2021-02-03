@@ -6,6 +6,10 @@ import okBoomer.Handler;
 
 import java.awt.*;
 
+/* Bomb.java is called when a player places down a bomb!
+*  This is different from the BombCollectable.java, where
+*  we use it to spawn Bomb Parts (bombs that are collectable by the player)
+* */
 public class Bomb extends Item{
     private static final int DEFAULT_DAMAGE = 1;
     private static int bombCount = 0;
@@ -48,7 +52,7 @@ public class Bomb extends Item{
 
     @Override
     public void render(Graphics g) {
-        // Insert g.draw method to draw out player
+        // Insert g.draw method to draw out planted bomb
         g.setColor(Color.darkGray);
         g.fillOval(x, y, width, height);
     }

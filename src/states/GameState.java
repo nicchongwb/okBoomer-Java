@@ -2,11 +2,16 @@ package states;
 
 import entities.creatures.Player;
 import entities.items.Bomb;
+import entities.items.BombCollectable;
 import okBoomer.Handler;
+import utils.ItemTimer;
 import worlds.World;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
+
 
 public class GameState extends State {
 
@@ -26,8 +31,10 @@ public class GameState extends State {
 
     // Bombs
     private Bomb bomb; // Explore using arrayList to store list of placed bombs
-    // Need an item for player to collect bomb parts to fill up bomb pouch
+    private BombCollectable bombPart; // bomb item for player to collect bomb parts to fill up bomb pouch
+    private ArrayList<BombCollectable> bombList; // get the list of currently spawned bomb items
 
+    private ItemTimer timer = new ItemTimer();
 
     // Constructors
     public GameState(Handler handler){
@@ -42,15 +49,20 @@ public class GameState extends State {
             0 = empty, no entity occupying
             1 = player1 occupying
             2 = player2 occupying
-            3 = bomb occupying
-         */
+            3 = bomb (planted) occupying
+            4 = bomb (collectable) occupying
+            */
         for (int[] columns: board){
             Arrays.fill(columns, 0); // Fills all element in board with 0
         }
 
         player1 = new Player(handler, 0,0); // spawn player 1 at the start
         player2 = new Player(handler, 576, 576); // spawn player 2 at the end
-        bomb = new Bomb(handler, 256,256); // spawn bomb in middle
+        bomb = new Bomb(handler, 256,256); // spawn bomb (planted) in middle
+
+        // initialise bombPart to get bombList array, it's not added into the arrayList, so it will not be counted in the map
+        bombPart = new BombCollectable(handler, 0, 0);
+        bombList = bombPart.getBombsSpawnedList();
 
         // Set static variables for collision logic in Player class getInput()
 
@@ -69,6 +81,8 @@ public class GameState extends State {
         world.tick();
         player1.tick();
         player2.tick();
+        spawnItem(0); // only spawn bombs as it is the only item in the game
+
     }
 
     @Override
@@ -80,6 +94,10 @@ public class GameState extends State {
         player1.render(g);
         player2.render(g);
 
+        // render the current bombs stored in the object
+        for(int i = 0; i < bombList.size(); i++){
+            bombList.get(i).render(g);
+        }
     }
 
     public static boolean canPlayerMove(int pid, int prevX, int prevY, int newX, int newY, Player targetPlayer){
@@ -104,17 +122,14 @@ public class GameState extends State {
             0 = empty, no entity occupying
             1 = player1 occupying
             2 = player2 occupying
-            3 = bomb occupying
+            3 = bomb (planted) occupying
+            4 = bomb (collectable) occupying
             */
             switch (tid){
 
                 // if next tile is empty
                 case 0:
                     updateBoard(pid, prevX, prevY, newX, newY);
-
-                    /* Testing section for bomb | this will make unlimited bomb in the center to test bomb damage */
-                    board[prevX][prevY] = 3;
-
                     return true; // let player move
 
                 // if next tile is bomb
@@ -124,6 +139,9 @@ public class GameState extends State {
                     System.out.println("bomb");
                     return true;
 
+                // once player picks up bomb <nich0las ch0ng>
+                case 4:
+                    return true;
                 // if next tile is player
                 default:
                     return false;
@@ -167,6 +185,53 @@ public class GameState extends State {
 
     }
 
+    /* Method to spawn items */
+    public void spawnItem(int itemid){
+
+        // if there are more than 3 bomb parts on the map, do not spawn anymore.
+        if(bombList.size()<3){
+            // check if countdown timer is running, if it is not, run it
+            if(!timer.hasRunStarted()){
+                timer.startTimer();
+            }
+
+            else {
+                // if item ready to spawn
+                if(timer.readyToSpawn()){
+                /* itemid usage:
+                    0 = bomb (collectable)
+                    1 = shield ???
+                 */
+                    switch (itemid){
+
+                        // code to spawn bomb (collectable)
+                        case 0:
+                            while(true){
+                                // generate random x and y from 0 to 9
+                                Random rand = new Random();
+                                int randx = rand.nextInt(10);
+                                int randy = rand.nextInt(10);
+
+                                // check if anything is occupying this tile
+                                // if nothing is occupying it, spawn a bomb part!
+                                int tid = getTileId(randx, randy);
+                                if(tid == 0){
+                                    /* spawn bomb */
+                                    // add new bomb item spawned into our bomb array
+                                    bombList.add(new BombCollectable(handler,randx*64, randy*64));
+                                    board[randx][randy] = 4; // update board array
+                                    timer.setRdyToSpawn(false); // reset the item spawn rate
+                                    break;
+                                }
+
+                            }
+
+                    }
+                }
+            }
+        }
+
+    }
     /* Method to bomb player */
     public static void bombPlayer(Player targetPlayer){
         targetPlayer.setHealth(targetPlayer.getHealth() - 1);

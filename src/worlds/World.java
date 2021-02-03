@@ -34,8 +34,7 @@ public class World {
 
     public Tile getTile(int x, int y){
         Tile t = Tile.tiles[tileArr[x][y]]; // obtain tile id at coordinates x, y.
-        if(t == null) { // if invalid tile id is called, return a regular dirt tile (default).
-            //return Tile.dirtTile;
+        if(t == null) { // if invalid tile id is called, return a regular path tile (default).
             return Tile.PathTile;
         }
         return t;

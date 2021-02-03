@@ -56,4 +56,8 @@ public abstract class State {
     public abstract int getP1Health();
     public abstract int getP2Health();
 
+    /* Maybe for Inventory Display
+    public abstract int getP1Bomb();
+    public abstract int getP2Bomb();
+     */
 }

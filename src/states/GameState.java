@@ -1,8 +1,10 @@
 package states;
 
+import entities.Entity;
 import entities.creatures.Player;
 import entities.items.Bomb;
 import okBoomer.Handler;
+import tiles.Tile;
 import worlds.World;
 
 import java.awt.*;
@@ -26,8 +28,6 @@ public class GameState extends State {
 
     // Bombs
     private Bomb bomb; // Explore using arrayList to store list of placed bombs
-    // Need an item for player to collect bomb parts to fill up bomb pouch
-
 
     // Constructors
     public GameState(Handler handler){
@@ -59,6 +59,7 @@ public class GameState extends State {
         board[player2.getX()/64][player2.getY()/64] = 2; // set player 2 in board [9][9] = 576,576
         board[bomb.getX()/64][bomb.getY()/64] = 3; // set bomb in board[4][4] = 256,256
 
+
     }
 
 
@@ -69,6 +70,7 @@ public class GameState extends State {
         world.tick();
         player1.tick();
         player2.tick();
+        //bomb.tick();
     }
 
     @Override
@@ -110,10 +112,10 @@ public class GameState extends State {
 
                 // if next tile is empty
                 case 0:
-                    updateBoard(pid, prevX, prevY, newX, newY);
+                        updateBoard(pid, prevX, prevY, newX, newY);
 
-                    /* Testing section for bomb | this will make unlimited bomb in the center to test bomb damage */
-                    board[prevX][prevY] = 3;
+                        /* Testing section for bomb | this will make unlimited bomb in the center to test bomb damage */
+                        // board[prevX][prevY] = 0;
 
                     return true; // let player move
 
@@ -143,28 +145,40 @@ public class GameState extends State {
         /*  1. Target index(s) of 2D board array where player resides, make it empty
             2. Target index(x) of 2D board array based on player's current X, Y and update it
         */
-
+        // get tid of the previous tile
+        int tidPrev = getTileId(prevX,prevY);
         // player 1
         if (pid == 0){
-            board[prevX][prevY] = 0; // Step 1
-            board[newX][newY] = 1; // Step 2
+            // check if the previous tile is a bomb or empty
+            if (tidPrev == 3){
+                board[prevX][prevY] = 3; // Step 1
+            }
+            else{
+                board[prevX][prevY] = 0; // Step 1
+            }
+
+            board[newX][newY] = 1;  // Step 2
 
             System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
-                            "Board: P1: CurrXY: [%d][%d] = %d%n%n",
+                            "Board: P1: CurrXY: [%d][%d] = %d%n%n \n",
                     prevX, prevY, board[prevX][prevY], newX, newY, board[newX][newY]);
+
+            // problem: when move, it override tid = 3
         }
         // player 2
         else if (pid == 1){
+            if (tidPrev == 3){
+                board[prevX][prevY] = 3; // Step 1
+            }
+            else{
+                board[prevX][prevY] = 0; // Step 1
+            }
+            board[newX][newY] = 2;  // Step 2
 
-            board[prevX][prevY] = 0; // Step 1
-            board[newX][newY] = 2; // Step 2
-
-            System.out.printf("Board: P2: PrevXY: [%d][%d] = %d%n" +
-                            "Board: P2: CurrXY: [%d][%d] = %d%n%n",
+            System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
+                            "Board: P1: CurrXY: [%d][%d] = %d%n%n \n",
                     prevX, prevY, board[prevX][prevY], newX, newY, board[newX][newY]);
-
         }
-
     }
 
     /* Method to bomb player */
@@ -172,6 +186,11 @@ public class GameState extends State {
         targetPlayer.setHealth(targetPlayer.getHealth() - 1);
     }
 
+    /* Method to plant the collected bomb */
+    public static void plantBomb(Player targetPlayer){
+        targetPlayer.setBomb(targetPlayer.getBomb() - 1);
+
+    }
 
     // Getters and Setters
 
@@ -180,10 +199,13 @@ public class GameState extends State {
     }
 
     public static int getTileId(int newX, int newY){
-
         int tid = board[newX][newY];
         return tid;
+    }
 
+    public static void setBombTileId(int newX, int newY){
+        int tid = 3;
+        board[newX][newY] = tid;
     }
 
     public Player getPlayer1() {
@@ -210,4 +232,17 @@ public class GameState extends State {
     public int getP2Health(){
         return player2.getHealth();
     }
+
+    /*
+    Maybe for Inventory Display
+    @Override
+    public int getP1Bomb(){
+        return player1.getBomb();
+    }
+
+    @Override
+    public int getP2Bomb(){
+        return player2.getBomb();
+    }
+     */
 }

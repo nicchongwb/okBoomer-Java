@@ -5,19 +5,22 @@ import okBoomer.Handler;
 
 public abstract class Creature extends Entity {
 
+    // DEFAULT_BOMB need to edit
+    public static final int DEFAULT_BOMB = 10;
     public static final int DEFAULT_HEALTH = 10;
     public static final int DEFAULT_SPEED = 64; // Change to 64 after Alicia's map
     public static final int DEFAULT_CREATURE_WIDTH = 64,
                             DEFAULT_CREATURE_HEIGHT = 64;
 
     // Creature characteristics/attributes
+    protected int bomb;
     protected int health;
     protected int speed;
     protected int xMove, yMove; // Movement in pixels to add to x, y
 
-
     public Creature(Handler handler, int x, int y, int width, int height) {
         super(handler, x, y, width, height);
+        bomb = DEFAULT_BOMB; // Set default bomb
         health = DEFAULT_HEALTH; // Set default health
         speed = DEFAULT_SPEED; // Set default speed
         xMove = 0;
@@ -33,6 +36,14 @@ public abstract class Creature extends Entity {
     }
 
     // Getters and Setters
+    public int getBomb() {
+        return bomb;
+    }
+
+    public void setBomb(int bomb) {
+        this.bomb = bomb;
+    }
+
     public int getHealth() {
         return health;
     }

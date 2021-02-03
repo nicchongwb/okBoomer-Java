@@ -17,9 +17,9 @@ public class KeyManager implements KeyListener {
     private boolean[] keys;
 
     // Player 1 up, down, left, right
-    public boolean p1Up, p1Down, p1Left, p1Right;
+    public boolean p1Up, p1Down, p1Left, p1Right, p1Bomb;
     // Player 2 up, down, left, right
-    public boolean p2Up, p2Down, p2Left, p2Right;
+    public boolean p2Up, p2Down, p2Left, p2Right, p2Bomb;
 
 
     // Constructor
@@ -35,12 +35,14 @@ public class KeyManager implements KeyListener {
         p1Down = keys[KeyEvent.VK_S];
         p1Left = keys[KeyEvent.VK_A];
         p1Right = keys[KeyEvent.VK_D];
+        p1Bomb = keys[KeyEvent.VK_G];
 
         // Update player 2 keys
         p2Up = keys[KeyEvent.VK_UP];
         p2Down = keys[KeyEvent.VK_DOWN];
         p2Left = keys[KeyEvent.VK_LEFT];
         p2Right = keys[KeyEvent.VK_RIGHT];
+        p2Bomb = keys[KeyEvent.VK_COMMA];
 
     }
 
@@ -69,7 +71,8 @@ public class KeyManager implements KeyListener {
 
         // player 1's keys
         if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_A ||
-            e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_D){
+           e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_D ||
+           e.getKeyCode() == KeyEvent.VK_G){
 
             // set variable for checking if key is already pressed to false.
             if(Player.getIfPressed1()){
@@ -79,7 +82,8 @@ public class KeyManager implements KeyListener {
 
         // player 2's keys
         if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN ||
-                e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT){
+           e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT ||
+           e.getKeyCode() == KeyEvent.VK_COMMA){
             
             // set variable for checking if key is already pressed to false.
             if(Player.getIfPressed2()){

@@ -21,6 +21,7 @@ public class Assets {
     private static final int width = 32, height = 32; // This is the size of each sprite(grid space) in sheet.png
     public static BufferedImage[] btn_start;
     public static BufferedImage RightTile, LeftTile, TopTile, BottomTile, CornerTile1, CornerTile2, CornerTile3, CornerTile4, BlueTile, PathTile;
+    public static BufferedImage BombTile;
     public static BufferedImage[] player1_down, player1_left, player1_right, player1_up, player2_down, player2_left, player2_right, player2_up ;
 
     public static void init(){
@@ -46,6 +47,9 @@ public class Assets {
         CornerTile4 = bgtiles.crop(width * 3, height *2, width, height);
         BlueTile = bgtiles.crop(width * 2 , height, width, height);
         PathTile = bgtiles.crop(width * 5 , height, width, height);
+
+        //bomb
+        BombTile = bgtiles.crop(0 , height * 4, width, height);
 
         //players
         player1_down = new BufferedImage[3];

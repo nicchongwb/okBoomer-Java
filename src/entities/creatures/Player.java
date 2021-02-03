@@ -6,6 +6,7 @@ import okBoomer.Handler;
 import states.GameState;
 import worlds.World;
 import gfx.Animation;
+import entities.items.Bomb;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,7 @@ public class Player extends Creature{
     private String name;
     private final int pid; // Player ID
     private Handler handler;
+    private Bomb bomb;
 
     // declare variables to check if key is already pressed
     private static boolean alrPressedp1 = false;
@@ -143,6 +145,24 @@ public class Player extends Creature{
                 }
 
             }
+            if (handler.getKeyManager().p1Bomb) {
+
+                if (!alrPressedp1) {
+                    if (getBomb() > 0) {
+                        if (GameState.getTileId(getX() / 64, getY() / 64) != 3) {
+                            GameState.setBombTileId(getX() / 64, getY() / 64);
+                            GameState.plantBomb(this);
+                            System.out.println("p1 bomb pouch: " + getBomb());
+                            // add new bomb object
+                        } else {
+                            System.out.println("p1 bomb planted");
+                        }
+                    } else {
+                        System.out.println("p1 bomb pouch: empty");
+                    }
+                    alrPressedp1 = true;
+                }
+            }
         }
         else if (pid == 1){ // It pid == 1 for player 2
 
@@ -212,6 +232,28 @@ public class Player extends Creature{
                     }
                     alrPressedp2 = true;
                     p2facing = 3;
+                }
+            }
+            if (handler.getKeyManager().p2Bomb) {
+
+                if(!alrPressedp2){
+                    // Ensure that player collected at least 1 bomb
+                    if(getBomb() > 0) {
+                        // Player can only plant 1 bomb at a time
+                        if (GameState.getTileId(getX()/64, getY()/64) != 3) {
+                            // Get player position and plant the bomb
+                            GameState.setBombTileId(getX()/64, getY()/64);
+                            GameState.plantBomb(this);
+                            System.out.println("p2 bomb pouch: " + getBomb());
+                        }
+                        else{
+                            System.out.println("p2 bomb planted");
+                        }
+                    }
+                    else{
+                        System.out.println("p2 bomb pouch: empty");
+                    }
+                    alrPressedp2 = true;
                 }
             }
         }

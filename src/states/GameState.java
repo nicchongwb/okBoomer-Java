@@ -162,9 +162,20 @@ public class GameState extends State {
             2. Target index(x) of 2D board array based on player's current X, Y and update it
         */
 
+        // get tid of the previous tile
+        int tidPrev = getTileId(prevX,prevY);
+
         // player 1
         if (pid == 0){
-            board[prevX][prevY] = 0; // Step 1
+
+            // check if the previous tile is a bomb or empty
+            if (tidPrev == 3){
+                board[prevX][prevY] = 3; // Step 1
+            }
+            else{
+                board[prevX][prevY] = 0; // Step 1
+            }
+
             board[newX][newY] = 1; // Step 2
 
             System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
@@ -174,7 +185,13 @@ public class GameState extends State {
         // player 2
         else if (pid == 1){
 
-            board[prevX][prevY] = 0; // Step 1
+            if (tidPrev == 3){
+                board[prevX][prevY] = 3; // Step 1
+            }
+            else{
+                board[prevX][prevY] = 0; // Step 1
+            }
+
             board[newX][newY] = 2; // Step 2
 
             System.out.printf("Board: P2: PrevXY: [%d][%d] = %d%n" +
@@ -237,9 +254,12 @@ public class GameState extends State {
         targetPlayer.setHealth(targetPlayer.getHealth() - 1);
     }
 
+    /* Method to plant the collected bomb */
+    public static void plantBomb(Player targetPlayer){
+        targetPlayer.setBomb(targetPlayer.getBomb() - 1);
 
+    }
     // Getters and Setters
-
     public int[][] getBoard() {
         return board;
     }
@@ -249,6 +269,11 @@ public class GameState extends State {
         int tid = board[newX][newY];
         return tid;
 
+    }
+
+    public static void setBombTileId(int newX, int newY){
+        int tid = 3;
+        board[newX][newY] = tid;
     }
 
     public Player getPlayer1() {
@@ -275,4 +300,16 @@ public class GameState extends State {
     public int getP2Health(){
         return player2.getHealth();
     }
+
+    /*
+    Maybe for Inventory Display
+    @Override
+    public int getP1Bomb(){
+        return player1.getBomb();
+    }
+    @Override
+    public int getP2Bomb(){
+        return player2.getBomb();
+    }
+     */
 }

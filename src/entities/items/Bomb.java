@@ -5,6 +5,7 @@ import okBoomer.Game;
 import okBoomer.Handler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /* Bomb.java is called when a player places down a bomb!
 *  This is different from the BombCollectable.java, where
@@ -13,6 +14,7 @@ import java.awt.*;
 public class Bomb extends Item{
     private static final int DEFAULT_DAMAGE = 1;
     private static int bombCount = 0;
+    private BufferedImage bombImg;
 
     // Player characteristics/attributes
     private String name;
@@ -26,11 +28,16 @@ public class Bomb extends Item{
         this.damage = DEFAULT_DAMAGE;
         bombID = bombCount;
         bombCount++;
+        bombImg = Assets.BombTile;
     }
 
     // Getter and Setter
     public String getName(){
         return name;
+    }
+
+    public int getBombID(){
+        return bombID;
     }
 
     private void setName(String name){
@@ -52,8 +59,7 @@ public class Bomb extends Item{
 
     @Override
     public void render(Graphics g) {
-        // Insert g.draw method to draw out planted bomb
-        g.setColor(Color.darkGray);
-        g.fillOval(x, y, width, height);
+        // Insert g.draw method to draw out bomb
+        g.drawImage(bombImg, x, y, width, height,null);
     }
 }

@@ -7,6 +7,7 @@ import okBoomer.Handler;
 import states.GameState;
 import worlds.World;
 import gfx.Animation;
+import entities.items.Bomb;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -159,6 +160,24 @@ public class Player extends Creature{
                         }
                     }
                     else{
+                        System.out.println("p1 bomb pouch: empty");
+                    }
+                    alrPressedp1 = true;
+                }
+            }
+            if (handler.getKeyManager().p1Bomb) {
+
+                if (!alrPressedp1) {
+                    if (getBomb() > 0) {
+                        if (GameState.getTileId(getX() / 64, getY() / 64) != 3) {
+                            GameState.setBombTileId(getX() / 64, getY() / 64);
+                            GameState.plantBomb(this);
+                            System.out.println("p1 bomb pouch: " + getBomb());
+                            // add new bomb object
+                        } else {
+                            System.out.println("p1 bomb planted");
+                        }
+                    } else {
                         System.out.println("p1 bomb pouch: empty");
                     }
                     alrPressedp1 = true;

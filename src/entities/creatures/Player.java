@@ -1,5 +1,6 @@
 package entities.creatures;
 
+import entities.items.BombCollectable;
 import gfx.Assets;
 import okBoomer.Game;
 import okBoomer.Handler;
@@ -19,6 +20,7 @@ GameState render() -> player.render(g);
  */
 
 public class Player extends Creature{
+    public static final int DEFAULT_BOMB = 0;
 
     private static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
@@ -31,6 +33,9 @@ public class Player extends Creature{
     private final int pid; // Player ID
     private Handler handler;
     private Bomb bomb;
+    private int bombHeld; // keep track of how many bombs player is holding
+
+    private int bombCollectable; // keep track of how many bombCollectable player is holding
 
     // declare variables to check if key is already pressed
     private static boolean alrPressedp1 = false;
@@ -45,6 +50,8 @@ public class Player extends Creature{
         this.handler = handler; // Help us access KeyManager
         pid = playerCount;
         playerCount++;
+        this.bombHeld = DEFAULT_BOMB;
+        this.bombCollectable = 0; // Start off with 0 bomb collectable
 
         //Animations
         p1animDown = new Animation(500, Assets.player1_down);
@@ -361,5 +368,22 @@ public class Player extends Creature{
     }
 
     // Other methods
+    public int getBomb() {
+        return bombHeld;
+    }
+
+    public void setBomb(int bomb) {
+        this.bombHeld = bomb;
+    }
+
+
+    // Method to convert bombCollectable to bombHeld
+    public void addBombPart(){
+        this.bombCollectable += 1;
+        if (this.bombCollectable >= 1){
+            this.bombCollectable -= 1;
+            this.bombHeld += 1;
+        }
+    }
 
 }

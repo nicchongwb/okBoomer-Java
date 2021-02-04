@@ -32,7 +32,7 @@ public class GameState extends State {
     // Bombs
     private Bomb bomb; // Explore using arrayList to store list of placed bombs
     private BombCollectable bombPart; // bomb item for player to collect bomb parts to fill up bomb pouch
-    private ArrayList<BombCollectable> bombList; // get the list of currently spawned bomb items
+    private static ArrayList<BombCollectable> bombList; // get the list of currently spawned bomb items
 
     private ItemTimer timer = new ItemTimer();
 
@@ -135,12 +135,27 @@ public class GameState extends State {
                 // if next tile is bomb
                 case 3:
                     updateBoard(pid, prevX, prevY, newX, newY);
+
+                    // Remove bombPart from ArrayList bombList so that it does not render
+
+
                     bombPlayer(targetPlayer);
                     System.out.println("bomb");
                     return true;
 
                 // once player picks up bomb <nich0las ch0ng>
                 case 4:
+                    updateBoard(pid, prevX, prevY, newX, newY);
+
+                    /* Remove bombCollectable from bombList */
+                    for (BombCollectable bombCol : bombList){
+                        if (bombCol.getX() == newX*64 && bombCol.getY() == newY*64){
+                            bombList.remove(bombCol);
+                        }
+                        break;
+                    }
+
+                    collectBombPart(targetPlayer);
                     return true;
                 // if next tile is player
                 default:
@@ -257,8 +272,12 @@ public class GameState extends State {
     /* Method to plant the collected bomb */
     public static void plantBomb(Player targetPlayer){
         targetPlayer.setBomb(targetPlayer.getBomb() - 1);
-
     }
+
+    public static void collectBombPart(Player targetPlayer){
+        targetPlayer.addBombPart();
+    }
+
     // Getters and Setters
     public int[][] getBoard() {
         return board;

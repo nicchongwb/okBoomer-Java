@@ -23,7 +23,7 @@ public class ItemTimer extends TimerTask{
         this.hasStarted = true;
 
         // set spawn rate between 3 seconds to 5 seconds
-        spawnRate = ThreadLocalRandom.current().nextInt(3, 5);
+        spawnRate = ThreadLocalRandom.current().nextInt(3, 6);
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -33,7 +33,6 @@ public class ItemTimer extends TimerTask{
                 if (i < 1) {
                     timer.cancel();
                     rdyToSpawn = true; // once timer has ended, next item is ready to spawn
-                    hasStarted = false; // reset timer
                 }
             }
         }, 0, period);
@@ -52,6 +51,10 @@ public class ItemTimer extends TimerTask{
 
     /* Getters and Setters */
     public void setRdyToSpawn(boolean value) {
-        this.rdyToSpawn = false;
+        this.rdyToSpawn = value;
+    }
+
+    public void sethasRunStarted(boolean value) {
+        this.hasStarted = value;
     }
 }

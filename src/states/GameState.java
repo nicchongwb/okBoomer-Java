@@ -58,7 +58,7 @@ public class GameState extends State {
 
         player1 = new Player(handler, 0,0); // spawn player 1 at the start
         player2 = new Player(handler, 576, 576); // spawn player 2 at the end
-        bomb = new Bomb(handler, 256,256); // spawn bomb (planted) in middle
+        bomb = new Bomb(handler, 128,256); // spawn bomb (planted) in middle
 
         // initialise bombPart to get bombList array, it's not added into the arrayList, so it will not be counted in the map
         bombPart = new BombCollectable(handler, 0, 0);
@@ -67,9 +67,9 @@ public class GameState extends State {
         // Set static variables for collision logic in Player class getInput()
 
         // Update board with player(s) and bomb coordinate
-        board[player1.getX()/64][player1.getY()/64] = 1; // set player 1 in board [0][0] = 0,0
-        board[player2.getX()/64][player2.getY()/64] = 2; // set player 2 in board [9][9] = 576,576
-        board[bomb.getX()/64][bomb.getY()/64] = 3; // set bomb in board[4][4] = 256,256
+        board[player1.getY()/64][player1.getX()/64] = 1; // set player 1 in board [0][0] = 0,0
+        board[player2.getY()/64][player2.getX()/64] = 2; // set player 2 in board [9][9] = 576,576
+        board[bomb.getY()/64][bomb.getX()/64] = 3; // set bomb in board[4][4] = 256,256
 
     }
 
@@ -91,13 +91,15 @@ public class GameState extends State {
         world.render(g);
 
         bomb.render(g);
-        player1.render(g);
-        player2.render(g);
 
         // render the current bombs stored in the object
         for(int i = 0; i < bombList.size(); i++){
             bombList.get(i).render(g);
         }
+        player1.render(g);
+        player2.render(g);
+
+
     }
 
     public static boolean canPlayerMove(int pid, int prevX, int prevY, int newX, int newY, Player targetPlayer){
@@ -124,17 +126,19 @@ public class GameState extends State {
             2 = player2 occupying
             3 = bomb (planted) occupying
             4 = bomb (collectable) occupying
+            5 = bomb (planted) + player 1 occupying (bomb is planted by p1)
+            6 = bomb (planted) + player 2 occupying (bomb is planted by p2)
             */
             switch (tid){
 
                 // if next tile is empty
                 case 0:
-                    updateBoard(pid, prevX, prevY, newX, newY);
+                    updatePlayerOnBoard(pid, prevX, prevY, newX, newY);
                     return true; // let player move
 
                 // if next tile is bomb
                 case 3:
-                    updateBoard(pid, prevX, prevY, newX, newY);
+                    updatePlayerOnBoard(pid, prevX, prevY, newX, newY);
 
                     // Remove bombPart from ArrayList bombList so that it does not render
 
@@ -145,18 +149,26 @@ public class GameState extends State {
 
                 // once player picks up bomb <nich0las ch0ng>
                 case 4:
-                    updateBoard(pid, prevX, prevY, newX, newY);
 
                     /* Remove bombCollectable from bombList */
                     for (BombCollectable bombCol : bombList){
-                        if (bombCol.getX() == newX*64 && bombCol.getY() == newY*64){
+                        if (bombCol.getX() == newX*64 && bombCol.getY() == newY*64) {
                             bombList.remove(bombCol);
+                            break;
                         }
-                        break;
                     }
 
+                    updatePlayerOnBoard(pid, prevX, prevY, newX, newY);
                     collectBombPart(targetPlayer);
                     return true;
+
+                case 5:
+
+                case 6:
+
+                    updatePlayerOnBoard(pid, prevX, prevY, newX, newY);
+                    return false;
+
                 // if next tile is player
                 default:
                     return false;
@@ -168,10 +180,10 @@ public class GameState extends State {
     }
 
     /* Method to update board 2d array and call updateEntity method inside */
-    public static void updateBoard(int pid, int prevX, int prevY, int newX, int newY){
+    public static void updatePlayerOnBoard(int pid, int prevX, int prevY, int newX, int newY){
 
         // the coordinates are passed into this method as pixels.
-        // divide them by 64 to get the coordinates in rows and cols
+        // divide them by 64 t-o get the coordinates in rows and cols
 
         /*  1. Target index(s) of 2D board array where player resides, make it empty
             2. Target index(x) of 2D board array based on player's current X, Y and update it
@@ -179,40 +191,50 @@ public class GameState extends State {
 
         // get tid of the previous tile
         int tidPrev = getTileId(prevX,prevY);
+        int tidNew = getTileId(newX, newY);
 
-        // player 1
-        if (pid == 0){
+        switch (pid) {
+            // player 1
+            case 0 -> {
+                // check if player is moving onto a player + bomb tile
+                if (tidNew == 5 || tidNew == 6) {
+                    break;
+                } else {
 
-            // check if the previous tile is a bomb or empty
-            if (tidPrev == 3){
-                board[prevX][prevY] = 3; // Step 1
+                    if(tidPrev == 6 || tidPrev == 5){
+                        board[prevY][prevX] = 3; // Step 1
+                    }
+                    else{
+                        board[prevY][prevX] = 0; // Step 1
+                    }
+
+                    board[newY][newX] = 1; // Step 2
+                    System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
+                                    "Board: P1: CurrXY: [%d][%d] = %d%n%n",
+                            prevY, prevX, board[prevY][prevX], newY, newX, board[newY][newX]);
+                }
             }
-            else{
-                board[prevX][prevY] = 0; // Step 1
+            // player 2
+            case 1 -> {
+                // check if player is moving onto a player + bomb tile
+                if (tidNew == 6 || tidNew == 5) {
+                    break;
+                } else {
+
+                    if(tidPrev == 5 || tidPrev == 6){
+                        board[prevY][prevX] = 3; // Step 1
+                    }
+                    else{
+                        board[prevY][prevX] = 0; // Step 1
+                    }
+
+                    board[newY][newX] = 2; // Step 2
+                    System.out.printf("Board: P2: PrevXY: [%d][%d] = %d%n" +
+                                    "Board: P2: CurrXY: [%d][%d] = %d%n%n",
+                            prevY, prevX, board[prevY][prevX], newY, newX, board[newY][newX]);
+                }
+
             }
-
-            board[newX][newY] = 1; // Step 2
-
-            System.out.printf("Board: P1: PrevXY: [%d][%d] = %d%n" +
-                            "Board: P1: CurrXY: [%d][%d] = %d%n%n",
-                    prevX, prevY, board[prevX][prevY], newX, newY, board[newX][newY]);
-        }
-        // player 2
-        else if (pid == 1){
-
-            if (tidPrev == 3){
-                board[prevX][prevY] = 3; // Step 1
-            }
-            else{
-                board[prevX][prevY] = 0; // Step 1
-            }
-
-            board[newX][newY] = 2; // Step 2
-
-            System.out.printf("Board: P2: PrevXY: [%d][%d] = %d%n" +
-                            "Board: P2: CurrXY: [%d][%d] = %d%n%n",
-                    prevX, prevY, board[prevX][prevY], newX, newY, board[newX][newY]);
-
         }
 
     }
@@ -251,8 +273,9 @@ public class GameState extends State {
                                     /* spawn bomb */
                                     // add new bomb item spawned into our bomb array
                                     bombList.add(new BombCollectable(handler,randx*64, randy*64));
-                                    board[randx][randy] = 4; // update board array
+                                    board[randy][randx] = 4; // update board array
                                     timer.setRdyToSpawn(false); // reset the item spawn rate
+                                    timer.sethasRunStarted(false); // reset hasStarted variable
                                     break;
                                 }
 
@@ -285,14 +308,13 @@ public class GameState extends State {
 
     public static int getTileId(int newX, int newY){
 
-        int tid = board[newX][newY];
+        int tid = board[newY][newX];
         return tid;
 
     }
 
-    public static void setBombTileId(int newX, int newY){
-        int tid = 3;
-        board[newX][newY] = tid;
+    public static void setTileId(int tid, int newX, int newY){
+        board[newY][newX] = tid;
     }
 
     public Player getPlayer1() {

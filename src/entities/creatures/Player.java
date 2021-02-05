@@ -42,8 +42,8 @@ public class Player extends Creature{
     private static boolean alrPressedp2 = false;
 
     // temporary variables to hold next player coordinates
-    private static int newX;
-    private static int newY;
+    private int newX;
+    private int newY;
 
     public Player(Handler handler, int x, int y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -156,8 +156,8 @@ public class Player extends Creature{
 
                 if (!alrPressedp1) {
                     if (getBomb() > 0) {
-                        if (GameState.getTileId(getX() / 64, getY() / 64) != 3) {
-                            GameState.setBombTileId(getX() / 64, getY() / 64);
+                        if (GameState.getTileId(prevX / 64, prevY / 64) != 3) {
+                            GameState.setTileId(5, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
                             System.out.println("p1 bomb pouch: " + getBomb());
                             // add new bomb object
@@ -247,9 +247,9 @@ public class Player extends Creature{
                     // Ensure that player collected at least 1 bomb
                     if(getBomb() > 0) {
                         // Player can only plant 1 bomb at a time
-                        if (GameState.getTileId(getX()/64, getY()/64) != 3) {
+                        if (GameState.getTileId(prevX/64, prevY/64) != 3) {
                             // Get player position and plant the bomb
-                            GameState.setBombTileId(getX()/64, getY()/64);
+                            GameState.setTileId(6, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
                             System.out.println("p2 bomb pouch: " + getBomb());
                         }

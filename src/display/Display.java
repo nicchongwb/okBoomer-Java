@@ -1,5 +1,7 @@
 package display;
 
+import gfx.Assets;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -16,6 +18,14 @@ public class Display {
     private int width, height;
 
     private int counter = 0;
+
+    // Variables for Polygon drawing
+    int LeftBgX[] = {0, 352, 288, 0};
+    int LeftBgY[] = {0, 0, 60, 60};
+    int RightBgX[] = {352, 640, 640, 288};
+    int RightBgY[] = {0, 0, 60, 60};
+    Color cyanColor = new Color(0x0da595);
+    Color brownColor = new Color(0xe1c672);
 
     // Constructor
     public Display(String title, int width, int height){
@@ -105,16 +115,27 @@ public class Display {
             super.paintComponent(g2d);       // paint background
             setBackground(Color.ORANGE);      // may use an image for background
 
+            g.setColor(cyanColor);
+            g.fillPolygon(LeftBgX, LeftBgY, 4);
+            g.setColor(brownColor);
+            g.fillPolygon(RightBgX, RightBgY, 4);
+
+            g.setColor(Color.WHITE);
+            ((Graphics2D) g).setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+            g.drawLine(352, 0, 288, 60);
+
             // Player(s) information includes: playerID/name, health
-            g.drawString("Bomb Parts: " + String.valueOf(p1BombPart) + "/3", 32, 30);
-            g.drawString("Bombs: " + String.valueOf(p1BombHeld), 32, 45);
+            g.setFont(new Font("SansSerif ", Font.BOLD, 13));
+            g.drawString("Bombs: " + String.valueOf(p1BombHeld), 32, 30);
+            g.drawString("Bomb Parts: " + String.valueOf(p1BombPart) + "/2", 32, 45);
 
 
-            g.drawString("Bombs Parts: " + String.valueOf(p2BombPart) + "/3", 512, 30);
-            g.drawString("Bombs: " + String.valueOf(p2BombHeld), 512, 45);
+            g.drawString("Bombs: " + String.valueOf(p2BombHeld), 512, 30);
+            g.drawString("Bombs Parts: " + String.valueOf(p2BombPart) + "/2", 512, 45);
+
 
             // To see if inventory is updating
-            g.drawString(String.valueOf(counter), 300, 45);
+            //g.drawString(String.valueOf(counter), 300, 45);
             counter += 1;
 
         }
@@ -182,16 +203,32 @@ public class Display {
             super.paintComponent(g2d);       // paint background
             setBackground(Color.ORANGE);      // may use an image for background
 
+            // Background for scoreboard
+
+            g.setColor(cyanColor);
+            g.fillPolygon(LeftBgX, LeftBgY, 4);
+            g.setColor(brownColor);
+            g.fillPolygon(RightBgX, RightBgY, 4);
+
+            g.setColor(Color.WHITE);
+            ((Graphics2D) g).setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+            g.drawLine(352, 0, 288, 60);
+
+
+            // Player(s) Avatar:
+            g.drawImage(Assets.player1_down[1], 32,15 ,null);
+            g.drawImage(Assets.player2_down[1], 576,15 ,null);
+
             // Player(s) information includes: playerID/name, health
-            g.drawString("Player 1: " + String.valueOf(p1Health) + "/10", 32, 30);
-            g.drawString("Points: 0", 32, 45);
+            g.setFont(new Font("SansSerif ", Font.BOLD, 13));
+            g.drawString("Player 1", 76, 30);
+            g.drawString("Health: " + String.valueOf(p1Health) + "/10", 76, 45);
 
-
-            g.drawString("Player 2: " + String.valueOf(p2Health) + "/10", 512, 30);
-            g.drawString("Points: 0", 512, 45);
+            g.drawString("Player 2", 480, 30);
+            g.drawString("Health: " + String.valueOf(p2Health) + "/10", 480, 45);
 
             // To see if scoreboard is updating
-            g.drawString(String.valueOf(counter), 300, 45);
+            //g.drawString(String.valueOf(counter), 300, 45);
             counter += 1;
 
         }

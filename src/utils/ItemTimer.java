@@ -29,7 +29,7 @@ public class ItemTimer extends TimerTask{
 
             int i = spawnRate;
             public void run() {
-                System.out.println(i--);
+                i--;
                 if (i < 1) {
                     timer.cancel();
                     rdyToSpawn = true; // once timer has ended, next item is ready to spawn

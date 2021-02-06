@@ -157,7 +157,7 @@ public class Player extends Creature{
 
                 if (!alrPressedp1) {
                     if (getBomb() > 0) {
-                        if (GameState.getTileId(prevX / 64, prevY / 64) != 3) {
+                        if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
                             GameState.setTileId(5, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
                             System.out.println("p1 bomb pouch: " + getBomb());
@@ -248,7 +248,7 @@ public class Player extends Creature{
                     // Ensure that player collected at least 1 bomb
                     if(getBomb() > 0) {
                         // Player can only plant 1 bomb at a time
-                        if (GameState.getTileId(prevX/64, prevY/64) != 3) {
+                        if (GameState.getTileId(prevX/64, prevY/64) != 6) {
                             // Get player position and plant the bomb
                             GameState.setTileId(6, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
@@ -384,16 +384,16 @@ public class Player extends Creature{
 
     // Method to convert bombCollectable to bombHeld
     public void addBombPart(){
-        // We convert 3 bombCollectable to 1 bomb
-        // Each player only can hold up to 3 bomb, if max bomb held, the player still can collect
-        // up to 3 bombCollectable
-        if (bombCollectable < 3){
+        // We convert 2 bombCollectable to 1 bomb
+        // Each player only can hold up to 2 bomb, if max bomb held, the player still can collect
+        // up to 2 bombCollectable
+        if (bombCollectable < 2){
             this.bombCollectable += 1;
         }
 
         if (bombHeld < MAX_BOMB) {
-            if (this.bombCollectable >= 3) {
-                this.bombCollectable -= 3;
+            if (this.bombCollectable >= 2) {
+                this.bombCollectable -= 2;
                 this.bombHeld += 1;
             }
         }

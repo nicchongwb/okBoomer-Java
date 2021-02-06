@@ -1,6 +1,6 @@
 package entities.creatures;
 
-import entities.items.Bomb;
+import entities.items.BombCollectable;
 import gfx.Assets;
 import okBoomer.Game;
 import okBoomer.Handler;
@@ -20,6 +20,8 @@ GameState render() -> player.render(g);
  */
 
 public class Player extends Creature{
+    public static final int DEFAULT_BOMB = 0;
+    public static final int MAX_BOMB = 3;
 
     private static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
@@ -32,20 +34,25 @@ public class Player extends Creature{
     private final int pid; // Player ID
     private Handler handler;
     private Bomb bomb;
+    private int bombHeld; // keep track of how many bombs player is holding
+
+    private int bombCollectable; // keep track of how many bombCollectable player is holding
 
     // declare variables to check if key is already pressed
     private static boolean alrPressedp1 = false;
     private static boolean alrPressedp2 = false;
 
     // temporary variables to hold next player coordinates
-    private static int newX;
-    private static int newY;
+    private int newX;
+    private int newY;
 
     public Player(Handler handler, int x, int y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.handler = handler; // Help us access KeyManager
         pid = playerCount;
         playerCount++;
+        this.bombHeld = DEFAULT_BOMB;
+        this.bombCollectable = 0; // Start off with 0 bomb collectable
 
         //Animations
         p1animDown = new Animation(500, Assets.player1_down);
@@ -144,33 +151,14 @@ public class Player extends Creature{
                     alrPressedp1 = true;
                     p1facing = 3;
                 }
-            }
-            if (handler.getKeyManager().p1Bomb) {
 
-                if(!alrPressedp1){
-                    if(getBomb() > 0) {
-                        if (GameState.getTileId(getX()/64, getY()/64) != 3) {
-                            GameState.setBombTileId(getX() / 64, getY() / 64);
-                            GameState.plantBomb(this);
-                            System.out.println("p1 bomb pouch: " + getBomb());
-                            // add new bomb object
-                        }
-                        else{
-                            System.out.println("p1 bomb planted");
-                        }
-                    }
-                    else{
-                        System.out.println("p1 bomb pouch: empty");
-                    }
-                    alrPressedp1 = true;
-                }
             }
             if (handler.getKeyManager().p1Bomb) {
 
                 if (!alrPressedp1) {
                     if (getBomb() > 0) {
-                        if (GameState.getTileId(getX() / 64, getY() / 64) != 3) {
-                            GameState.setBombTileId(getX() / 64, getY() / 64);
+                        if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
+                            GameState.setTileId(5, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
                             System.out.println("p1 bomb pouch: " + getBomb());
                             // add new bomb object
@@ -260,9 +248,9 @@ public class Player extends Creature{
                     // Ensure that player collected at least 1 bomb
                     if(getBomb() > 0) {
                         // Player can only plant 1 bomb at a time
-                        if (GameState.getTileId(getX()/64, getY()/64) != 3) {
+                        if (GameState.getTileId(prevX/64, prevY/64) != 6) {
                             // Get player position and plant the bomb
-                            GameState.setBombTileId(getX()/64, getY()/64);
+                            GameState.setTileId(6, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
                             System.out.println("p2 bomb pouch: " + getBomb());
                         }
@@ -313,7 +301,6 @@ public class Player extends Creature{
         p2animLeft.tick();
         p2animRight.tick();
 
-
         getInput();
         move();
     }
@@ -322,7 +309,6 @@ public class Player extends Creature{
     public void render(Graphics g) {
         // Insert g.draw method to draw out player
         g.drawImage(getCurrentAnimationFrame(), x, y, width, height,null);
-        //bomb.render(g);
     }
 
     private BufferedImage getCurrentAnimationFrame(){
@@ -383,5 +369,34 @@ public class Player extends Creature{
     }
 
     // Other methods
+    public int getBomb() {
+        return bombHeld;
+    }
+
+    public void setBomb(int bomb) {
+        this.bombHeld = bomb;
+    }
+
+    public int getBombCollectable(){
+        return bombCollectable;
+    }
+
+
+    // Method to convert bombCollectable to bombHeld
+    public void addBombPart(){
+        // We convert 2 bombCollectable to 1 bomb
+        // Each player only can hold up to 2 bomb, if max bomb held, the player still can collect
+        // up to 2 bombCollectable
+        if (bombCollectable < 2){
+            this.bombCollectable += 1;
+        }
+
+        if (bombHeld < MAX_BOMB) {
+            if (this.bombCollectable >= 2) {
+                this.bombCollectable -= 2;
+                this.bombHeld += 1;
+            }
+        }
+    }
 
 }

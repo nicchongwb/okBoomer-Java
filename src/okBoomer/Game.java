@@ -74,7 +74,7 @@ public class Game implements Runnable{
 
         handler = new Handler(this);
 
-        // States | Initialise states and set desiredcurrent state
+        // States | Initialise states and set desired current state
         gameState = new GameState(handler); // Pass in this current instance of game class
         menuState = new MenuState(handler); // Pass in this current instance of game class
         State.setCurrentState(menuState); // gameState to test gameState
@@ -96,6 +96,12 @@ public class Game implements Runnable{
 
     // render method to render during game loop
     private void render(){
+        // Initialise inventory and scoreboard display if State is GameState
+        if (State.getState() instanceof GameState){
+            this.display.createInvScore();
+        }
+
+
         bs = display.getCanvas().getBufferStrategy(); // Set buffer strategy for canvas | to give a buffer
                                                       // for canvas before displaying out to screen
 
@@ -125,12 +131,20 @@ public class Game implements Runnable{
             else if (State.getState() instanceof GameState) {
                 State.getState().render(g);
 
+
                 // If we are in GameState, then we update scoreboard
                 //if (State.getState() instanceof GameState) {
                 int p1Health = gameState.getP1Health();
                 int p2Health = gameState.getP2Health();
 
+                int p1BombHeld = gameState.getP1BombHeld();
+                int p2BombHeld = gameState.getP2BombHeld();
+
+                int p1BombPart = gameState.getP1BombPart();
+                int p2BombPart = gameState.getP2BombPart();
+
                 display.updateScoreboard(p1Health, p2Health);
+                display.updateInventory(p1BombHeld, p2BombHeld, p1BombPart, p2BombPart);
                 //}
             }
         }

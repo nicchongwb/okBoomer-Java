@@ -52,12 +52,14 @@ public abstract class State {
     public abstract void tick();
     public abstract void render(Graphics g);
 
+
     // Methods for scoreboard
     public abstract int getP1Health();
     public abstract int getP2Health();
 
-    /* Maybe for Inventory Display
-    public abstract int getP1Bomb();
-    public abstract int getP2Bomb();
-     */
+    // Methods for inventory
+    public abstract int getP1BombHeld();
+    public abstract int getP2BombHeld();
+    public abstract int getP1BombPart();
+    public abstract int getP2BombPart();
 }

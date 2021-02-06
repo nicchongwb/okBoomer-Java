@@ -120,18 +120,22 @@ public class Display {
             g.setColor(brownColor);
             g.fillPolygon(RightBgX, RightBgY, 4);
 
+            // Bomb(s) icon:
+            g.drawImage(Assets.BombPart, 32,15 ,null);
+            g.drawImage(Assets.BombPart, 576,15 ,null);
+
             g.setColor(Color.WHITE);
             ((Graphics2D) g).setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
             g.drawLine(352, 0, 288, 60);
 
             // Player(s) information includes: playerID/name, health
             g.setFont(new Font("SansSerif ", Font.BOLD, 13));
-            g.drawString("Bombs: " + String.valueOf(p1BombHeld), 32, 30);
-            g.drawString("Bomb Parts: " + String.valueOf(p1BombPart) + "/2", 32, 45);
+            g.drawString("Bombs: " + String.valueOf(p1BombHeld) + "/3", 76, 30);
+            g.drawString("Bomb Parts: " + String.valueOf(p1BombPart) + "/2", 76, 45);
 
 
-            g.drawString("Bombs: " + String.valueOf(p2BombHeld), 512, 30);
-            g.drawString("Bombs Parts: " + String.valueOf(p2BombPart) + "/2", 512, 45);
+            g.drawString("Bombs: " + String.valueOf(p2BombHeld) + "/3", 464, 30);
+            g.drawString("Bombs Parts: " + String.valueOf(p2BombPart) + "/2", 464, 45);
 
 
             // To see if inventory is updating

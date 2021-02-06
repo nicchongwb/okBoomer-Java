@@ -387,7 +387,7 @@ public class Player extends Creature{
         // We convert 2 bombCollectable to 1 bomb
         // Each player only can hold up to 2 bomb, if max bomb held, the player still can collect
         // up to 2 bombCollectable
-        if (bombCollectable < 2){
+        if (bombCollectable < 3){
             this.bombCollectable += 1;
         }
 

@@ -1,8 +1,10 @@
 package entities.items;
 
+import gfx.Assets;
 import okBoomer.Handler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /* BombCollectable.java is called when spawning
@@ -16,10 +18,12 @@ public class BombCollectable extends Item{
     private ArrayList<BombCollectable> bombsSpawnedList  = new ArrayList<BombCollectable>();
     private int numBombsSpawned = 0; // count the number of bombs spawned in the game
     private int bombID = 0; // give each bomb(collectable) spawned an ID.
+    private BufferedImage bombPart;
 
     public BombCollectable(Handler handler, int x, int y) {
         super(handler, x, y, Item.DEFAULT_ITEM_WIDTH, Item.DEFAULT_ITEM_HEIGHT);
         this.handler = handler; // Help us access KeyManager
+        bombPart = Assets.BombPart;
         bombID++;
     }
 
@@ -31,8 +35,8 @@ public class BombCollectable extends Item{
     @Override
     public void render(Graphics g) {
         // Insert g.draw method to draw out bomb (collectable)
-        g.setColor(Color.red);
-        g.fillOval(x, y, width, height);
+        g.drawImage(bombPart, x, y, width, height,null);
+
     }
 
     /* Getters and Setters */

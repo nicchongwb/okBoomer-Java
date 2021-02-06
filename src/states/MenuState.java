@@ -59,7 +59,7 @@ public class MenuState extends State {
         uiManager.render(g);
     }
 
-    // Ignore this function, this serves no purpose in this class
+    /*--------------------------Ignore this function, this serves no purpose in this class----------------------------*/
     @Override
     public int getP1Health(){
         return 0;
@@ -69,4 +69,26 @@ public class MenuState extends State {
     public int getP2Health(){
         return 0;
     }
+
+    @Override
+    // Update Inventory Methods
+    public int getP1BombHeld(){
+        return 0;
+    }
+
+    @Override
+    public int getP2BombHeld(){
+        return 0;
+    }
+
+    @Override
+    public int getP1BombPart(){
+        return 0;
+    }
+
+    @Override
+    public int getP2BombPart(){
+        return 0;
+    }
+    /*----------------------------------------------End of ignored----------------------------------------------------*/
 }

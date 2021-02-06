@@ -137,7 +137,14 @@ public class Game implements Runnable{
                 int p1Health = gameState.getP1Health();
                 int p2Health = gameState.getP2Health();
 
+                int p1BombHeld = gameState.getP1BombHeld();
+                int p2BombHeld = gameState.getP2BombHeld();
+
+                int p1BombPart = gameState.getP1BombPart();
+                int p2BombPart = gameState.getP2BombPart();
+
                 display.updateScoreboard(p1Health, p2Health);
+                display.updateInventory(p1BombHeld, p2BombHeld, p1BombPart, p2BombPart);
                 //}
             }
         }

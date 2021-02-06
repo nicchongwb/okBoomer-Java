@@ -342,15 +342,25 @@ public class GameState extends State {
         return player2.getHealth();
     }
 
-    /*
-    Maybe for Inventory Display
     @Override
-    public int getP1Bomb(){
+    // Update Inventory Methods
+    public int getP1BombHeld(){
         return player1.getBomb();
     }
+
     @Override
-    public int getP2Bomb(){
+    public int getP2BombHeld(){
         return player2.getBomb();
     }
-     */
+
+    @Override
+    public int getP1BombPart(){
+        return player1.getBombCollectable();
+    }
+
+    @Override
+    public int getP2BombPart(){
+        return player2.getBombCollectable();
+    }
+
 }

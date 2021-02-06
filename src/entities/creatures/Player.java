@@ -21,6 +21,7 @@ GameState render() -> player.render(g);
 
 public class Player extends Creature{
     public static final int DEFAULT_BOMB = 0;
+    public static final int MAX_BOMB = 3;
 
     private static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
@@ -376,13 +377,25 @@ public class Player extends Creature{
         this.bombHeld = bomb;
     }
 
+    public int getBombCollectable(){
+        return bombCollectable;
+    }
+
 
     // Method to convert bombCollectable to bombHeld
     public void addBombPart(){
-        this.bombCollectable += 1;
-        if (this.bombCollectable >= 1){
-            this.bombCollectable -= 1;
-            this.bombHeld += 1;
+        // We convert 3 bombCollectable to 1 bomb
+        // Each player only can hold up to 3 bomb, if max bomb held, the player still can collect
+        // up to 3 bombCollectable
+        if (bombCollectable < 3){
+            this.bombCollectable += 1;
+        }
+
+        if (bombHeld < MAX_BOMB) {
+            if (this.bombCollectable >= 3) {
+                this.bombCollectable -= 3;
+                this.bombHeld += 1;
+            }
         }
     }
 

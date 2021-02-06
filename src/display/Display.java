@@ -36,11 +36,11 @@ public class Display {
         JLabel scoreText = new JLabel("Scoreboard");
         scoreboard.add(scoreText);
 
-        createDisplay(inventory, scoreboard); // Create Display/ Initialise JFrame
+        createDisplay(); // Create Display/ Initialise JFrame
     }
 
     // Other methods
-    private void createDisplay(JPanel inventory, JPanel scoreboard){
+    private void createDisplay(){
         frame = new JFrame(title);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure process is killed upon closing
@@ -59,10 +59,15 @@ public class Display {
 
         // Final Step to Add canvas,etc onto our JFrame
         frame.add(canvas);
-        frame.add(scoreboard, BorderLayout.NORTH);
-        frame.add(inventory, BorderLayout.SOUTH);
         frame.pack(); // Resize frame so that we can see all of the canvas without issues/ cutoffs
 
+    }
+
+    // Method to add inventory and scoreboard to the canvas
+    public void createInvScore(){
+        frame.add(this.scoreboard, BorderLayout.NORTH);
+        frame.add(this.inventory, BorderLayout.SOUTH);
+        frame.pack();
     }
 
 

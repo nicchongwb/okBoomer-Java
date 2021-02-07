@@ -23,12 +23,14 @@ public class Assets {
     public static BufferedImage RightTile, LeftTile, TopTile, BottomTile, CornerTile1, CornerTile2, CornerTile3, CornerTile4, BlueTile, PathTile;
     public static BufferedImage BombTile, BombPart;
     public static BufferedImage[] player1_down, player1_left, player1_right, player1_up, player2_down, player2_left, player2_right, player2_up ;
+    public static BufferedImage[] player1_downbombed, player1_leftbombed, player1_rightbombed, player1_upbombed, player2_downbombed, player2_leftbombed, player2_rightbombed, player2_upbombed ;
+
 
     public static void init(){
         // Test spritesheet
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/res/sprites/sheet.png"));
-        SpriteSheet bgtiles = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombermantiles.png"));
-        SpriteSheet character = new SpriteSheet(ImageLoader.loadImage("/res/sprites/charactersheet.png"));
+        SpriteSheet bgtiles = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombermantilesnew.png"));
+        SpriteSheet character = new SpriteSheet(ImageLoader.loadImage("/res/sprites/characternew.png"));
         SpriteSheet bombItem = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombs2.bmp"));
 
 
@@ -59,10 +61,20 @@ public class Assets {
         player1_right = new BufferedImage[3];
         player1_up = new BufferedImage[3];
 
+        player1_downbombed = new BufferedImage[3];
+        player1_leftbombed = new BufferedImage[3];
+        player1_rightbombed = new BufferedImage[3];
+        player1_upbombed = new BufferedImage[3];
+
         player2_down = new BufferedImage[3];
         player2_left = new BufferedImage[3];
         player2_right = new BufferedImage[3];
         player2_up = new BufferedImage[3];
+
+        player2_downbombed = new BufferedImage[3];
+        player2_leftbombed = new BufferedImage[3];
+        player2_rightbombed = new BufferedImage[3];
+        player2_upbombed = new BufferedImage[3];
 
         player1_down[0] = character.crop(width * 3,height * 4, width, height);
         player1_down[1] = character.crop(width * 4,height * 4, width, height);
@@ -77,6 +89,19 @@ public class Assets {
         player1_up[1] = character.crop(width * 4,height * 7, width, height);
         player1_up[2] = character.crop(width * 5,height * 7, width, height);
 
+        player1_downbombed[0] = character.crop(width * 12,height * 4, width, height);
+        player1_downbombed[1] = character.crop(width * 13,height * 4, width, height);
+        player1_downbombed[2] = character.crop(width * 14,height * 4, width, height);
+        player1_leftbombed[0] = character.crop(width * 12,height * 5, width, height);
+        player1_leftbombed[1] = character.crop(width * 13,height * 5, width, height);
+        player1_leftbombed[2] = character.crop(width * 14,height * 5, width, height);
+        player1_rightbombed[0] = character.crop(width * 12,height * 6, width, height);
+        player1_rightbombed[1] = character.crop(width * 13,height * 6, width, height);
+        player1_rightbombed[2] = character.crop(width * 14,height * 6, width, height);
+        player1_upbombed[0] = character.crop(width * 12,height * 7, width, height);
+        player1_upbombed[1] = character.crop(width * 13,height * 7, width, height);
+        player1_upbombed[2] = character.crop(width * 14,height * 7, width, height);
+
         player2_down[0] = character.crop(0,0, width, height);
         player2_down[1] = character.crop(width,0, width, height);
         player2_down[2] = character.crop(width * 2,0, width, height);
@@ -89,6 +114,19 @@ public class Assets {
         player2_up[0] = character.crop(0,height * 3, width, height);
         player2_up[1] = character.crop(width,height * 3, width, height);
         player2_up[2] = character.crop(width * 2,height * 3, width, height);
+
+        player2_downbombed[0] = character.crop(width * 12,0, width, height);
+        player2_downbombed[1] = character.crop(width * 13,0, width, height);
+        player2_downbombed[2] = character.crop(width * 14,0, width, height);
+        player2_leftbombed[0] = character.crop(width * 12, height , width, height);
+        player2_leftbombed[1] = character.crop(width * 13, height , width, height);
+        player2_leftbombed[2] = character.crop(width * 14, height , width, height);
+        player2_rightbombed[0] = character.crop(width * 12,height * 2, width, height);
+        player2_rightbombed[1] = character.crop(width * 13,height * 2, width, height);
+        player2_rightbombed[2] = character.crop(width * 14,height * 2, width, height);
+        player2_upbombed[0] = character.crop(width * 12,height * 3, width, height);
+        player2_upbombed[1] = character.crop(width * 13,height * 3, width, height);
+        player2_upbombed[2] = character.crop(width * 14,height * 3, width, height);
 
         //start button
         //btn_start = new BufferedImage[2];

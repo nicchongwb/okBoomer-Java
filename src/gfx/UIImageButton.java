@@ -5,7 +5,7 @@ import okBoomer.ClickListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class UIImageButton extends UIObject{
+public class UIImageButton extends UIObject implements ClickListener{
 
     private BufferedImage[] images;
     private ClickListener clicker;

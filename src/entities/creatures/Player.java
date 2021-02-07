@@ -1,11 +1,8 @@
 package entities.creatures;
 
-import entities.items.BombCollectable;
 import gfx.Assets;
-import okBoomer.Game;
 import okBoomer.Handler;
 import states.GameState;
-import worlds.World;
 import gfx.Animation;
 import entities.items.Bomb;
 
@@ -26,15 +23,22 @@ public class Player extends Creature{
     private static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
     private Animation p1animDown, p1animUp, p1animLeft, p1animRight, p2animDown, p2animUp, p2animLeft, p2animRight;
+    private Animation p1animDownbombed, p1animUpbombed, p1animLeftbombed, p1animRightbombed, p2animDownbombed, p2animUpbombed, p2animLeftbombed, p2animRightbombed;
     private static int p1facing = 1; // 0: face up, 1: down, 2: left, 3:right
     private static int p2facing = 0;
+    private static int p1bombed = 0;
+    private static int p2bombed = 0;
 
     // Player characteristics/attributes
     private String name;
     private final int pid; // Player ID
     private Handler handler;
     private Bomb bomb;
+    private Player player;
     private int bombHeld; // keep track of how many bombs player is holding
+    private  boolean checkBombed = false; //check whether player got bombed
+    private  boolean bombTimer = false;
+    private long lastTrueTime;
 
     private int bombCollectable; // keep track of how many bombCollectable player is holding
 
@@ -64,6 +68,16 @@ public class Player extends Creature{
         p2animUp = new Animation(500, Assets.player2_up);
         p2animLeft = new Animation(500, Assets.player2_left);
         p2animRight = new Animation(500, Assets.player2_right);
+
+        p1animDownbombed = new Animation(500, Assets.player1_downbombed);
+        p1animUpbombed = new Animation(500, Assets.player1_upbombed);
+        p1animLeftbombed = new Animation(500, Assets.player1_leftbombed);
+        p1animRightbombed = new Animation(500, Assets.player1_rightbombed);
+
+        p2animDownbombed = new Animation(500, Assets.player2_downbombed);
+        p2animUpbombed = new Animation(500, Assets.player2_upbombed);
+        p2animLeftbombed = new Animation(500, Assets.player2_leftbombed);
+        p2animRightbombed = new Animation(500, Assets.player2_rightbombed);
     }
 
     public String getName(){
@@ -99,6 +113,8 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
+                    if (checkBombed){ p1bombed = 0;}
+
                     alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
                                         // Note: alrPressed is set to false inside KeyManager.java on keyRelease
                     p1facing = 0 ;
@@ -115,6 +131,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
+                    if (checkBombed){ p1bombed = 1;}
                     alrPressedp1 = true;
                     p1facing = 1;
                 }
@@ -132,6 +149,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
+                    if (checkBombed){ p1bombed = 2;}
                     alrPressedp1 = true;
                     p1facing = 2;
                 }
@@ -148,6 +166,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
+                    if (checkBombed){ p1bombed = 3;}
                     alrPressedp1 = true;
                     p1facing = 3;
                 }
@@ -185,7 +204,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
-
+                    if (checkBombed){ p2bombed = 0;}
                     alrPressedp2 = true;
                     p2facing = 0;
                 }
@@ -203,7 +222,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
-
+                    if (checkBombed){ p2bombed = 1;}
                     alrPressedp2 = true;
                     p2facing = 1;
                 }
@@ -221,6 +240,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
+                    if (checkBombed){ p2bombed = 2;}
                     alrPressedp2 = true;
                     p2facing = 2;
                 }
@@ -238,6 +258,7 @@ public class Player extends Creature{
                     else{
                         System.out.println("No move pls");
                     }
+                    if (checkBombed){ p2bombed = 3;}
                     alrPressedp2 = true;
                     p2facing = 3;
                 }
@@ -301,6 +322,15 @@ public class Player extends Creature{
         p2animLeft.tick();
         p2animRight.tick();
 
+        p1animDownbombed.tick();
+        p1animUpbombed.tick();
+        p1animLeftbombed.tick();
+        p1animRightbombed.tick();
+        p2animDownbombed.tick();
+        p2animUpbombed.tick();
+        p2animLeftbombed.tick();
+        p2animRightbombed.tick();
+
         getInput();
         move();
     }
@@ -308,37 +338,21 @@ public class Player extends Creature{
     @Override
     public void render(Graphics g) {
         // Insert g.draw method to draw out player
-        g.drawImage(getCurrentAnimationFrame(), x, y, width, height,null);
-    }
-
-    private BufferedImage getCurrentAnimationFrame(){
-        if (pid ==0){
-            if (handler.getKeyManager().p1Left){
-                return p1animLeft.getCurrentFrame();
-            }else if (handler.getKeyManager().p1Right){
-                return p1animRight.getCurrentFrame();
-            }else if (handler.getKeyManager().p1Up){
-                return p1animUp.getCurrentFrame();
-            } else if (handler.getKeyManager().p1Down){
-                return p1animDown.getCurrentFrame();
-            }else{
-                return getFacing();
+        if (checkBombed) {
+            bombTimer();
+            if (bombTimer) {
+                g.drawImage(getBombedAnimationFrame(), x, y, width, height, null);
+            }
+            else{
+                g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
             }
         }
         else {
-            if (handler.getKeyManager().p2Left){
-                return p2animLeft.getCurrentFrame();
-            }else if (handler.getKeyManager().p2Right){
-                return p2animRight.getCurrentFrame();
-            }else if (handler.getKeyManager().p2Down){
-                return p2animDown.getCurrentFrame();
-            } else {
-                return getFacing();
-            }
+            g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
         }
     }
 
-    private BufferedImage getFacing(){
+    private BufferedImage getCurrentAnimationFrame(){
         if (pid ==0) {
             if (p1facing == 0) {
                 return p1animUp.getCurrentFrame();
@@ -363,6 +377,48 @@ public class Player extends Creature{
         }
     }
 
+    public BufferedImage getBombedAnimationFrame() {
+        if (checkBombed) {
+            if (pid == 0) {
+                if (p1bombed == 0) {
+                    return p1animUpbombed.getCurrentFrame();
+                } else if (p1bombed == 1) {
+                    return p1animDownbombed.getCurrentFrame();
+                } else if (p1bombed == 2) {
+                    return p1animLeftbombed.getCurrentFrame();
+                } else if (p1bombed == 3) {
+                    return p1animRightbombed.getCurrentFrame();
+                } else {
+                    return getCurrentAnimationFrame();
+                }
+            } else {
+                if (p2bombed == 0) {
+                    return p2animUpbombed.getCurrentFrame();
+                } else if (p2bombed == 1) {
+                    return p2animDownbombed.getCurrentFrame();
+                } else if (p2bombed == 2) {
+                    return p2animLeftbombed.getCurrentFrame();
+                } else {
+                    return p2animRightbombed.getCurrentFrame();
+                }
+            }
+        } else {
+            return getCurrentAnimationFrame();
+        }
+    }
+    private boolean bombTimer() {
+        long now = System.currentTimeMillis();
+        if (checkBombed & !bombTimer) {
+            lastTrueTime = now;
+            bombTimer = true;
+        }
+        if (lastTrueTime + 3000 < now) { //to run player bombed animations for 3 seconds
+            checkBombed = false;
+            bombTimer = false;
+        }
+        return bombTimer;
+    }
+
     // Getter and Setter
     public int getPid() {
         return pid;
@@ -381,6 +437,9 @@ public class Player extends Creature{
         return bombCollectable;
     }
 
+    public boolean setBombed(){
+        return this.checkBombed = true;
+    }
 
     // Method to convert bombCollectable to bombHeld
     public void addBombPart(){

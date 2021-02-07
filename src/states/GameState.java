@@ -6,7 +6,6 @@ import entities.items.BombCollectable;
 import okBoomer.Handler;
 import utils.ItemTimer;
 import worlds.World;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +20,7 @@ public class GameState extends State {
     private static int maxWorldY;
     private static int minWorldX = -1;
     private static int minWorldY = -1;
+    //public static boolean getBombed = false;
 
     // 2D Array to keep track of entities if player touch bomb | for game logic (process damage, etc)
     private static int[][] board;
@@ -101,7 +101,6 @@ public class GameState extends State {
         player1.render(g);
         player2.render(g);
 
-
     }
 
     /* Method to determine if player can move */
@@ -175,6 +174,7 @@ public class GameState extends State {
 
                     // Remove bombPart from ArrayList bombList so that it does not render
                     bombPlayer(targetPlayer);
+                    targetPlayer.setBombed();
                     System.out.println("bomb");
                     return true;
 
@@ -284,19 +284,15 @@ public class GameState extends State {
         }
 
     }
+
     /* Method to bomb player */
-    public static void bombPlayer(Player targetPlayer){
-        targetPlayer.setHealth(targetPlayer.getHealth() - 1);
-    }
+    public static void bombPlayer(Player targetPlayer){ targetPlayer.setHealth(targetPlayer.getHealth() - 1); }
 
     /* Method to plant the collected bomb */
-    public static void plantBomb(Player targetPlayer){
-        targetPlayer.setBomb(targetPlayer.getBomb() - 1);
-    }
+    public static void plantBomb(Player targetPlayer){ targetPlayer.setBomb(targetPlayer.getBomb() - 1); }
 
-    public static void collectBombPart(Player targetPlayer){
-        targetPlayer.addBombPart();
-    }
+    public static void collectBombPart(Player targetPlayer){ targetPlayer.addBombPart(); }
+
 
     // Getters and Setters
     public int[][] getBoard() {

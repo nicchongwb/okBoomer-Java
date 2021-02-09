@@ -1,6 +1,7 @@
 package entities.creatures;
 
 import gfx.Assets;
+import interfaces.Board;
 import okBoomer.Handler;
 import states.GameState;
 import gfx.Animation;
@@ -9,6 +10,8 @@ import entities.items.Bomb;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+//import static interfaces.Board.canPlayerMove;
+
 /* Usage: GameState class -> private Player player;
 GameState constructor -> player = new Player(x,y);
 GameState tick() -> player.tick();
@@ -16,7 +19,7 @@ GameState render() -> player.render(g);
 
  */
 
-public class Player extends Creature{
+public class Player extends Creature implements Board {
     public static final int DEFAULT_BOMB = 0;
     public static final int MAX_BOMB = 3;
 
@@ -107,7 +110,7 @@ public class Player extends Creature{
 
                     // if they don't collide, allow them to move
                     // and update board array
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = -speed;
                     }
                     else{
@@ -125,7 +128,7 @@ public class Player extends Creature{
                 if(!alrPressedp1){
 
                     newY = y + speed;
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = speed;
                     }
                     else{
@@ -143,7 +146,7 @@ public class Player extends Creature{
 
                     newX = x - speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = -speed;
                     }
                     else{
@@ -160,7 +163,7 @@ public class Player extends Creature{
                 if(!alrPressedp1){
 
                     newX = x + speed;
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = speed;
                     }
                     else{
@@ -198,7 +201,7 @@ public class Player extends Creature{
                 if(!alrPressedp2){
                     newY = y - speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = -speed;
                     }
                     else{
@@ -216,7 +219,7 @@ public class Player extends Creature{
 
                     newY = y + speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = speed;
                     }
                     else{
@@ -234,7 +237,7 @@ public class Player extends Creature{
 
                     newX = x - speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = -speed;
                     }
                     else{
@@ -252,7 +255,7 @@ public class Player extends Creature{
 
                     newX = x + speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = speed;
                     }
                     else{

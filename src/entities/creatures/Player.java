@@ -1,6 +1,7 @@
 package entities.creatures;
 
 import gfx.Assets;
+import gfx.AudioPlayer;
 import interfaces.Board;
 import okBoomer.Handler;
 import states.GameState;
@@ -29,8 +30,6 @@ public class Player extends Creature implements Board {
     private Animation p1animDownbombed, p1animUpbombed, p1animLeftbombed, p1animRightbombed, p2animDownbombed, p2animUpbombed, p2animLeftbombed, p2animRightbombed;
     private static int p1facing = 1; // 0: face up, 1: down, 2: left, 3:right
     private static int p2facing = 0;
-    private static int p1bombed = 0;
-    private static int p2bombed = 0;
 
     // Player characteristics/attributes
     private String name;
@@ -53,6 +52,9 @@ public class Player extends Creature implements Board {
     private int newX;
     private int newY;
 
+    // variables for playing sounds
+    private AudioPlayer collectsound, dropsound;
+
     public Player(Handler handler, int x, int y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.handler = handler; // Help us access KeyManager
@@ -72,15 +74,15 @@ public class Player extends Creature implements Board {
         p2animLeft = new Animation(500, Assets.player2_left);
         p2animRight = new Animation(500, Assets.player2_right);
 
-        p1animDownbombed = new Animation(500, Assets.player1_downbombed);
-        p1animUpbombed = new Animation(500, Assets.player1_upbombed);
-        p1animLeftbombed = new Animation(500, Assets.player1_leftbombed);
-        p1animRightbombed = new Animation(500, Assets.player1_rightbombed);
+        p1animDownbombed = new Animation(245, Assets.player1_downbombed);
+        p1animUpbombed = new Animation(245, Assets.player1_upbombed);
+        p1animLeftbombed = new Animation(245, Assets.player1_leftbombed);
+        p1animRightbombed = new Animation(245, Assets.player1_rightbombed);
 
-        p2animDownbombed = new Animation(500, Assets.player2_downbombed);
-        p2animUpbombed = new Animation(500, Assets.player2_upbombed);
-        p2animLeftbombed = new Animation(500, Assets.player2_leftbombed);
-        p2animRightbombed = new Animation(500, Assets.player2_rightbombed);
+        p2animDownbombed = new Animation(245, Assets.player2_downbombed);
+        p2animUpbombed = new Animation(245, Assets.player2_upbombed);
+        p2animLeftbombed = new Animation(245, Assets.player2_leftbombed);
+        p2animRightbombed = new Animation(245, Assets.player2_rightbombed);
     }
 
     public String getName(){
@@ -116,7 +118,6 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 0;}
 
                     alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
                                         // Note: alrPressed is set to false inside KeyManager.java on keyRelease
@@ -134,7 +135,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 1;}
+
                     alrPressedp1 = true;
                     p1facing = 1;
                 }
@@ -152,7 +153,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 2;}
+
                     alrPressedp1 = true;
                     p1facing = 2;
                 }
@@ -169,7 +170,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 3;}
+
                     alrPressedp1 = true;
                     p1facing = 3;
                 }
@@ -182,6 +183,8 @@ public class Player extends Creature implements Board {
                         if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
                             GameState.setTileId(5, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
+                            dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
+                            dropsound.playonce();
                             System.out.println("p1 bomb pouch: " + getBomb());
                             // add new bomb object
                         } else {
@@ -207,7 +210,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 0;}
+
                     alrPressedp2 = true;
                     p2facing = 0;
                 }
@@ -225,7 +228,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 1;}
+
                     alrPressedp2 = true;
                     p2facing = 1;
                 }
@@ -243,7 +246,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 2;}
+
                     alrPressedp2 = true;
                     p2facing = 2;
                 }
@@ -261,7 +264,7 @@ public class Player extends Creature implements Board {
                     else{
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 3;}
+
                     alrPressedp2 = true;
                     p2facing = 3;
                 }
@@ -276,6 +279,8 @@ public class Player extends Creature implements Board {
                             // Get player position and plant the bomb
                             GameState.setTileId(6, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
+                            dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
+                            dropsound.playonce();
                             System.out.println("p2 bomb pouch: " + getBomb());
                         }
                         else{
@@ -383,23 +388,21 @@ public class Player extends Creature implements Board {
     public BufferedImage getBombedAnimationFrame() {
         if (checkBombed) {
             if (pid == 0) {
-                if (p1bombed == 0) {
+                if (p1facing == 0) {
                     return p1animUpbombed.getCurrentFrame();
-                } else if (p1bombed == 1) {
+                } else if (p1facing == 1) {
                     return p1animDownbombed.getCurrentFrame();
-                } else if (p1bombed == 2) {
+                } else if (p1facing == 2) {
                     return p1animLeftbombed.getCurrentFrame();
-                } else if (p1bombed == 3) {
-                    return p1animRightbombed.getCurrentFrame();
                 } else {
-                    return getCurrentAnimationFrame();
+                    return p1animRightbombed.getCurrentFrame();
                 }
             } else {
-                if (p2bombed == 0) {
+                if (p2facing == 0) {
                     return p2animUpbombed.getCurrentFrame();
-                } else if (p2bombed == 1) {
+                } else if (p2facing == 1) {
                     return p2animDownbombed.getCurrentFrame();
-                } else if (p2bombed == 2) {
+                } else if (p2facing == 2) {
                     return p2animLeftbombed.getCurrentFrame();
                 } else {
                     return p2animRightbombed.getCurrentFrame();
@@ -415,7 +418,7 @@ public class Player extends Creature implements Board {
             lastTrueTime = now;
             bombTimer = true;
         }
-        if (lastTrueTime + 3000 < now) { //to run player bombed animations for 3 seconds
+        if (lastTrueTime + 1000 < now) { //to run player bombed animations for 1 second
             checkBombed = false;
             bombTimer = false;
         }
@@ -444,11 +447,17 @@ public class Player extends Creature implements Board {
         return this.checkBombed = true;
     }
 
+    public boolean setBombedTimer(){
+        return this.bombTimer = false;
+    }
+
     // Method to convert bombCollectable to bombHeld
     public void addBombPart(){
         // We convert 2 bombCollectable to 1 bomb
         // Each player only can hold up to 2 bomb, if max bomb held, the player still can collect
         // up to 2 bombCollectable
+        collectsound = new AudioPlayer("/res/audio/collect.wav"); //sound effect for collecting bomb
+        collectsound.playonce();
         if (bombCollectable < 2){
             this.bombCollectable += 1;
         }

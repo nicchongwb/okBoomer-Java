@@ -1,5 +1,6 @@
 package states;
 
+import gfx.AudioPlayer;
 import interfaces.Board;
 import entities.creatures.Player;
 import entities.items.Bomb;
@@ -36,6 +37,9 @@ public class GameState extends State implements Board{
     public static ArrayList<BombCollectable> bombList; // get the list of currently spawned bomb items
 
     private ItemTimer timer = new ItemTimer();
+
+    // variable for playing sound
+    private static AudioPlayer bombsound;
 
     // Constructors
     public GameState(Handler handler){
@@ -154,7 +158,11 @@ public class GameState extends State implements Board{
     }
 
     /* Method to bomb player */
-    public static void bombPlayer(Player targetPlayer){ targetPlayer.setHealth(targetPlayer.getHealth() - 1); }
+    public static void bombPlayer(Player targetPlayer){
+        bombsound = new AudioPlayer("/res/audio/bomb2.wav"); //sound effect for bombing player
+        bombsound.playonce();
+        targetPlayer.setHealth(targetPlayer.getHealth() - 1);
+    }
 
     /* Method to plant the collected bomb */
     public static void plantBomb(Player targetPlayer){ targetPlayer.setBomb(targetPlayer.getBomb() - 1); }

@@ -19,8 +19,6 @@ public class Bomb extends Item{
     private Game game;
     private int damage;
     private ArrayList<Bomb> bombsPlantedList  = new ArrayList<Bomb>(8);
-    //private ArrayList<Bomb> bombsPlantedList1  = new ArrayList<Bomb>(8);
-    //private ArrayList<String> tryList  = new ArrayList<String>(8);
 
     public Bomb(Handler handler, int x, int y){
         super(handler, x, y, Item.DEFAULT_ITEM_WIDTH, Item.DEFAULT_ITEM_HEIGHT);
@@ -55,21 +53,10 @@ public class Bomb extends Item{
         return bombID;
     }
 
-    /*
-    public void addMember(Handler handler, int x, int y) {
-        bombsPlantedList.add(new Bomb(handler, x, y));
-    };*/
-
     // get the planted bomb objects on the map
     public ArrayList<Bomb> getBombsPlantedList(){
         return this.bombsPlantedList;
     }
-    /*public ArrayList<Bomb> getBombsPlantedList1(){
-        return this.bombsPlantedList1;
-    }
-    public ArrayList<String> getTryList(){
-        return this.tryList;
-    }*/
 
     @Override
     public void tick() {

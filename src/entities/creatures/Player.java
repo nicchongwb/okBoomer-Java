@@ -21,7 +21,7 @@ GameState render() -> player.render(g);
  */
 
 public class Player extends Creature implements Board {
-    public static final int DEFAULT_BOMB = 0;
+    public static final int DEFAULT_BOMB = 3;
     public static final int MAX_BOMB = 3;
 
     private static int playerCount = 0;
@@ -35,7 +35,7 @@ public class Player extends Creature implements Board {
     private String name;
     private final int pid; // Player ID
     private Handler handler;
-    private Bomb bomb;
+    private Bomb bomb;      // initialise bomb object with coordinates
     private Player player;
     private int bombHeld; // keep track of how many bombs player is holding
     private  boolean checkBombed = false; //check whether player got bombed
@@ -182,7 +182,10 @@ public class Player extends Creature implements Board {
                     if (getBomb() > 0) {
                         if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
                             GameState.setTileId(5, prevX / 64, prevY / 64);
-                            GameState.plantBomb(this);
+                            // add new bomb object
+                            bomb = new Bomb(handler, prevX, prevY);
+                            GameState.plantBomb(this, bomb);
+
                             dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
                             dropsound.playonce();
                             System.out.println("p1 bomb pouch: " + getBomb());
@@ -278,7 +281,7 @@ public class Player extends Creature implements Board {
                         if (GameState.getTileId(prevX/64, prevY/64) != 6) {
                             // Get player position and plant the bomb
                             GameState.setTileId(6, prevX / 64, prevY / 64);
-                            GameState.plantBomb(this);
+                            GameState.plantBomb(this, bomb);
                             dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
                             dropsound.playonce();
                             System.out.println("p2 bomb pouch: " + getBomb());

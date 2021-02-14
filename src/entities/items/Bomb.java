@@ -18,7 +18,7 @@ public class Bomb extends Item{
     private final int bombID; // Player ID
     private Game game;
     private int damage;
-    private ArrayList<Bomb> bombsPlantedList  = new ArrayList<Bomb>(8);
+    private ArrayList<Bomb> plantBombList  = new ArrayList<Bomb>();
 
     public Bomb(Handler handler, int x, int y){
         super(handler, x, y, Item.DEFAULT_ITEM_WIDTH, Item.DEFAULT_ITEM_HEIGHT);
@@ -54,8 +54,8 @@ public class Bomb extends Item{
     }
 
     // get the planted bomb objects on the map
-    public ArrayList<Bomb> getBombsPlantedList(){
-        return this.bombsPlantedList;
+    public ArrayList<Bomb> getPlantedBombList(){
+        return this.plantBombList;
     }
 
     @Override

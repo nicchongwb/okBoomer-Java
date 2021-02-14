@@ -38,8 +38,10 @@ public class GameState extends State implements Board{
     public static ArrayList<Bomb> plantedBombList; // Arraylist to keep track of the number of planted bombs
 
     private ItemTimer timer = new ItemTimer();
+    private static boolean alrSetBomb = false;
 
     // variable for playing sound
+
     private static AudioPlayer bombsound;
 
     // Constructors
@@ -105,6 +107,13 @@ public class GameState extends State implements Board{
         for(int i = 0; i < bombList.size(); i++){
             bombList.get(i).render(g);
         }
+        // render planted bomb
+        //if (alrSetBomb){
+            // render the current bombs stored in the object
+            for(int i = 0; i < plantedBombList.size(); i++){
+                plantedBombList.get(i).render(g);
+            }
+        //}
         player1.render(g);
         player2.render(g);
 
@@ -149,9 +158,7 @@ public class GameState extends State implements Board{
                                     timer.sethasRunStarted(false); // reset hasStarted variable
                                     break;
                                 }
-
                             }
-
                     }
                 }
             }
@@ -169,8 +176,14 @@ public class GameState extends State implements Board{
     /* Method to plant the collected bomb */
     public static void plantBomb(Player targetPlayer, Bomb bomb){
         targetPlayer.setBomb(targetPlayer.getBomb() - 1);
+        // remove oldest bomb and add the latest bomb into the array when total bomb planted on the map exceed 8
+        if(plantedBombList.size() == 2){
+            setTileId(0, plantedBombList.get(0).getX()/64, plantedBombList.get(0).getY()/64);
+            plantedBombList.remove(0);
+        }
         plantedBombList.add(bomb); // add bomb object to ArrayList
-        System.out.println("this is " + plantedBombList.size());
+        alrSetBomb = true;
+        System.out.println("Planted bomb arraylist size: " + plantedBombList.size());
     }
 
     public static void collectBombPart(Player targetPlayer){ targetPlayer.addBombPart(); }

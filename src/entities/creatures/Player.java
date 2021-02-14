@@ -28,6 +28,7 @@ public class Player extends Creature implements Board {
     private static int pixToMove = 32; // Amount of pixels to move
     private Animation p1animDown, p1animUp, p1animLeft, p1animRight, p2animDown, p2animUp, p2animLeft, p2animRight;
     private Animation p1animDownbombed, p1animUpbombed, p1animLeftbombed, p1animRightbombed, p2animDownbombed, p2animUpbombed, p2animLeftbombed, p2animRightbombed;
+    private Animation bomb100, bomb75, bomb50, bomb25;
     private static int p1facing = 1; // 0: face up, 1: down, 2: left, 3:right
     private static int p2facing = 0;
 
@@ -177,8 +178,9 @@ public class Player extends Creature implements Board {
 
             }
             if (handler.getKeyManager().p1Bomb) {
-
-                if (!alrPressedp1) {
+                // Ensure that player collected at least 1 bomb
+                if (getBomb() > 0) {
+                    // Check if the tile have a bomb planted or not
                     if (getBomb() > 0) {
                         if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
                             GameState.setTileId(5, prevX / 64, prevY / 64);
@@ -189,7 +191,6 @@ public class Player extends Creature implements Board {
                             dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
                             dropsound.playonce();
                             System.out.println("p1 bomb pouch: " + getBomb());
-                            // add new bomb object
                         } else {
                             System.out.println("p1 bomb planted");
                         }
@@ -276,25 +277,24 @@ public class Player extends Creature implements Board {
 
                 if(!alrPressedp2){
                     // Ensure that player collected at least 1 bomb
-                    if(getBomb() > 0) {
-                        // Player can only plant 1 bomb at a time
-                        if (GameState.getTileId(prevX/64, prevY/64) != 6) {
-                            // Get player position and plant the bomb
-                            GameState.setTileId(6, prevX / 64, prevY / 64);
-                            GameState.plantBomb(this, bomb);
-                            dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
-                            dropsound.playonce();
-                            System.out.println("p2 bomb pouch: " + getBomb());
+                        if (getBomb() > 0) {
+                            // Check if the tile have a bomb planted or not
+                            if (GameState.getTileId(prevX / 64, prevY / 64) != 6) {
+                                    GameState.setTileId(6, prevX / 64, prevY / 64);
+                                    // add new bomb object
+                                    bomb = new Bomb(handler, prevX, prevY);
+                                    GameState.plantBomb(this, bomb);
+                                    dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
+                                    dropsound.playonce();
+                                    System.out.println("p2 bomb pouch: " + getBomb());
+                            } else {
+                                System.out.println("p2 bomb planted");
+                            }
+                        } else {
+                            System.out.println("p2 bomb pouch: empty");
                         }
-                        else{
-                            System.out.println("p2 bomb planted");
-                        }
+                        alrPressedp1 = true;
                     }
-                    else{
-                        System.out.println("p2 bomb pouch: empty");
-                    }
-                    alrPressedp2 = true;
-                }
             }
         }
 
@@ -415,6 +415,7 @@ public class Player extends Creature implements Board {
             return getCurrentAnimationFrame();
         }
     }
+
     private boolean bombTimer() {
         long now = System.currentTimeMillis();
         if (checkBombed & !bombTimer) {
@@ -472,5 +473,9 @@ public class Player extends Creature implements Board {
             }
         }
     }
+/*
+    public static boolean getAlrSetBomb(){
+        return alrSetBomb;
+    }*/
 
 }

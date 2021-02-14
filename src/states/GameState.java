@@ -35,6 +35,7 @@ public class GameState extends State implements Board{
     private Bomb bomb; // Explore using arrayList to store list of placed bombs
     private BombCollectable bombPart; // bomb item for player to collect bomb parts to fill up bomb pouch
     public static ArrayList<BombCollectable> bombList; // get the list of currently spawned bomb items
+    public static ArrayList<Bomb> plantedBombList; // Arraylist to keep track of the number of planted bombs
 
     private ItemTimer timer = new ItemTimer();
 
@@ -71,6 +72,7 @@ public class GameState extends State implements Board{
         bombPart = new BombCollectable(handler, 0, 0);
         bombList = bombPart.getBombsSpawnedList();
 
+        plantedBombList = bomb.getPlantedBombList();
         // Set static variables for collision logic in Player class getInput()
 
         // Update board with player(s) and bomb coordinate
@@ -165,9 +167,15 @@ public class GameState extends State implements Board{
     }
 
     /* Method to plant the collected bomb */
-    public static void plantBomb(Player targetPlayer){ targetPlayer.setBomb(targetPlayer.getBomb() - 1); }
+    public static void plantBomb(Player targetPlayer, Bomb bomb){
+        targetPlayer.setBomb(targetPlayer.getBomb() - 1);
+        plantedBombList.add(bomb); // add bomb object to ArrayList
+        System.out.println("this is " + plantedBombList.size());
+    }
 
-    public static void collectBombPart(Player targetPlayer){ targetPlayer.addBombPart(); }
+    public static void collectBombPart(Player targetPlayer){
+        targetPlayer.addBombPart();
+    }
 
 
     // Getters and Setters

@@ -6,6 +6,7 @@ import okBoomer.Handler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /* Bomb.java is called when a player places down a bomb!
 *  This is different from the BombCollectable.java, where
@@ -15,6 +16,8 @@ public class Bomb extends Item{
     private static final int DEFAULT_DAMAGE = 1;
     private static int bombCount = 0;
     private BufferedImage bombImg;
+    // ArrayList to hold the planted bombs objects
+    private ArrayList<Bomb> plantBombList  = new ArrayList<Bomb>();
 
     // Player characteristics/attributes
     private String name;
@@ -50,6 +53,10 @@ public class Bomb extends Item{
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public ArrayList<Bomb> getPlantedBombList(){
+        return this.plantBombList;
     }
 
     @Override

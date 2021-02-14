@@ -78,12 +78,17 @@ class utils.ItemTimer {
 + void setRdyToSpawn(boolean)
 + void sethasRunStarted(boolean)
 }
+interface interfaces.Board {
+~ {static} boolean canPlayerMove(int,int,int,int,int,Player)
+~ {static} void checkPrevandUpdateBoard(int,int,int,int,int,int)
+}
 class gfx.Assets {
 - {static} int width
 + {static} BufferedImage[] btn_start
 + {static} BufferedImage RightTile
 + {static} BufferedImage BombTile
 + {static} BufferedImage[] player1_down
++ {static} BufferedImage[] player1_downbombed
 + {static} void init()
 }
 class tiles.BlueTile {
@@ -262,13 +267,20 @@ class entities.creatures.Player {
 - {static} int playerCount
 - {static} int pixToMove
 - Animation p1animDown
+- Animation p1animDownbombed
 - {static} int p1facing
 - {static} int p2facing
+- {static} int p1bombed
+- {static} int p2bombed
 - String name
 - int pid
 - Handler handler
 - Bomb bomb
+- Player player
 - int bombHeld
+- boolean checkBombed
+- boolean bombTimer
+- long lastTrueTime
 - int bombCollectable
 - {static} boolean alrPressedp1
 - {static} boolean alrPressedp2
@@ -284,11 +296,13 @@ class entities.creatures.Player {
 + void tick()
 + void render(Graphics)
 - BufferedImage getCurrentAnimationFrame()
-- BufferedImage getFacing()
++ BufferedImage getBombedAnimationFrame()
+- boolean bombTimer()
 + int getPid()
 + int getBomb()
 + void setBomb(int)
 + int getBombCollectable()
++ boolean setBombed()
 + void addBombPart()
 }
 class okBoomer.Launcher {
@@ -376,21 +390,27 @@ class states.GameState {
 - {static} int maxWorldY
 - {static} int minWorldX
 - {static} int minWorldY
-- {static} int[][] board
++ {static} int[][] board
 - Player player1
 - Player player2
 - Bomb bomb
 - BombCollectable bombPart
-- {static} ArrayList<BombCollectable> bombList
++ {static} ArrayList<BombCollectable> bombList
 - ItemTimer timer
 + void tick()
 + void render(Graphics)
-+ {static} boolean canPlayerMove(int,int,int,int,int,Player)
-+ {static} void checkPrevandUpdateBoard(int,int,int,int,int,int)
 + void spawnItem(int)
 + {static} void bombPlayer(Player)
 + {static} void plantBomb(Player)
 + {static} void collectBombPart(Player)
++ {static} int getMaxWorldX()
++ {static} void setMaxWorldX(int)
++ {static} int getMaxWorldY()
++ {static} void setMaxWorldY(int)
++ {static} int getMinWorldX()
++ {static} void setMinWorldX(int)
++ {static} int getMinWorldY()
++ {static} void setMinWorldY(int)
 + int[][] getBoard()
 + {static} int getTileId(int,int)
 + {static} void setTileId(int,int,int)
@@ -424,6 +444,7 @@ tiles.Tile <|-- tiles.BottomTile
 entities.Entity <|-- entities.items.Item
 gfx.UIObject <|-- gfx.UIImageButton
 entities.Entity <|-- entities.creatures.Creature
+interfaces.Board <|.. entities.creatures.Player
 entities.creatures.Creature <|-- entities.creatures.Player
 java.awt.event.KeyListener <|.. Input.KeyManager
 entities.items.Item <|-- entities.items.BombCollectable
@@ -433,5 +454,6 @@ tiles.Tile <|-- tiles.CornerTile3
 java.awt.event.MouseListener <|.. gfx.MouseManager
 java.awt.event.MouseMotionListener <|.. gfx.MouseManager
 tiles.Tile <|-- tiles.TopTile
+interfaces.Board <|.. states.GameState
 states.State <|-- states.GameState
 @enduml

@@ -3,6 +3,7 @@ package okBoomer;
 import Input.KeyManager;
 import display.Display;
 import gfx.Assets;
+import gfx.AudioPlayer;
 import gfx.ImageLoader;
 import gfx.MouseManager;
 import states.*;
@@ -50,6 +51,8 @@ public class Game implements Runnable{
     //Handler
     private Handler handler;
 
+    // Play bomb sound
+    private static AudioPlayer bombsound;
 
     // Constructors
     public Game(String title, int width, int height){

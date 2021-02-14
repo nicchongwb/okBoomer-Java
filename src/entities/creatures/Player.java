@@ -1,5 +1,6 @@
 package entities.creatures;
 
+import entities.items.BombCollectable;
 import gfx.Assets;
 import okBoomer.Handler;
 import states.GameState;
@@ -8,6 +9,8 @@ import entities.items.Bomb;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /* Usage: GameState class -> private Player player;
 GameState constructor -> player = new Player(x,y);
@@ -16,8 +19,8 @@ GameState render() -> player.render(g);
 
  */
 
-public class Player extends Creature{
-    public static final int DEFAULT_BOMB = 0;
+public class Player extends Creature {
+    public static final int DEFAULT_BOMB = 3;       //edit to 0 ltr
     public static final int MAX_BOMB = 3;
 
     private static int playerCount = 0;
@@ -28,6 +31,8 @@ public class Player extends Creature{
     private static int p2facing = 0;
     private static int p1bombed = 0;
     private static int p2bombed = 0;
+    private static ArrayList<Bomb> bombsPlantedList, bombsPlantedList1;
+    private static ArrayList<String> tryList;
 
     // Player characteristics/attributes
     private String name;
@@ -36,8 +41,9 @@ public class Player extends Creature{
     private Bomb bomb;
     private Player player;
     private int bombHeld; // keep track of how many bombs player is holding
-    private  boolean checkBombed = false; //check whether player got bombed
-    private  boolean bombTimer = false;
+    private boolean checkBombed = false; //check whether player got bombed
+    private boolean bombTimer = false;
+    private boolean createBomb = false;
     private long lastTrueTime;
 
     private int bombCollectable; // keep track of how many bombCollectable player is holding
@@ -45,6 +51,7 @@ public class Player extends Creature{
     // declare variables to check if key is already pressed
     private static boolean alrPressedp1 = false;
     private static boolean alrPressedp2 = false;
+    private boolean alrSetBomb = false;
 
     // temporary variables to hold next player coordinates
     private int newX;
@@ -80,11 +87,11 @@ public class Player extends Creature{
         p2animRightbombed = new Animation(500, Assets.player2_rightbombed);
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    private void setName(String name){
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -96,10 +103,10 @@ public class Player extends Creature{
         newX = x;
         newY = y;
 
-        if (pid == 0){ // If pid == 0 for player 1
+        if (pid == 0) { // If pid == 0 for player 1
             if (handler.getKeyManager().p1Up) { // if keyPressed is true
 
-                if(!alrPressedp1){ // check if alrPressed is true
+                if (!alrPressedp1) { // check if alrPressed is true
 
                     // for player collision purposes, check if the next tile the player will be moving to
                     // collides with the edges of the map.
@@ -107,31 +114,33 @@ public class Player extends Creature{
 
                     // if they don't collide, allow them to move
                     // and update board array
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         yMove = -speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 0;}
+                    if (checkBombed) {
+                        p1bombed = 0;
+                    }
 
                     alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
-                                        // Note: alrPressed is set to false inside KeyManager.java on keyRelease
-                    p1facing = 0 ;
+                    // Note: alrPressed is set to false inside KeyManager.java on keyRelease
+                    p1facing = 0;
                 }
             }
             if (handler.getKeyManager().p1Down) {
 
-                if(!alrPressedp1){
+                if (!alrPressedp1) {
 
                     newY = y + speed;
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         yMove = speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 1;}
+                    if (checkBombed) {
+                        p1bombed = 1;
+                    }
                     alrPressedp1 = true;
                     p1facing = 1;
                 }
@@ -139,17 +148,18 @@ public class Player extends Creature{
             }
             if (handler.getKeyManager().p1Left) {
 
-                if(!alrPressedp1){
+                if (!alrPressedp1) {
 
                     newX = x - speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         xMove = -speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 2;}
+                    if (checkBombed) {
+                        p1bombed = 2;
+                    }
                     alrPressedp1 = true;
                     p1facing = 2;
                 }
@@ -157,16 +167,17 @@ public class Player extends Creature{
             }
             if (handler.getKeyManager().p1Right) {
 
-                if(!alrPressedp1){
+                if (!alrPressedp1) {
 
                     newX = x + speed;
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         xMove = speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p1bombed = 3;}
+                    if (checkBombed) {
+                        p1bombed = 3;
+                    }
                     alrPressedp1 = true;
                     p1facing = 3;
                 }
@@ -190,21 +201,21 @@ public class Player extends Creature{
                     alrPressedp1 = true;
                 }
             }
-        }
-        else if (pid == 1){ // It pid == 1 for player 2
+        } else if (pid == 1) { // It pid == 1 for player 2
 
             if (handler.getKeyManager().p2Up) {
 
-                if(!alrPressedp2){
+                if (!alrPressedp2) {
                     newY = y - speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         yMove = -speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 0;}
+                    if (checkBombed) {
+                        p2bombed = 0;
+                    }
                     alrPressedp2 = true;
                     p2facing = 0;
                 }
@@ -212,17 +223,18 @@ public class Player extends Creature{
             }
             if (handler.getKeyManager().p2Down) {
 
-                if(!alrPressedp2){
+                if (!alrPressedp2) {
 
                     newY = y + speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         yMove = speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 1;}
+                    if (checkBombed) {
+                        p2bombed = 1;
+                    }
                     alrPressedp2 = true;
                     p2facing = 1;
                 }
@@ -230,17 +242,18 @@ public class Player extends Creature{
             }
             if (handler.getKeyManager().p2Left) {
 
-                if(!alrPressedp2){
+                if (!alrPressedp2) {
 
                     newX = x - speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         xMove = -speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 2;}
+                    if (checkBombed) {
+                        p2bombed = 2;
+                    }
                     alrPressedp2 = true;
                     p2facing = 2;
                 }
@@ -248,46 +261,87 @@ public class Player extends Creature{
             }
             if (handler.getKeyManager().p2Right) {
 
-                if(!alrPressedp2){
+                if (!alrPressedp2) {
 
                     newX = x + speed;
 
-                    if(GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if (GameState.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         xMove = speed;
-                    }
-                    else{
+                    } else {
                         System.out.println("No move pls");
                     }
-                    if (checkBombed){ p2bombed = 3;}
+                    if (checkBombed) {
+                        p2bombed = 3;
+                    }
                     alrPressedp2 = true;
                     p2facing = 3;
                 }
             }
             if (handler.getKeyManager().p2Bomb) {
 
-                if(!alrPressedp2){
+                if (!alrPressedp2) {
                     // Ensure that player collected at least 1 bomb
-                    if(getBomb() > 0) {
+                    if (getBomb() > 0) {
                         // Player can only plant 1 bomb at a time
-                        if (GameState.getTileId(prevX/64, prevY/64) != 6) {
+                        if (GameState.getTileId(prevX / 64, prevY / 64) != 6) {
+                            // ensure that there is only 8 active bombs on the map
+
+
+                            //if(plantBombList.size()<3) {
                             // Get player position and plant the bomb
                             GameState.setTileId(6, prevX / 64, prevY / 64);
                             GameState.plantBomb(this);
+                            bomb = new Bomb(handler, prevX, prevY);
+                            bombsPlantedList = bomb.getBombsPlantedList();
+                            bombsPlantedList.add(new Bomb(handler, prevX, prevY));
+                            // bombsPlantedList1 = bomb.getBombsPlantedList1();
+                            //bombsPlantedList1.addAll(bombsPlantedList);
+                            // bombsPlantedList.add((bombsPlantedList.size()), new Bomb(handler, prevX / 64, prevY / 64));
+                            // tryList = bomb.getTryList();
+                            // tryList.add("hello");
+                            // System.out.println("try: " + tryList);
+
                             System.out.println("p2 bomb pouch: " + getBomb());
-                        }
-                        else{
+                            alrSetBomb = true;
+                            System.out.println("bombsPlantedList: " + bombsPlantedList.size());
+                            //System.out.println("bombsPlantedList1: " + bombsPlantedList1.size());
+/*                            for (Bomb bombPlanted : bombsPlantedList) {
+                                bombsPlantedList.add((bombsPlantedList.size()), new Bomb(handler, prevX / 64, prevY / 64));
+                                System.out.println("Number = " + bombPlanted);
+                            }*/
+
+                            // need to relook at this for animation
+                            //}
+                            //else{
+                            /*if (plantBombList.size() >= 3){
+                                // remove the old bomb and update the recent bomb to the list
+                                for (Bomb bombColu : plantBombList) {
+                                    if (bombColu.getX() == prevX * 64 && bombColu.getY() == prevY * 64) {
+                                        //if (bombCol.getX() == newX*64 && bombCol.getY() == newY*64) {
+
+                                        plantBombList.remove(bombColu);
+                                    }
+                                }
+                                // get the tid of the bomb[0] and set it to empty (tid = 0)
+                                // GameState.setTileId(0, prevX / 64, prevY / 64);
+                                // the removed bomb tile have to be changed to 0
+                                plantBombList.add(new Bomb(handler, prevX, prevY));
+                                System.out.println("array: " + plantBombList);
+*/
+                            // test the update array
+                        } else {
                             System.out.println("p2 bomb planted");
                         }
-                    }
-                    else{
+                    } else {
                         System.out.println("p2 bomb pouch: empty");
                     }
                     alrPressedp2 = true;
                 }
             }
         }
-
     }
+
+//}
 
     public static void setIfPressed1(boolean bool){
         alrPressedp1 = bool;
@@ -349,6 +403,19 @@ public class Player extends Creature{
         }
         else {
             g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
+        }
+
+        if (alrSetBomb){
+            // not fixed, image moved slightly when player move
+            //bomb = new Bomb(handler, prevX / 64, prevY / 64);   // obj is created but y render bomb is null/ 0,0 :(( sad.
+
+            // render the current bombs stored in the object
+            //bombsPlantedList
+            /*
+            for(int i = 0; i < bombsPlantedList.size(); i++){
+                bombsPlantedList.get(i).render(g);
+                //bomb.render(g);
+            }*/
         }
     }
 

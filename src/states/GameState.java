@@ -26,6 +26,7 @@ public class GameState extends State implements Board{
 
     // 2D Array to keep track of entities if player touch bomb | for game logic (process damage, etc)
     public static int[][] board;
+    private static final int maxPlantedBombs = 8;
 
     // Players
     private Player player1;
@@ -69,12 +70,12 @@ public class GameState extends State implements Board{
         player1 = new Player(handler, 0,0); // spawn player 1 at the start
         player2 = new Player(handler, 576, 576); // spawn player 2 at the end
         bomb = new Bomb(handler, 128,256); // spawn bomb (planted) in middle
+        plantedBombList = bomb.getPlantedBombList();
 
         // initialise bombPart to get bombList array, it's not added into the arrayList, so it will not be counted in the map
         bombPart = new BombCollectable(handler, 0, 0);
         bombList = bombPart.getBombsSpawnedList();
 
-        plantedBombList = bomb.getPlantedBombList();
         // Set static variables for collision logic in Player class getInput()
 
         // Update board with player(s) and bomb coordinate
@@ -170,20 +171,38 @@ public class GameState extends State implements Board{
     public static void bombPlayer(Player targetPlayer){
         bombsound = new AudioPlayer("/res/audio/bomb2.wav"); //sound effect for bombing player
         bombsound.playonce();
+        removePlantedBomb(targetPlayer);
         targetPlayer.setHealth(targetPlayer.getHealth() - 1);
+    }
+
+    public static void removePlantedBomb(Player targetPlayer){
+        for(int i = 0; i < plantedBombList.size(); i++){
+            if (plantedBombList.get(i).getX() == targetPlayer.getNewX() && plantedBombList.get(i).getY() == targetPlayer.getNewY()){
+                plantedBombList.remove(i);
+            }
+        }
+        resetBombID();
+        System.out.println("Planted bomb arraylist size (after damage from a bomb): " + plantedBombList.size());
+    }
+
+    // reset bombID - in order to remove by index in the arraylist
+    public static void resetBombID(){
+        for(int i = 0; i < plantedBombList.size(); i++){
+            plantedBombList.get(i).setBombID(i);
+        }
     }
 
     /* Method to plant the collected bomb */
     public static void plantBomb(Player targetPlayer, Bomb bomb){
         targetPlayer.setBomb(targetPlayer.getBomb() - 1);
         // remove oldest bomb and add the latest bomb into the array when total bomb planted on the map exceed 8
-        if(plantedBombList.size() == 2){
+        if(plantedBombList.size() == maxPlantedBombs){
             setTileId(0, plantedBombList.get(0).getX()/64, plantedBombList.get(0).getY()/64);
             plantedBombList.remove(0);
         }
         plantedBombList.add(bomb); // add bomb object to ArrayList
         alrSetBomb = true;
-        System.out.println("Planted bomb arraylist size: " + plantedBombList.size());
+        System.out.println("Planted bomb arraylist size (after planting a bomb): " + plantedBombList.size());
     }
 
     public static void collectBombPart(Player targetPlayer){ targetPlayer.addBombPart(); }

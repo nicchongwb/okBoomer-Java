@@ -12,11 +12,8 @@ import java.util.ArrayList;
 public class Bomb extends Item{
     private static final int DEFAULT_DAMAGE = 1;
     private static int bombCount = 0;
+    private static int bombID;
     private BufferedImage bombImg;
-    // Player characteristics/attributes
-    private String name;
-    private final int bombID; // Player ID
-    private Game game;
     private int damage;
     private ArrayList<Bomb> plantBombList  = new ArrayList<Bomb>();
 
@@ -26,23 +23,19 @@ public class Bomb extends Item{
         this.damage = DEFAULT_DAMAGE;
         bombID = bombCount;
         bombCount++;
-
         bombImg = Assets.BombTile;
     }
 
 
 
     // Getter and Setter
-    public String getName(){
-        return name;
-    }
-
-    private void setName(String name){
-        this.name = name;
-    }
-
     public int getDamage() {
         return damage;
+    }
+
+    // reset
+    public void setBombID(int bombID){
+        this.bombID = bombID;
     }
 
     public void setDamage(int damage) {
@@ -51,6 +44,10 @@ public class Bomb extends Item{
 
     public int getBombID(){
         return bombID;
+    }
+
+    public void setBombCount(int bombCount){
+        this.bombCount = bombCount;
     }
 
     // get the planted bomb objects on the map

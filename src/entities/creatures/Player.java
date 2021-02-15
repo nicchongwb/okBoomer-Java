@@ -473,6 +473,22 @@ public class Player extends Creature implements Board {
             }
         }
     }
+
+    public int getNewX() {
+        return newX;
+    }
+
+    public void setNewX(int newX) {
+        this.newX = newX;
+    }
+
+    public int getNewY() {
+        return newY;
+    }
+
+    public void setNewY(int newY) {
+        this.newY = newY;
+    }
 /*
     public static boolean getAlrSetBomb(){
         return alrSetBomb;

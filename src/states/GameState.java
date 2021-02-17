@@ -34,16 +34,14 @@ public class GameState extends State implements Board{
 
     // Bombs
     private Bomb bomb; // Explore using arrayList to store list of placed bombs
-    private BombCollectable bombPart; // bomb item for player to collect bomb parts to fill up bomb pouch
-    public static ArrayList<BombCollectable> bombList; // get the list of currently spawned bomb items
+    private BombCollectable bombPart; // The bomb item for player to collect bomb parts to fill up bomb pouch
+    public static ArrayList<BombCollectable> bombList; // To get the list of currently spawned bomb items
     public static ArrayList<Bomb> plantedBombList; // Arraylist to keep track of the number of planted bombs
 
     private ItemTimer timer = new ItemTimer();
-    private static boolean alrSetBomb = false;
 
-    // variable for playing sound
-
-    private static AudioPlayer bombsound;
+    // Audio
+    private static AudioPlayer bombsound;   // variable for playing sound
 
     // Constructors
     public GameState(Handler handler){
@@ -69,20 +67,18 @@ public class GameState extends State implements Board{
 
         player1 = new Player(handler, 0,0); // spawn player 1 at the start
         player2 = new Player(handler, 576, 576); // spawn player 2 at the end
-        bomb = new Bomb(handler, 128,256); // spawn bomb (planted) in middle
+        bomb = new Bomb(handler, 0,0); // spawn bomb (planted) at the start
         plantedBombList = bomb.getPlantedBombList();
 
-        // initialise bombPart to get bombList array, it's not added into the arrayList, so it will not be counted in the map
+        // To initialise bombPart to get bombList array, it's not added into the arrayList, so it will not be counted in the map
         bombPart = new BombCollectable(handler, 0, 0);
         bombList = bombPart.getBombsSpawnedList();
 
         // Set static variables for collision logic in Player class getInput()
 
         // Update board with player(s) and bomb coordinate
-        board[player1.getY()/64][player1.getX()/64] = 1; // set player 1 in board [0][0] = 0,0
-        board[player2.getY()/64][player2.getX()/64] = 2; // set player 2 in board [9][9] = 576,576
-        board[bomb.getY()/64][bomb.getX()/64] = 3; // set bomb in board[4][4] = 256,256
-
+        board[player1.getY()/64][player1.getX()/64] = 1; // To set player 1 in board [0][0] = 0,0
+        board[player2.getY()/64][player2.getX()/64] = 2; // To set player 2 in board [9][9] = 576,576
     }
 
 
@@ -93,7 +89,7 @@ public class GameState extends State implements Board{
         world.tick();
         player1.tick();
         player2.tick();
-        spawnItem(0); // only spawn bombs as it is the only item in the game
+        spawnItem(0); // Only spawn bombs as it is the only item in the game
 
     }
 
@@ -104,17 +100,14 @@ public class GameState extends State implements Board{
 
         bomb.render(g);
 
-        // render the current bombs stored in the object
+        // Render the current bombs stored in the object
         for(int i = 0; i < bombList.size(); i++){
             bombList.get(i).render(g);
         }
-        // render planted bomb
-        //if (alrSetBomb){
-            // render the current bombs stored in the object
-            for(int i = 0; i < plantedBombList.size(); i++){
-                plantedBombList.get(i).render(g);
-            }
-        //}
+        // Render planted bomb
+        for(int i = 0; i < plantedBombList.size(); i++){
+            plantedBombList.get(i).render(g);
+        }
         player1.render(g);
         player2.render(g);
 
@@ -124,39 +117,39 @@ public class GameState extends State implements Board{
     /* Method to spawn items */
     public void spawnItem(int itemid){
 
-        // if there are more than 3 bomb parts on the map, do not spawn anymore.
+        // If there are more than 3 bomb parts on the map, do not spawn anymore.
         if(bombList.size()<3){
-            // check if countdown timer is running, if it is not, run it
+            // Check if countdown timer is running, if it is not, run it
             if(!timer.hasRunStarted()){
                 timer.startTimer();
             }
 
             else {
-                // if item ready to spawn
+                // If item ready to spawn
                 if(timer.readyToSpawn()){
                 /* itemid usage:
                     0 = bomb (collectable)
                  */
                     switch (itemid){
 
-                        // code to spawn bomb (collectable)
+                        // Code to spawn bomb (collectable)
                         case 0:
                             while(true){
-                                // generate random x and y from 0 to 9
+                                // Generate random x and y from 0 to 9
                                 Random rand = new Random();
                                 int randx = rand.nextInt(10);
                                 int randy = rand.nextInt(10);
 
-                                // check if anything is occupying this tile
+                                // Check if anything is occupying this tile
                                 // if nothing is occupying it, spawn a bomb part!
                                 int tid = getTileId(randx, randy);
                                 if(tid == 0){
-                                    /* spawn bomb */
-                                    // add new bomb item spawned into our bomb array
+                                    /* Spawn bomb */
+                                    // Add new bomb item spawned into our bomb array
                                     bombList.add(new BombCollectable(handler,randx*64, randy*64));
-                                    board[randy][randx] = 4; // update board array
-                                    timer.setRdyToSpawn(false); // reset the item spawn rate
-                                    timer.sethasRunStarted(false); // reset hasStarted variable
+                                    board[randy][randx] = 4; // Update board array
+                                    timer.setRdyToSpawn(false); // Reset the item spawn rate
+                                    timer.sethasRunStarted(false); // Reset hasStarted variable
                                     break;
                                 }
                             }
@@ -169,7 +162,7 @@ public class GameState extends State implements Board{
 
     /* Method to bomb player */
     public static void bombPlayer(Player targetPlayer){
-        bombsound = new AudioPlayer("/res/audio/bomb2.wav"); //sound effect for bombing player
+        bombsound = new AudioPlayer("/res/audio/bomb2.wav"); // Sound effect for bombing player
         bombsound.playonce();
         removePlantedBomb(targetPlayer);
         targetPlayer.setHealth(targetPlayer.getHealth() - 1);
@@ -182,10 +175,10 @@ public class GameState extends State implements Board{
             }
         }
         resetBombID();
-        System.out.println("Planted bomb arraylist size (after damage from a bomb): " + plantedBombList.size());
+        System.out.println("Planted bomb arraylist size (after damage from a bomb): " + plantedBombList);
     }
 
-    // reset bombID - in order to remove by index in the arraylist
+    // Reset bombID - in order to remove by index in the arraylist
     public static void resetBombID(){
         for(int i = 0; i < plantedBombList.size(); i++){
             plantedBombList.get(i).setBombID(i);
@@ -195,14 +188,14 @@ public class GameState extends State implements Board{
     /* Method to plant the collected bomb */
     public static void plantBomb(Player targetPlayer, Bomb bomb){
         targetPlayer.setBomb(targetPlayer.getBomb() - 1);
-        // remove oldest bomb and add the latest bomb into the array when total bomb planted on the map exceed 8
+        // Remove oldest bomb and add the latest bomb into the array
+        // when total bomb planted on the map exceed the maximum planted bombs
         if(plantedBombList.size() == maxPlantedBombs){
             setTileId(0, plantedBombList.get(0).getX()/64, plantedBombList.get(0).getY()/64);
             plantedBombList.remove(0);
         }
-        plantedBombList.add(bomb); // add bomb object to ArrayList
-        alrSetBomb = true;
-        System.out.println("Planted bomb arraylist size (after planting a bomb): " + plantedBombList.size());
+        plantedBombList.add(bomb); // To add bomb object to ArrayList
+        System.out.println("Planted bomb arraylist size (after planting a bomb): " + plantedBombList);
     }
 
     public static void collectBombPart(Player targetPlayer){ targetPlayer.addBombPart(); }

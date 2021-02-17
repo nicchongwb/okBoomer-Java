@@ -10,5 +10,4 @@ public abstract class Item extends Entity {
     public Item(Handler handler, int x, int y, int width, int height) {
         super(handler, x, y, width, height);
     }
-
 }

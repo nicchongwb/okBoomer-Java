@@ -288,9 +288,6 @@ public class Player extends Creature implements Board {
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // The coords are passed in as pixels
                         yMove = -speed;
                     }
-                    else{
-                        System.out.println("No move pls");
-                    }
 
                     alrPressedp1 = true; // To set alrPressed to true so our player won't move themselves continuously
                     // Note: alrPressed is set to false inside KeyManager.java on keyRelease
@@ -304,9 +301,6 @@ public class Player extends Creature implements Board {
                     newY = y + speed;
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = speed;
-                    }
-                    else{
-                        System.out.println("No move pls");
                     }
 
                     alrPressedp1 = true;
@@ -323,9 +317,6 @@ public class Player extends Creature implements Board {
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = -speed;
                     }
-                    else{
-                        System.out.println("No move pls");
-                    }
 
                     alrPressedp1 = true;
                     p1facing = 2;
@@ -339,9 +330,6 @@ public class Player extends Creature implements Board {
                     newX = x + speed;
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = speed;
-                    }
-                    else{
-                        System.out.println("No move pls");
                     }
 
                     alrPressedp1 = true;
@@ -361,13 +349,11 @@ public class Player extends Creature implements Board {
 
                         dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
                         dropsound.playonce();
-                        System.out.println("p1 bomb pouch: " + getBomb());
-                    } else {
-                        System.out.println("p1 bomb planted");
+
                     }
-                } else {
-                    System.out.println("p1 bomb pouch: empty");
+
                 }
+
                 alrPressedp1 = true;
             }
         }
@@ -381,9 +367,6 @@ public class Player extends Creature implements Board {
 
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = -speed;
-                    }
-                    else{
-                        System.out.println("No move pls");
                     }
 
                     alrPressedp2 = true;
@@ -400,9 +383,6 @@ public class Player extends Creature implements Board {
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         yMove = speed;
                     }
-                    else{
-                        System.out.println("No move pls");
-                    }
 
                     alrPressedp2 = true;
                     p2facing = 1;
@@ -415,11 +395,8 @@ public class Player extends Creature implements Board {
 
                     newX = x - speed;
 
-                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)) { // coords are passed in as pixels
                         xMove = -speed;
-                    }
-                    else{
-                        System.out.println("No move pls");
                     }
 
                     alrPressedp2 = true;
@@ -435,9 +412,6 @@ public class Player extends Creature implements Board {
 
                     if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
                         xMove = speed;
-                    }
-                    else{
-                        System.out.println("No move pls");
                     }
 
                     alrPressedp2 = true;
@@ -457,16 +431,11 @@ public class Player extends Creature implements Board {
                             GameState.plantBomb(this, bomb);
                             dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
                             dropsound.playonce();
-                            System.out.println("p2 bomb pouch: " + getBomb());
                         }
-                        else {
-                            System.out.println("p2 bomb planted");
-                        }
+
                     }
-                    else {
-                        System.out.println("p2 bomb pouch: empty");
-                    }
-                    alrPressedp1 = true;
+
+                    alrPressedp2 = true;
                 }
             }
         }

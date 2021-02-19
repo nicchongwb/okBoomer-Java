@@ -89,7 +89,6 @@ public interface Board {
                     // Remove bombPart from ArrayList bombList so that it does not render
                     bombPlayer(targetPlayer);
                     targetPlayer.setBombed();
-                    System.out.println("bomb");
                     return true;
 
                 // once player picks up bomb [non-collidable tile]

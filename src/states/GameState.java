@@ -26,7 +26,7 @@ public class GameState extends State implements Board{
 
     // 2D Array to keep track of entities if player touch bomb | for game logic (process damage, etc)
     public static int[][] board;
-    private static final int maxPlantedBombs = 8;
+    private static final int MAX_PLANTED_BOMB = 8;
 
     // Players
     private Player player1;
@@ -175,7 +175,6 @@ public class GameState extends State implements Board{
             }
         }
         resetBombID();
-        System.out.println("Planted bomb arraylist size (after damage from a bomb): " + plantedBombList);
     }
 
     // Reset bombID - in order to remove by index in the arraylist
@@ -190,12 +189,11 @@ public class GameState extends State implements Board{
         targetPlayer.setBomb(targetPlayer.getBomb() - 1);
         // Remove oldest bomb and add the latest bomb into the array
         // when total bomb planted on the map exceed the maximum planted bombs
-        if(plantedBombList.size() == maxPlantedBombs){
+        if(plantedBombList.size() == MAX_PLANTED_BOMB){
             setTileId(0, plantedBombList.get(0).getX()/64, plantedBombList.get(0).getY()/64);
             plantedBombList.remove(0);
         }
         plantedBombList.add(bomb); // To add bomb object to ArrayList
-        System.out.println("Planted bomb arraylist size (after planting a bomb): " + plantedBombList);
     }
 
     public static void collectBombPart(Player targetPlayer){ targetPlayer.addBombPart(); }

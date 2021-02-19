@@ -53,7 +53,7 @@ public class Assets {
         BlueTile = bgtiles.crop(width * 2 , height, width, height);
         PathTile = bgtiles.crop(width * 5 , height, width, height);
         //bomb
-        BombTile = bgtiles.crop(0 , height * 4, width, height);
+        BombTile = bombItem.crop(width * 2, 0, width, height);
         BombPart = bombItem.crop(width * 2, 0, width, height);
         //players
         player1_down = new BufferedImage[3];

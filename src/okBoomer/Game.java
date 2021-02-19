@@ -65,7 +65,7 @@ public class Game implements Runnable{
 
     // Other methods
 
-    // init method to initialise assets in our game before we process to run our game
+    // The init method to initialise assets in our game before we process to run our game
     private void init(){
         display = new Display(title, width, height); // Initialise Display object for Game instance
         display.getFrame().addKeyListener(keyManager); // Add keyListener to JFrame so that GUI updates based on key input
@@ -84,7 +84,7 @@ public class Game implements Runnable{
         //State.setCurrentState(gameState);
     }
 
-    // tick method a.k.a update all game variables, positions of objects, etc
+    // The tick method a.k.a update all game variables, positions of objects, etc
     // during game loop.
     private void tick(){
         // Update KeyManager
@@ -97,7 +97,7 @@ public class Game implements Runnable{
 
     }
 
-    // render method to render during game loop
+    // To render method to render during game loop
     private void render(){
         // Initialise inventory and scoreboard display if State is GameState
         if (State.getState() instanceof GameState){

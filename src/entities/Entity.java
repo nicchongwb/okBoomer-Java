@@ -2,10 +2,11 @@ package entities;
 
 import okBoomer.Handler;
 
+import javax.swing.*;
 import java.awt.*;
 
 // Entity aka Game Actors, this can be used to implement creatures/items
-public abstract class Entity {
+public abstract class Entity extends JPanel {
     protected Handler handler;
     // Entity characteristics/attributes
     protected int x, y; // Position of entity, We use int since our x,y are

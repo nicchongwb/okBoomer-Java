@@ -71,8 +71,8 @@ public class KeyManager implements KeyListener {
 
         // player 1's keys
         if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_A ||
-            e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_D ||
-            e.getKeyCode() == KeyEvent.VK_G){
+           e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_D ||
+           e.getKeyCode() == KeyEvent.VK_G){
 
             // set variable for checking if key is already pressed to false.
             if(Player.getIfPressed1()){
@@ -82,8 +82,8 @@ public class KeyManager implements KeyListener {
 
         // player 2's keys
         if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN ||
-            e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT ||
-            e.getKeyCode() == KeyEvent.VK_COMMA){
+           e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT ||
+           e.getKeyCode() == KeyEvent.VK_COMMA){
             
             // set variable for checking if key is already pressed to false.
             if(Player.getIfPressed2()){

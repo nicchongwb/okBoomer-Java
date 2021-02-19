@@ -18,7 +18,6 @@ public abstract class Creature extends Entity {
     protected int speed;
     protected int xMove, yMove; // Movement in pixels to add to x, y
 
-
     public Creature(Handler handler, int x, int y, int width, int height) {
         super(handler, x, y, width, height);
         //bomb = DEFAULT_BOMB; // Set default bomb

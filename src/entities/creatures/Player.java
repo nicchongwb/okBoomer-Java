@@ -2,6 +2,7 @@ package entities.creatures;
 
 import gfx.Assets;
 import gfx.AudioPlayer;
+//import gfx.FadeAnimation;
 import interfaces.Board;
 import okBoomer.Handler;
 import states.GameState;
@@ -10,7 +11,6 @@ import entities.items.Bomb;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 //import static interfaces.Board.canPlayerMove;
 
@@ -22,7 +22,7 @@ GameState render() -> player.render(g);
  */
 
 public class Player extends Creature implements Board {
-    public static final int DEFAULT_BOMB = 3;
+    public static final int DEFAULT_BOMB = 0;
     public static final int MAX_BOMB = 3;
 
     private static int playerCount = 0;
@@ -36,24 +36,24 @@ public class Player extends Creature implements Board {
     private String name;
     private final int pid; // Player ID
     private Handler handler;
-    private Bomb bomb; // initialise bomb object with coordinates
+    private Bomb bomb;      // Initialise bomb object with coordinates
     private Player player;
-    private int bombHeld; // keep track of how many bombs player is holding
-    private  boolean checkBombed = false; //check whether player got bombed
+    private int bombHeld; // Keep track of how many bombs player is holding
+    private  boolean checkBombed = false; // Check whether player got bombed
     private  boolean bombTimer = false;
     private long lastTrueTime;
 
-    private int bombCollectable; // keep track of how many bombCollectable player is holding
+    private int bombCollectable; // Keep track of how many bombCollectable player is holding
 
-    // declare variables to check if key is already pressed
+    // Declare variables to check if key is already pressed
     private static boolean alrPressedp1 = false;
     private static boolean alrPressedp2 = false;
 
-    // temporary variables to hold next player coordinates
+    // Temporary variables to hold next player coordinates
     private int newX;
     private int newY;
 
-    // variables for playing sounds
+    // Variables for playing sounds
     private AudioPlayer collectsound, dropsound;
 
     public Player(Handler handler, int x, int y) {
@@ -86,14 +86,186 @@ public class Player extends Creature implements Board {
         p2animRightbombed = new Animation(245, Assets.player2_rightbombed);
     }
 
+    // Getter and Setter
     public String getName(){
         return name;
     }
 
-    private void setName(String name){
+    public void setName(String name){
         this.name = name;
     }
 
+    public static void setIfPressed1(boolean bool){
+        alrPressedp1 = bool;
+    }
+
+    public static void setIfPressed2(boolean bool){
+        alrPressedp2 = bool;
+    }
+
+    public static boolean getIfPressed1(){
+        return alrPressedp1;
+    }
+
+    public static boolean getIfPressed2(){
+        return alrPressedp2;
+    }
+
+    public int getNewX() {
+        return newX;
+    }
+
+    public void setNewX(int newX) {
+        this.newX = newX;
+    }
+
+    public int getNewY() {
+        return newY;
+    }
+
+    public void setNewY(int newY) {
+        this.newY = newY;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public int getBomb() {
+        return bombHeld;
+    }
+
+    public void setBomb(int bomb) {
+        this.bombHeld = bomb;
+    }
+
+    public int getBombCollectable(){
+        return bombCollectable;
+    }
+
+    public boolean setBombed(){
+        return this.checkBombed = true;
+    }
+
+    public boolean setBombedTimer(){
+        return this.bombTimer = false;
+    }
+
+    @Override
+    public void tick() {
+        // Print out player position if key is not pressed
+        /*if (alrPressedp1){
+            System.out.printf("P%d: X: %d\tY: %d%n", getPid()+1, x, y);
+        }
+        */
+        //Animations
+        p1animDown.tick();
+        p1animUp.tick();
+        p1animLeft.tick();
+        p1animRight.tick();
+        p2animDown.tick();
+        p2animUp.tick();
+        p2animLeft.tick();
+        p2animRight.tick();
+
+        p1animDownbombed.tick();
+        p1animUpbombed.tick();
+        p1animLeftbombed.tick();
+        p1animRightbombed.tick();
+        p2animDownbombed.tick();
+        p2animUpbombed.tick();
+        p2animLeftbombed.tick();
+        p2animRightbombed.tick();
+
+        getInput();
+        move();
+    }
+
+    @Override
+    public void render(Graphics g) {
+        // Insert g.draw method to draw out player
+        if (checkBombed) {
+            bombTimer();
+            if (bombTimer) {
+                g.drawImage(getBombedAnimationFrame(), x, y, width, height, null);
+            }
+            else{
+                g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
+            }
+        }
+        else {
+            g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
+        }
+    }
+
+    // Buffer Image and Timer
+    private BufferedImage getCurrentAnimationFrame(){
+        if (pid ==0) {
+            if (p1facing == 0) {
+                return p1animUp.getCurrentFrame();
+            } else if (p1facing == 1) {
+                return p1animDown.getCurrentFrame();
+            } else if (p1facing == 2) {
+                return p1animLeft.getCurrentFrame();
+            } else {
+                return p1animRight.getCurrentFrame();
+            }
+        }
+        else{
+            if (p2facing == 0) {
+                return p2animUp.getCurrentFrame();
+            } else if (p2facing == 1) {
+                return p2animDown.getCurrentFrame();
+            } else if (p2facing == 2) {
+                return p2animLeft.getCurrentFrame();
+            } else {
+                return p2animRight.getCurrentFrame();
+            }
+        }
+    }
+
+    public BufferedImage getBombedAnimationFrame() {
+        if (checkBombed) {
+            if (pid == 0) {
+                if (p1facing == 0) {
+                    return p1animUpbombed.getCurrentFrame();
+                } else if (p1facing == 1) {
+                    return p1animDownbombed.getCurrentFrame();
+                } else if (p1facing == 2) {
+                    return p1animLeftbombed.getCurrentFrame();
+                } else {
+                    return p1animRightbombed.getCurrentFrame();
+                }
+            } else {
+                if (p2facing == 0) {
+                    return p2animUpbombed.getCurrentFrame();
+                } else if (p2facing == 1) {
+                    return p2animDownbombed.getCurrentFrame();
+                } else if (p2facing == 2) {
+                    return p2animLeftbombed.getCurrentFrame();
+                } else {
+                    return p2animRightbombed.getCurrentFrame();
+                }
+            }
+        } else {
+            return getCurrentAnimationFrame();
+        }
+    }
+
+    private boolean bombTimer() {
+        long now = System.currentTimeMillis();
+        if (checkBombed & !bombTimer) {
+            lastTrueTime = now;
+            bombTimer = true;
+        }
+        if (lastTrueTime + 1000 < now) { //to run player bombed animations for 1 second
+            checkBombed = false;
+            bombTimer = false;
+        }
+        return bombTimer;
+    }
+
+    // Other methods
     private void getInput() {
         // Everytime we call getInput method, we have to reset xMove and yMove
         xMove = 0;
@@ -103,25 +275,25 @@ public class Player extends Creature implements Board {
         newY = y;
 
         if (pid == 0){ // If pid == 0 for player 1
-            if (handler.getKeyManager().p1Up) { // if keyPressed is true
+            if (handler.getKeyManager().p1Up) { // If keyPressed is true
 
-                if(!alrPressedp1){ // check if alrPressed is true
+                if(!alrPressedp1){ // Check if alrPressed is true
 
-                    // for player collision purposes, check if the next tile the player will be moving to
+                    // For player collision purposes, check if the next tile the player will be moving to
                     // collides with the edges of the map.
                     newY = y - speed;
 
-                    // if they don't collide, allow them to move
+                    // If they don't collide, allow them to move
                     // and update board array
-                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // coords are passed in as pixels
+                    if(Board.canPlayerMove(pid, prevX, prevY, newX, newY, this)){ // The coords are passed in as pixels
                         yMove = -speed;
                     }
                     else{
                         System.out.println("No move pls");
                     }
 
-                    alrPressedp1 = true; // set alrPressed to true so our player won't move themselves continuously
-                                        // Note: alrPressed is set to false inside KeyManager.java on keyRelease
+                    alrPressedp1 = true; // To set alrPressed to true so our player won't move themselves continuously
+                    // Note: alrPressed is set to false inside KeyManager.java on keyRelease
                     p1facing = 0 ;
                 }
             }
@@ -178,30 +350,28 @@ public class Player extends Creature implements Board {
 
             }
             if (handler.getKeyManager().p1Bomb) {
+                // Ensure that player collected at least 1 bomb
+                if (getBomb() > 0) {
+                    // Check if the tile have a bomb planted or not
+                    if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
+                        GameState.setTileId(5, prevX / 64, prevY / 64);
+                        // Add new bomb object
+                        bomb = new Bomb(handler, prevX, prevY);
+                        GameState.plantBomb(this, bomb);
 
-                if (!alrPressedp1) {
-                    if (getBomb() > 0) {
-                        if (GameState.getTileId(prevX / 64, prevY / 64) != 5) {
-
-                            // add new bomb object
-                            bomb = new Bomb(handler, prevX, prevY);
-                            GameState.setTileId(5, prevX / 64, prevY / 64);
-                            GameState.plantBomb(this, bomb);
-
-                            dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
-                            dropsound.playonce();
-                            System.out.println("p1 bomb pouch: " + getBomb());
-
-                        } else {
-                            System.out.println("p1 bomb planted");
-                        }
+                        dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
+                        dropsound.playonce();
+                        System.out.println("p1 bomb pouch: " + getBomb());
                     } else {
-                        System.out.println("p1 bomb pouch: empty");
+                        System.out.println("p1 bomb planted");
                     }
-                    alrPressedp1 = true;
+                } else {
+                    System.out.println("p1 bomb pouch: empty");
                 }
+                alrPressedp1 = true;
             }
         }
+
         else if (pid == 1){ // It pid == 1 for player 2
 
             if (handler.getKeyManager().p2Up) {
@@ -275,190 +445,32 @@ public class Player extends Creature implements Board {
                 }
             }
             if (handler.getKeyManager().p2Bomb) {
-
+                // need to fix bug
                 if(!alrPressedp2){
                     // Ensure that player collected at least 1 bomb
-                    if(getBomb() > 0) {
-                        // Player can only plant 1 bomb at a time
-                        if (GameState.getTileId(prevX/64, prevY/64) != 6) {
-
-                            // add new bomb object
-                            bomb = new Bomb(handler, prevX, prevY);
-                            // Get player position and plant the bomb
+                    if (getBomb() > 0) {
+                        // Check if the tile have a bomb planted or not
+                        if (GameState.getTileId(prevX / 64, prevY / 64) != 6) {
                             GameState.setTileId(6, prevX / 64, prevY / 64);
+                            // Add new bomb object
+                            bomb = new Bomb(handler, prevX, prevY);
                             GameState.plantBomb(this, bomb);
-
                             dropsound = new AudioPlayer("/res/audio/drop.wav"); //sound effect for dropping bomb
                             dropsound.playonce();
                             System.out.println("p2 bomb pouch: " + getBomb());
-
                         }
-                        else{
+                        else {
                             System.out.println("p2 bomb planted");
                         }
                     }
-                    else{
+                    else {
                         System.out.println("p2 bomb pouch: empty");
                     }
-                    alrPressedp2 = true;
+                    alrPressedp1 = true;
                 }
             }
         }
 
-    }
-
-    public static void setIfPressed1(boolean bool){
-        alrPressedp1 = bool;
-    }
-
-    public static void setIfPressed2(boolean bool){
-        alrPressedp2 = bool;
-    }
-
-    public static boolean getIfPressed1(){
-        return alrPressedp1;
-    }
-
-    public static boolean getIfPressed2(){
-        return alrPressedp2;
-    }
-
-    @Override
-    public void tick() {
-        // Print out player position if key is not pressed
-        /*if (alrPressedp1){
-            System.out.printf("P%d: X: %d\tY: %d%n", getPid()+1, x, y);
-        }
-        */
-        //Animations
-        p1animDown.tick();
-        p1animUp.tick();
-        p1animLeft.tick();
-        p1animRight.tick();
-        p2animDown.tick();
-        p2animUp.tick();
-        p2animLeft.tick();
-        p2animRight.tick();
-
-        p1animDownbombed.tick();
-        p1animUpbombed.tick();
-        p1animLeftbombed.tick();
-        p1animRightbombed.tick();
-        p2animDownbombed.tick();
-        p2animUpbombed.tick();
-        p2animLeftbombed.tick();
-        p2animRightbombed.tick();
-
-        getInput();
-        move();
-    }
-
-    @Override
-    public void render(Graphics g) {
-        // Insert g.draw method to draw out player
-        if (checkBombed) {
-            bombTimer();
-            if (bombTimer) {
-                g.drawImage(getBombedAnimationFrame(), x, y, width, height, null);
-            }
-            else{
-                g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
-            }
-        }
-        else {
-            g.drawImage(getCurrentAnimationFrame(), x, y, width, height, null);
-        }
-    }
-
-    private BufferedImage getCurrentAnimationFrame(){
-        if (pid ==0) {
-            if (p1facing == 0) {
-                return p1animUp.getCurrentFrame();
-            } else if (p1facing == 1) {
-                return p1animDown.getCurrentFrame();
-            } else if (p1facing == 2) {
-                return p1animLeft.getCurrentFrame();
-            } else {
-                return p1animRight.getCurrentFrame();
-            }
-        }
-        else{
-            if (p2facing == 0) {
-                return p2animUp.getCurrentFrame();
-            } else if (p2facing == 1) {
-                return p2animDown.getCurrentFrame();
-            } else if (p2facing == 2) {
-                return p2animLeft.getCurrentFrame();
-            } else {
-                return p2animRight.getCurrentFrame();
-            }
-        }
-    }
-
-    public BufferedImage getBombedAnimationFrame() {
-        if (checkBombed) {
-            if (pid == 0) {
-                if (p1facing == 0) {
-                    return p1animUpbombed.getCurrentFrame();
-                } else if (p1facing == 1) {
-                    return p1animDownbombed.getCurrentFrame();
-                } else if (p1facing == 2) {
-                    return p1animLeftbombed.getCurrentFrame();
-                } else {
-                    return p1animRightbombed.getCurrentFrame();
-                }
-            } else {
-                if (p2facing == 0) {
-                    return p2animUpbombed.getCurrentFrame();
-                } else if (p2facing == 1) {
-                    return p2animDownbombed.getCurrentFrame();
-                } else if (p2facing == 2) {
-                    return p2animLeftbombed.getCurrentFrame();
-                } else {
-                    return p2animRightbombed.getCurrentFrame();
-                }
-            }
-        } else {
-            return getCurrentAnimationFrame();
-        }
-    }
-    private boolean bombTimer() {
-        long now = System.currentTimeMillis();
-        if (checkBombed & !bombTimer) {
-            lastTrueTime = now;
-            bombTimer = true;
-        }
-        if (lastTrueTime + 1000 < now) { //to run player bombed animations for 1 second
-            checkBombed = false;
-            bombTimer = false;
-        }
-        return bombTimer;
-    }
-
-    // Getter and Setter
-    public int getPid() {
-        return pid;
-    }
-
-    // Other methods
-    public int getBomb() {
-        return bombHeld;
-    }
-
-    public void setBomb(int bomb) {
-        this.bombHeld = bomb;
-    }
-
-    public int getBombCollectable(){
-        return bombCollectable;
-    }
-
-    public boolean setBombed(){
-        return this.checkBombed = true;
-    }
-
-    public boolean setBombedTimer(){
-        return this.bombTimer = false;
     }
 
     // Method to convert bombCollectable to bombHeld
@@ -479,5 +491,4 @@ public class Player extends Creature implements Board {
             }
         }
     }
-
-}
+    }

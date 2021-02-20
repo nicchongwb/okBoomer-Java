@@ -5,25 +5,15 @@ import states.MenuState;
 import states.State;
 import okBoomer.Game;
 
+// Interface to control Music change
 public interface Jukebox {
 
-    static void playMusic(){
-        if (State.getState() != null){
-            if (Game.toPlay){
-                if (State.getState() instanceof MenuState){
-                    State.stateMusic.stop();
-                    State.setMusic("/res/audio/bomberman1_menu.wav");
-                }
-                else if (State.getState() instanceof GameState){
-                    State.stateMusic.stop();
-                    State.setMusic("/res/audio/Invincible2.wav");
-                }
-            }
-            else{
-                State.stateMusic.stop();
-                State.setMusic("/res/audio/bomberman1_menu.wav");
-            }
-        }
-
+    static void playMusic(String filepath){
+        State.setMusic(filepath);
     }
+
+    static void stopMusic(){
+        State.stateMusic.stop();
+    }
+
 }

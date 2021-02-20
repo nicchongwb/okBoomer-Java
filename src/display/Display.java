@@ -21,8 +21,9 @@ public class Display{
 
     private int counter = 0;
 
-    static JTextField player1_input;
-    static JTextField player2_input;
+    //static JTextField player1_input;
+    //static JTextField player2_input;
+    private static String p1Name_input, p2Name_input;
 
 
 
@@ -56,9 +57,24 @@ public class Display{
         //background
         Image img = Toolkit.getDefaultToolkit().getImage("E:\\rahul.jpg");
 
-
-
         createDisplay(); // Create Display/ Initialise JFrame
+    }
+
+    // Display Static Getter and Setters
+    public static void setP1Name(String name){
+        p1Name_input = name;
+    }
+
+    public static void setP2Name(String name){
+        p2Name_input = name;
+    }
+
+    public static String getP1Name(){
+        return p1Name_input;
+    }
+
+    public static String getP2Name(){
+        return p2Name_input;
     }
 
     // Other methods
@@ -87,8 +103,6 @@ public class Display{
 
     }
 
-
-
     // Method to add inventory and scoreboard to the canvas
     public void createInvScore(){
         frame.add(this.scoreboard, BorderLayout.NORTH);
@@ -108,10 +122,6 @@ public class Display{
         scoreboard.setVisible(true);
         inventory.setVisible(true);
     }
-
-
-
-
 
     // Jpanel for inventory display
     class InventoryDisplay extends JPanel{
@@ -207,6 +217,7 @@ public class Display{
         public void setP2BombPart(int p2BombPart) {
             this.p2BombPart = p2BombPart;
         }
+
     }
 
 
@@ -250,17 +261,16 @@ public class Display{
             ((Graphics2D) g).setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
             g.drawLine(352, 0, 288, 60);
 
-
             // Player(s) Avatar:
             g.drawImage(Assets.player1_down[1], 32,15 ,null);
             g.drawImage(Assets.player2_down[1], 576,15 ,null);
 
             // Player(s) information includes: playerID/name, health
             g.setFont(new Font("SansSerif ", Font.BOLD, 13));
-            g.drawString("Player 1", 76, 30);
+            g.drawString(getP1Name(), 76, 30);
             g.drawString("Health: " + String.valueOf(p1Health) + "/10", 76, 45);
 
-            g.drawString("Player 2", 480, 30);
+            g.drawString(getP2Name(), 480, 30);
             g.drawString("Health: " + String.valueOf(p2Health) + "/10", 480, 45);
 
             // To see if scoreboard is updating

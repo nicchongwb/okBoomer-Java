@@ -1,10 +1,12 @@
 package states;
 
+import display.Display;
 import gfx.AudioPlayer;
 import interfaces.Board;
 import entities.creatures.Player;
 import entities.items.Bomb;
 import entities.items.BombCollectable;
+import interfaces.Jukebox;
 import okBoomer.Handler;
 import utils.ItemTimer;
 import worlds.World;
@@ -47,6 +49,9 @@ public class GameState extends State implements Board{
     // Constructors
     public GameState(Handler handler){
         super(handler); // This is to look at the same game object
+        Jukebox.stopMusic();
+        //Jukebox.playMusic("/res/audio/bomberman1_menu.wav");
+
         world = new World("src/res/worlds/world1.txt");
         maxWorldX = (world.getWidth()-1);
         maxWorldY = (world.getWidth()-1);
@@ -68,8 +73,14 @@ public class GameState extends State implements Board{
 
         player1 = new Player(handler, 0,0); // spawn player 1 at the start
         player2 = new Player(handler, 576, 576); // spawn player 2 at the end
+
+        // Set Player 1 and 2 Name
+        player1.setName(Display.getP1Name());
+        player2.setName(Display.getP2Name());
+
         bomb = new Bomb(handler, 0,0); // spawn bomb (planted) at the start
         plantedBombList = bomb.getPlantedBombList();
+
 
         // To initialise bombPart to get bombList array, it's not added into the arrayList, so it will not be counted in the map
         bombPart = new BombCollectable(handler, 0, 0);

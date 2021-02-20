@@ -3,11 +3,9 @@ package okBoomer;
 import Input.KeyManager;
 import display.Display;
 import entities.creatures.Player;
-import gfx.Assets;
-import gfx.AudioPlayer;
-import gfx.ImageLoader;
-import gfx.MouseManager;
+import gfx.*;
 import interfaces.Jukebox;
+import interfaces.StateManager;
 import states.*;
 import states.State;
 import okBoomer.Handler;
@@ -25,9 +23,10 @@ base code of our game.
 - Game class will implement Runnable to make it run on a thread
 */
 
-public class Game implements Runnable, Jukebox {
+public class Game implements Runnable, StateManager {
     // Declare local variables
     private Display display; // To give our Game class a Display
+    public static UIManager uiManager;
 
     // Variables for Display
     public int width, height; // Easier to access width,height used
@@ -85,12 +84,14 @@ public class Game implements Runnable, Jukebox {
         Assets.init(); // Load in all of our assets
 
         handler = new Handler(this);
+        uiManager = new UIManager(handler);
 
         // States | Initialise states and set desired current state
         gameState = new GameState(handler); // Pass in this current instance of game class
         menuState = new MenuState(handler); // Pass in this current instance of game class
         endState = new EndState(handler);
-        State.setCurrentState(menuState); // gameState to test gameState
+        State.setCurrentState(menuState); // Set State to MenuState for the first launch
+        Jukebox.stopMusic(); // Stop any music if playing in the case of replay game
     }
 
     // The tick method a.k.a update all game variables, positions of objects, etc
@@ -99,16 +100,20 @@ public class Game implements Runnable, Jukebox {
         // Update KeyManager
         keyManager.tick();
 
-
         // State | if any state exist then we call the currentState's tick function
         if (State.getState() != null){
             State.getState().tick();
-            Jukebox.playMusic();
+            //Jukebox.playMusic();
             if (State.getState() instanceof GameState){
                 display.returnDisplay();
             }
+            else if (State.getState() instanceof MenuState){
+                //System.out.println("Game.tick() MenuState");
+            }
+            else if (State.getState() instanceof EndState){
+                //System.out.println("Game.tick() EndState");
+            }
         }
-
     }
 
     // render method to render during game loop
@@ -229,6 +234,11 @@ public class Game implements Runnable, Jukebox {
     @Override
     public void run() {
         init(); // Initialise game
+        /* ---------- MAIN CONTROL OF StateManager interface tie with UIManager Class --------*/
+            /* This section is to control the music, necessary UIWindows and UIButton interactions
+             for the respective state the game is in */
+        StateManager.initUIManager(handler, uiManager);
+
 
         /*Code below controls the refresh rate (fps) and to ensure that
             the refresh rate is constant rate regardless of computational
@@ -284,7 +294,6 @@ public class Game implements Runnable, Jukebox {
     public MouseManager getMouseManager(){
         return mouseManager;
     }
-
 
     // Synchronized method to ensure that only one thread can access
     // the resource at a given point of time

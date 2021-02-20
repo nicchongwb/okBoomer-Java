@@ -11,12 +11,11 @@ public class UIManager {
     private Handler handler;
     private ArrayList<UIObject> objects;
 
+    // Constructor for UIManager
     public UIManager(Handler handler){
-        this.handler = handler;
-        objects = new ArrayList<UIObject>();
+        this.handler = handler; // establish our game to tie with UIManage
+        objects = new ArrayList<UIObject>(); // Initialise ArrayList to store UIObjects
     }
-
-
 
     public void tick(){
         for(UIObject o: objects){

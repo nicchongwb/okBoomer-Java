@@ -37,6 +37,7 @@ public interface StateManager {
     // initMenuUI -> initialise UI elements and click for the Menu State
     static void initMenuUI(Handler handler, UIManager uiManager){
         // Add Start Button object to UIManager's ArrayList
+        System.out.println("making start button...");
         uiManager.addObject(new UIImageButton(200,200,256,128,Assets.btn_start, new ClickListener(){
 
             // Override onClick() to perform specific actions upon clicking START button
@@ -86,7 +87,8 @@ public interface StateManager {
 
     // initEndUI -> initialise UI elements and click for the End State
     static void initEndUI(Handler handler, UIManager uiManager){
-        uiManager.addObject(new UIImageButton(200,200,256,128,Assets.btn_start, new ClickListener(){
+        System.out.println("making replay and quit button...");
+        uiManager.addObject(new UIImageButton(200,200,256,128,Assets.btn_replay, new ClickListener(){
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
@@ -107,12 +109,19 @@ public interface StateManager {
 
     // This method will control the State of the game based on user's mouse click and keyboard input
     static void initUIManager(Handler handler, UIManager uiManager){
+        //clear all buttons from objects array list
+        uiManager.objects.clear();
+
         // Check for Current State of game and issue necessary methods
-        if (State.getState() instanceof MenuState) {
-            initMenuUI(handler, uiManager);
-        }
-        else if (State.getState() instanceof EndState) {
+        if (State.getState() instanceof EndState) {
+
+            System.out.println("ENDSTATE");
             initEndUI(handler, uiManager);
+        }
+        else if (State.getState() instanceof MenuState) {
+
+            System.out.println("MENUSTATE");
+            initMenuUI(handler, uiManager);
         }
     }
     

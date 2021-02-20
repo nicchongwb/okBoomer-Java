@@ -241,6 +241,8 @@ public class Display{
 
         }
 
+
+
         // Paint function to update scoreboard. This is called via repaint()
         @Override
         public void paint(Graphics g){
@@ -278,6 +280,7 @@ public class Display{
             counter += 1;
 
         }
+
 
         // Getter and Setter
         public int getP1Health() {

@@ -16,6 +16,9 @@ import java.awt.image.BufferedImage;
 import java.security.Key;
 import java.util.Arrays;
 
+import static display.Display.getP1Name;
+import static display.Display.getP2Name;
+
 /* Game class, not to be mistaken with Launcher class
 This class will be the main class of our game that holds all of our
 base code of our game.
@@ -162,22 +165,30 @@ public class Game implements Runnable, StateManager {
 
                 display.clearDisplay();
                 g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/background.png"), 0, 0, null);
+
                 State.getState().render(g);
                 Font fnt0 = new Font("arial", Font.BOLD, 50);
                 g.setFont(fnt0);
                 g.setColor(Color.red);
                 g.drawString("Game Over", 190, 100);
                 g.setColor(Color.green);
-                System.out.println("P1 health:" + gameState.getP1Health() );
-                System.out.println(whoDied);
+
+                //Print out winner's name
+                String player1_wins = getP1Name() + " wins";
+                String player2_wins = getP2Name() + " wins";
+
+                //Centralise text
+                FontMetrics metrics = g.getFontMetrics(fnt0);
+                int x1 = 0 + (this.width - metrics.stringWidth(player1_wins)) / 2;
+                int x2 = 0 + (this.width - metrics.stringWidth(player2_wins)) / 2;
+
                 if(whoDied == "p1"){
-                    g.drawString("Player 2 wins", 170, 170);
+                    g.drawString(player2_wins, x2, 177);
                 }else if(whoDied == "p2"){
-                    g.drawString("Player 1 wins", 170, 170);
+                    g.drawString(player1_wins, x1, 177);
                 }
 
-
-
+                //When replay button is clicked, initialise new game
                 if (playAgain == true) {
                     playAgain = false;
                     Assets.init();
@@ -209,11 +220,16 @@ public class Game implements Runnable, StateManager {
 
                 if (p2Health == 0){
                     State.setCurrentState(endState);
+                    StateManager.switchState(handler, "EndState");
+                    StateManager.initUIManager(handler, uiManager);
                     playAgain = true;
                     Player.playerCount = 0;
                     whoDied = "p2";
                 }else if (p1Health ==0){
                     State.setCurrentState(endState);
+                    StateManager.switchState(handler, "EndState");
+                    StateManager.initUIManager(handler, uiManager);
+
                     playAgain = true;
                     Player.playerCount = 0;
                     whoDied = "p1";

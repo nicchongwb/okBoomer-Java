@@ -34,6 +34,7 @@ public class EndState extends State {
     public void render(Graphics g) {
         // Insert g.draw Methods to draw out menu
         Game.uiManager.render(g);
+        //g.clearRect(200,200,256,128);
     }
 
     /*--------------------------Ignore this function, this serves no purpose in this class----------------------------*/

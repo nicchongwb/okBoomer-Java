@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class UIManager {
     private Handler handler;
-    private ArrayList<UIObject> objects;
+    public ArrayList<UIObject> objects;
 
     // Constructor for UIManager
     public UIManager(Handler handler){

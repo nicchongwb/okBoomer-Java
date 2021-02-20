@@ -20,6 +20,7 @@ public class Assets {
     // eg. Character animation
     private static final int width = 32, height = 32; // This is the size of each sprite(grid space) in sheet.png
     public static BufferedImage[] btn_start;
+    public static BufferedImage[] btn_replay;
     public static BufferedImage[] btn_quit;
     public static BufferedImage RightTile, LeftTile, TopTile, BottomTile, CornerTile1, CornerTile2, CornerTile3, CornerTile4, BlueTile, PathTile;
     public static BufferedImage BombTile, BombPart;
@@ -30,6 +31,8 @@ public class Assets {
     public static void init(){
         // Test spritesheet
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/res/sprites/sheet.png"));
+        SpriteSheet sheet2 = new SpriteSheet(ImageLoader.loadImage("/res/sprites/sheet2.png"));
+        SpriteSheet sheet3 = new SpriteSheet(ImageLoader.loadImage("/res/sprites/sheet3.png"));
         SpriteSheet bgtiles = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombermantilesnew.png"));
         SpriteSheet character = new SpriteSheet(ImageLoader.loadImage("/res/sprites/characternew.png"));
         SpriteSheet bombItem = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombs2.bmp"));
@@ -42,9 +45,15 @@ public class Assets {
         btn_start[0] = sheet.crop(0, height*2, width*2, height);
         btn_start[1] = sheet.crop(0, height*3, width*2, height);
 
+        //replay button
+        btn_replay = new BufferedImage[2];
+        btn_replay[0] = sheet2.crop( 0, height*2, width*2, height);
+        btn_replay[1] = sheet2.crop(0, height*3, width*2, height);
+
         //quit button
-        btn_quit = new BufferedImage[1];
-        btn_quit[0] = sheet.crop(0, height*1, width*2, height);
+        btn_quit = new BufferedImage[2];
+        btn_quit[0] = sheet3.crop( 0, height*2, width*2, height);
+        btn_quit[1] = sheet3.crop(0, height*3, width*2, height);
 
         //background
         RightTile = bgtiles.crop(width * 3, height, width, height);
@@ -133,10 +142,7 @@ public class Assets {
         player2_upbombed[1] = character.crop(width * 13,height * 3, width, height);
         player2_upbombed[2] = character.crop(width * 14,height * 3, width, height);
 
-        //start button
-        //btn_start = new BufferedImage[2];
-        //btn_start[0] = sheet.crop(width*6, height*4, width*2, height);
-        //btn_start[1] = sheet.crop(width*6, height*4, width*2, height);
+
 
     }
 }

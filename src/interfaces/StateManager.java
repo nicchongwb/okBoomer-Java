@@ -78,6 +78,7 @@ public interface StateManager {
 
     // initEndUI -> initialise UI elements and click for the End State
     static void initEndUI(Handler handler, UIManager uiManager){
+
         uiManager.addObject(new UIImageButton(200,200,256,128,Assets.btn_replay, new ClickListener(){
             @Override
             public void onClick() {

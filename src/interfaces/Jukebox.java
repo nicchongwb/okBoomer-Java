@@ -9,11 +9,28 @@ import okBoomer.Game;
 public interface Jukebox {
 
     static void playMusic(String filepath){
-        State.setMusic(filepath);
+        try{
+            State.setMusic(filepath);
+        } catch(Exception e){
+            // error is thrown when file path names are wrong.
+            System.out.println("Error loading audio file resources. Please double-check your file names before" +
+                    "re-running the game!");
+            System.exit(0);
+        }
+
     }
 
     static void stopMusic(){
-        State.stateMusic.stop();
+        try{
+            State.stateMusic.stop();
+        } catch(NullPointerException e){
+            // when stopping the music, error might be thrown if there is no music currently playing.
+            // hence, we catch NullPointerException
+            System.out.println("Error loading stopping game music. Please double-check your file names before" +
+                    "re-running the game!");
+            System.exit(0);
+        }
+
     }
 
 }

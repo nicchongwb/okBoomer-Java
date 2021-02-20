@@ -20,6 +20,7 @@ public class Assets {
     // eg. Character animation
     private static final int width = 32, height = 32; // This is the size of each sprite(grid space) in sheet.png
     public static BufferedImage[] btn_start;
+    public static BufferedImage[] btn_quit;
     public static BufferedImage RightTile, LeftTile, TopTile, BottomTile, CornerTile1, CornerTile2, CornerTile3, CornerTile4, BlueTile, PathTile;
     public static BufferedImage BombTile, BombPart;
     public static BufferedImage[] player1_down, player1_left, player1_right, player1_up, player2_down, player2_left, player2_right, player2_up ;
@@ -40,6 +41,10 @@ public class Assets {
         btn_start = new BufferedImage[2];
         btn_start[0] = sheet.crop(0, height*2, width*2, height);
         btn_start[1] = sheet.crop(0, height*3, width*2, height);
+
+        //quit button
+        btn_quit = new BufferedImage[1];
+        btn_quit[0] = sheet.crop(0, height*1, width*2, height);
 
         //background
         RightTile = bgtiles.crop(width * 3, height, width, height);

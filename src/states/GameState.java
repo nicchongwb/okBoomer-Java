@@ -42,6 +42,7 @@ public class GameState extends State implements Board{
 
     // Audio
     private static AudioPlayer bombsound;   // variable for playing sound
+    private AudioPlayer gamemusic;
 
     // Constructors
     public GameState(Handler handler){

@@ -7,7 +7,7 @@ public abstract class Creature extends Entity {
 
     // DEFAULT_BOMB need to edit
     //public static final int DEFAULT_BOMB = 10;
-    public static final int DEFAULT_HEALTH = 10;
+    public static final int DEFAULT_HEALTH = 1;
     public static final int DEFAULT_SPEED = 64; // Change to 64 after Alicia's map
     public static final int DEFAULT_CREATURE_WIDTH = 64,
                             DEFAULT_CREATURE_HEIGHT = 64;

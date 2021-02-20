@@ -2,10 +2,12 @@ package okBoomer;
 
 import Input.KeyManager;
 import display.Display;
+import entities.creatures.Player;
 import gfx.Assets;
 import gfx.AudioPlayer;
 import gfx.ImageLoader;
 import gfx.MouseManager;
+import interfaces.Jukebox;
 import states.*;
 import states.State;
 import okBoomer.Handler;
@@ -23,7 +25,7 @@ base code of our game.
 - Game class will implement Runnable to make it run on a thread
 */
 
-public class Game implements Runnable{
+public class Game implements Runnable, Jukebox {
     // Declare local variables
     private Display display; // To give our Game class a Display
 
@@ -43,16 +45,23 @@ public class Game implements Runnable{
     // States
     public State gameState;
     public State menuState;
+    public State endState;
 
     // Input
     private KeyManager keyManager;
     private MouseManager mouseManager;
+
+    public boolean playAgain = false;
+    public String whoDied;
 
     //Handler
     private Handler handler;
 
     // Play bomb sound
     private static AudioPlayer bombsound;
+
+    // Jukebox control variables
+    public static boolean toPlay = true;
 
     // Constructors
     public Game(String title, int width, int height){
@@ -80,8 +89,8 @@ public class Game implements Runnable{
         // States | Initialise states and set desired current state
         gameState = new GameState(handler); // Pass in this current instance of game class
         menuState = new MenuState(handler); // Pass in this current instance of game class
+        endState = new EndState(handler);
         State.setCurrentState(menuState); // gameState to test gameState
-        //State.setCurrentState(gameState);
     }
 
     // The tick method a.k.a update all game variables, positions of objects, etc
@@ -90,14 +99,19 @@ public class Game implements Runnable{
         // Update KeyManager
         keyManager.tick();
 
+
         // State | if any state exist then we call the currentState's tick function
         if (State.getState() != null){
             State.getState().tick();
+            Jukebox.playMusic();
+            if (State.getState() instanceof GameState){
+                display.returnDisplay();
+            }
         }
 
     }
 
-    // To render method to render during game loop
+    // render method to render during game loop
     private void render(){
         // Initialise inventory and scoreboard display if State is GameState
         if (State.getState() instanceof GameState){
@@ -106,7 +120,7 @@ public class Game implements Runnable{
 
 
         bs = display.getCanvas().getBufferStrategy(); // Set buffer strategy for canvas | to give a buffer
-                                                      // for canvas before displaying out to screen
+        // for canvas before displaying out to screen
 
         // Check if bs is empty before getting buffer strategy
         if (bs == null){
@@ -125,13 +139,52 @@ public class Game implements Runnable{
         // respective state
         if (State.getState() != null) {
             if (State.getState() instanceof MenuState) {
+
+                g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/background.png"), 0, 0, null);
+                Font fnt0 = new Font("arial", Font.BOLD, 50);
+                g.setFont(fnt0);
+                g.setColor(Color.white);
+                g.drawString("OK, BOOMER", width/4, 100);
+
+
+                State.getState().render(g);
+
+
+            }if (State.getState() instanceof EndState) {
+                //Start audio for end state
+                State.stateMusic.stop();
+                State.setMusic("/res/audio/bomberman1_menu.wav");
+
+                display.clearDisplay();
+                g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/background.png"), 0, 0, null);
                 State.getState().render(g);
                 Font fnt0 = new Font("arial", Font.BOLD, 50);
                 g.setFont(fnt0);
                 g.setColor(Color.red);
-                g.drawString("OK BOOMER", width/4, 100);
+                g.drawString("Game Over", 190, 100);
+                g.setColor(Color.green);
+                System.out.println("P1 health:" + gameState.getP1Health() );
+                System.out.println(whoDied);
+                if(whoDied == "p1"){
+                    g.drawString("Player 2 wins", 170, 170);
+                }else if(whoDied == "p2"){
+                    g.drawString("Player 1 wins", 170, 170);
+                }
+
+
+
+                if (playAgain == true) {
+                    playAgain = false;
+                    Assets.init();
+                    handler = new Handler(this);
+                    gameState = new GameState(handler); // Pass in this current instance of game class
+                    menuState = new MenuState(handler); // Pass in this current instance of menu class
+                    menuState = new EndState(handler); // Pass in this current instance of end class
+
+                }
             }
             else if (State.getState() instanceof GameState) {
+                display.returnDisplay();
                 State.getState().render(g);
 
 
@@ -148,7 +201,18 @@ public class Game implements Runnable{
 
                 display.updateScoreboard(p1Health, p2Health);
                 display.updateInventory(p1BombHeld, p2BombHeld, p1BombPart, p2BombPart);
-                //}
+
+                if (p2Health == 0){
+                    State.setCurrentState(endState);
+                    playAgain = true;
+                    Player.playerCount = 0;
+                    whoDied = "p2";
+                }else if (p1Health ==0){
+                    State.setCurrentState(endState);
+                    playAgain = true;
+                    Player.playerCount = 0;
+                    whoDied = "p1";
+                }
             }
         }
 
@@ -156,8 +220,8 @@ public class Game implements Runnable{
 
         bs.show(); // After drawing, tell Java to show all the buffered drawing to screen
         g.dispose(); // Get rids of graphics object to save resources | since there is a
-                     // set of buffered renders constantly queueing up to be sent do display
-                     // on screen
+        // set of buffered renders constantly queueing up to be sent do display
+        // on screen
     }
 
     // Must have a run method if we implement runnable
@@ -171,7 +235,7 @@ public class Game implements Runnable{
             hardware resources. */
         int fps = 60; // Indicates how many times under a second do we want out tick() method to run
         double timePerTick = 1000000000 / fps; // 1 bil nanoSeconds(1 sec) / fps = number of times we want to run tick()
-                                               // method under a second/ 1 bil nanoSeconds.
+        // method under a second/ 1 bil nanoSeconds.
         double delta = 0; // delta is the rate of change
         long now;
         long lastTime = System.nanoTime(); // Get current time of computer in nanoSeconds
@@ -185,8 +249,8 @@ public class Game implements Runnable{
         while (running){
             now = System.nanoTime(); // Get current time of computer in nanoSeconds
             delta += (now - lastTime) / timePerTick; // amount of time passed since we last called this line of code
-                                                     // divided by timePerTick =  How much time we have until we call
-                                                     // the tick() and render() methods again.
+            // divided by timePerTick =  How much time we have until we call
+            // the tick() and render() methods again.
 
             timer += now - lastTime; // [Optional] this is to see refresh rate in System.out
 

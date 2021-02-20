@@ -1,5 +1,6 @@
 package states;
 
+import gfx.AudioPlayer;
 import okBoomer.Game;
 import okBoomer.Handler;
 import java.awt.Graphics;
@@ -28,6 +29,7 @@ USAGE:
 import java.awt.*;
 
 public abstract class State {
+    public static AudioPlayer stateMusic = new AudioPlayer("/res/audio/bomberman1_menu.wav");
 
     // State Manager logic | utilises polymorphism concept
     private static State currentState = null; // Hold what state we want to hold in our game
@@ -62,4 +64,10 @@ public abstract class State {
     public abstract int getP2BombHeld();
     public abstract int getP1BombPart();
     public abstract int getP2BombPart();
+
+    // Method to set game music
+    public static void setMusic(String filepath){
+        stateMusic = new AudioPlayer(filepath);
+        stateMusic.play();
+    }
 }

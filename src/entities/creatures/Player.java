@@ -25,7 +25,7 @@ public class Player extends Creature implements Board {
     public static final int DEFAULT_BOMB = 0;
     public static final int MAX_BOMB = 3;
 
-    private static int playerCount = 0;
+    public static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
     private Animation p1animDown, p1animUp, p1animLeft, p1animRight, p2animDown, p2animUp, p2animLeft, p2animRight;
     private Animation p1animDownbombed, p1animUpbombed, p1animLeftbombed, p1animRightbombed, p2animDownbombed, p2animUpbombed, p2animLeftbombed, p2animRightbombed;
@@ -460,4 +460,4 @@ public class Player extends Creature implements Board {
             }
         }
     }
-    }
+}

@@ -1,13 +1,15 @@
 package display;
 
 import gfx.Assets;
+import states.EndState;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
 
 // Display class to create window display/etc in Launcher
-public class Display {
+public class Display{
     // Declare local variables
     private JFrame frame; // JFrame for window display of application
     private Canvas canvas; // Canvas object let us draw graphics(sprite,rect,etc) on our window/JFrame in this case
@@ -18,6 +20,11 @@ public class Display {
     private int width, height;
 
     private int counter = 0;
+
+    static JTextField player1_input;
+    static JTextField player2_input;
+
+
 
     // Variables for Polygon drawing
     int LeftBgX[] = {0, 352, 288, 0};
@@ -46,6 +53,11 @@ public class Display {
         JLabel scoreText = new JLabel("Scoreboard");
         scoreboard.add(scoreText);
 
+        //background
+        Image img = Toolkit.getDefaultToolkit().getImage("E:\\rahul.jpg");
+
+
+
         createDisplay(); // Create Display/ Initialise JFrame
     }
 
@@ -64,6 +76,8 @@ public class Display {
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height)); // Ensure that canvas always stay within the width and height
 
+        canvas.setBackground(Color.BLACK);
+
         // KeyManager Input
         canvas.setFocusable(false); // So that JFrame will focus on itself
 
@@ -73,12 +87,29 @@ public class Display {
 
     }
 
+
+
     // Method to add inventory and scoreboard to the canvas
     public void createInvScore(){
         frame.add(this.scoreboard, BorderLayout.NORTH);
         frame.add(this.inventory, BorderLayout.SOUTH);
         frame.pack();
     }
+
+    public void clearDisplay(){
+        scoreboard.setVisible(false);
+        inventory.setVisible(false);
+        frame.pack();
+
+    }
+
+
+    public void returnDisplay(){
+        scoreboard.setVisible(true);
+        inventory.setVisible(true);
+    }
+
+
 
 
 
@@ -177,6 +208,7 @@ public class Display {
             this.p2BombPart = p2BombPart;
         }
     }
+
 
     // Jpanel for scoreboard display
     class ScoreboardDisplay extends JPanel{

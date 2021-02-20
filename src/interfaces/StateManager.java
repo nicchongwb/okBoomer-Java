@@ -7,11 +7,8 @@ import display.Display;
 import gfx.Assets;
 import gfx.UIImageButton;
 import gfx.UIManager;
-import okBoomer.ClickListener;
-import okBoomer.Game;
 import okBoomer.Handler;
 import states.EndState;
-import states.GameState;
 import states.MenuState;
 import states.State;
 
@@ -74,7 +71,6 @@ public interface StateManager {
 
                 }else if(result == JOptionPane.CANCEL_OPTION){
                     handler.getMouseManager().setUIManager(uiManager);
-
                 }
             }
         }));
@@ -87,6 +83,8 @@ public interface StateManager {
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
                 switchState(handler, "GameState");
+                Jukebox.stopMusic();
+                Jukebox.playMusic("/res/audio/Invincible2.wav");
             }
         }));
 
@@ -94,6 +92,7 @@ public interface StateManager {
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
+                Jukebox.stopMusic();
                 System.exit(0);
             }
         }));
@@ -112,7 +111,6 @@ public interface StateManager {
             initMenuUI(handler, uiManager);
         }
     }
-    
 
 
 }

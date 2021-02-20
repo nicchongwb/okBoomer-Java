@@ -24,7 +24,7 @@ public class SpriteSheet {
     }
 
     public BufferedImage crop(int x, int y, int width, int height){
-        // Takes in 4 parametes, x|y is the coordinate to start crop
+        // Takes in 4 parameters, x|y is the coordinate to start crop
         // width|height is the size of crop
         return sheet.getSubimage(x, y, width, height);
     }

@@ -24,7 +24,6 @@ public class GameState extends State implements Board{
     private static int maxWorldY;
     private static int minWorldX = -1;
     private static int minWorldY = -1;
-    //public static boolean getBombed = false;
 
     // 2D Array to keep track of entities if player touch bomb | for game logic (process damage, etc)
     public static int[][] board;
@@ -50,7 +49,7 @@ public class GameState extends State implements Board{
     public GameState(Handler handler){
         super(handler); // This is to look at the same game object
         Jukebox.stopMusic();
-        //Jukebox.playMusic("/res/audio/bomberman1_menu.wav");
+        Jukebox.playMusic("/res/audio/Invincible2.wav");
 
         world = new World("src/res/worlds/world1.txt");
         maxWorldX = (world.getWidth()-1);
@@ -72,7 +71,7 @@ public class GameState extends State implements Board{
         }
 
         player1 = new Player(handler, 0,0); // spawn player 1 at the start
-        player2 = new Player(handler, 576, 576); // spawn player 2 at the end
+        player2 = new Player(handler, world.getHeight() * 64 - 64, world.getWidth() * 64 - 64); // spawn player 2 at the end
 
         // Set Player 1 and 2 Name
         player1.setName(Display.getP1Name());

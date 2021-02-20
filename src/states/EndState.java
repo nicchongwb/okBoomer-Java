@@ -1,20 +1,12 @@
 package states;
 
-import gfx.Assets;
-import gfx.UIImageButton;
-import gfx.UIManager;
-
 import interfaces.Jukebox;
-import okBoomer.ClickListener;
 import okBoomer.Game;
 
 import okBoomer.Handler;
-import worlds.World;
 
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class EndState extends State {
 
@@ -22,7 +14,6 @@ public class EndState extends State {
         super(handler);
         handler.getMouseManager().setUIManager(Game.uiManager);
         Jukebox.stopMusic();
-        Jukebox.playMusic("/res/audio/bomberman1_menu.wav");
     }
 
     @Override
@@ -34,7 +25,6 @@ public class EndState extends State {
     public void render(Graphics g) {
         // Insert g.draw Methods to draw out menu
         Game.uiManager.render(g);
-        //g.clearRect(200,200,256,128);
     }
 
     /*--------------------------Ignore this function, this serves no purpose in this class----------------------------*/

@@ -1,23 +1,14 @@
 package states;
 
-import gfx.Assets;
-import gfx.AudioPlayer;
-import gfx.UIImageButton;
-import gfx.UIManager;
-
-import okBoomer.ClickListener;
+import interfaces.Jukebox;
 import okBoomer.Game;
 import okBoomer.Handler;
 
 
-import javax.swing.*;
 import java.awt.*;
 
 
 public class MenuState extends State {
-    //private AudioPlayer menumusic;
-    public String player1_name;
-    public String player2_name;
 
     public MenuState(Handler handler){
         super(handler);

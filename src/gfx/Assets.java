@@ -142,7 +142,5 @@ public class Assets {
         player2_upbombed[1] = character.crop(width * 13,height * 3, width, height);
         player2_upbombed[2] = character.crop(width * 14,height * 3, width, height);
 
-
-
     }
 }

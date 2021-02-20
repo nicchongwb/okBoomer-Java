@@ -3,7 +3,7 @@ class tiles.CornerTile2 {
 }
 class gfx.UIManager {
 - Handler handler
-- ArrayList<UIObject> objects
++ ArrayList<UIObject> objects
 + void tick()
 + void render(Graphics)
 + void onMouseMove(MouseEvent)
@@ -17,6 +17,7 @@ class gfx.UIManager {
 }
 class gfx.AudioPlayer {
 - Clip clip
++ void setTrack(String)
 + void play()
 + void playonce()
 + void stop()
@@ -62,6 +63,9 @@ class tiles.Tile {
 + boolean isSolid()
 + int getId()
 }
+interface interfaces.ClickListener {
++ void onClick()
+}
 class gfx.Animation {
 - int speed
 - long lastTime
@@ -92,6 +96,7 @@ interface interfaces.Board {
 class gfx.Assets {
 - {static} int width
 + {static} BufferedImage[] btn_start
++ {static} BufferedImage[] btn_replay
 + {static} BufferedImage[] btn_quit
 + {static} BufferedImage RightTile
 + {static} BufferedImage BombTile
@@ -114,14 +119,17 @@ class display.Display {
 - String title
 - int width
 - int counter
-~ {static} JTextField player1_input
-~ {static} JTextField player2_input
+- {static} String p1Name_input
 ~ int[] LeftBgX
 ~ int[] LeftBgY
 ~ int[] RightBgX
 ~ int[] RightBgY
 ~ Color cyanColor
 ~ Color brownColor
++ {static} void setP1Name(String)
++ {static} void setP2Name(String)
++ {static} String getP1Name()
++ {static} String getP2Name()
 - void createDisplay()
 + void createInvScore()
 + void clearDisplay()
@@ -157,8 +165,6 @@ class display.Display.ScoreboardDisplay {
 + void setP2Health(int)
 }
 class states.MenuState {
-+ String player1_name
-+ String player2_name
 + void tick()
 + void render(Graphics)
 + int getP1Health()
@@ -246,7 +252,8 @@ abstract class entities.items.Item {
 + {static} int DEFAULT_ITEM_WIDTH
 }
 interface interfaces.Jukebox {
-~ {static} void playMusic()
+~ {static} void playMusic(String)
+~ {static} void stopMusic()
 }
 class gfx.UIImageButton {
 - BufferedImage[] images
@@ -390,9 +397,6 @@ class okBoomer.Game {
 }
 class tiles.PathTile {
 }
-interface okBoomer.ClickListener {
-+ void onClick()
-}
 interface interfaces.StateManager {
 ~ {static} void switchState(Handler,String)
 ~ {static} void initMenuUI(Handler,UIManager)
@@ -501,7 +505,7 @@ entities.items.Item <|-- entities.items.Bomb
 interfaces.StateManager <|.. states.State
 tiles.Tile <|-- tiles.BottomTile
 entities.Entity <|-- entities.items.Item
-okBoomer.ClickListener <|.. gfx.UIImageButton
+interfaces.ClickListener <|.. gfx.UIImageButton
 gfx.UIObject <|-- gfx.UIImageButton
 entities.Entity <|-- entities.creatures.Creature
 interfaces.Board <|.. entities.creatures.Player
@@ -509,7 +513,6 @@ entities.creatures.Creature <|-- entities.creatures.Player
 java.awt.event.KeyListener <|.. Input.KeyManager
 entities.items.Item <|-- entities.items.BombCollectable
 okBoomer.Runnable <|.. okBoomer.Game
-interfaces.Jukebox <|.. okBoomer.Game
 interfaces.StateManager <|.. okBoomer.Game
 tiles.Tile <|-- tiles.PathTile
 states.State <|-- states.EndState

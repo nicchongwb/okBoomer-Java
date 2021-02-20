@@ -1,6 +1,6 @@
 package gfx;
 
-import okBoomer.ClickListener;
+import interfaces.ClickListener;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -12,9 +12,11 @@ public class AudioPlayer {
     private Clip clip;
 
     public AudioPlayer(String music) {
+        setTrack(music);
+    }
 
+    public void setTrack(String music){
         try {
-
             AudioInputStream audio = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(music));
 
             AudioFormat baseFormat = audio.getFormat();
@@ -34,7 +36,6 @@ public class AudioPlayer {
         catch(Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void play(){
@@ -43,7 +44,7 @@ public class AudioPlayer {
         clip.setFramePosition(0);
         clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY); // so audio can keep looping
-        //Thread.sleep(10000);
+        //Thread.sleep(10000); // Debug purposes
     }
 
     public void playonce(){ //to play sound effect once only
@@ -60,6 +61,7 @@ public class AudioPlayer {
 
     public void close() {
         stop();
+        clip.flush();
         clip.close();
     }
 

@@ -21,8 +21,6 @@ public class Display{
 
     private int counter = 0;
 
-    //static JTextField player1_input;
-    //static JTextField player2_input;
     private static String p1Name_input, p2Name_input;
 
 
@@ -53,9 +51,6 @@ public class Display{
         scoreboard.setPreferredSize(new Dimension(640,60));
         JLabel scoreText = new JLabel("Scoreboard");
         scoreboard.add(scoreText);
-
-        //background
-        Image img = Toolkit.getDefaultToolkit().getImage("E:\\rahul.jpg");
 
         createDisplay(); // Create Display/ Initialise JFrame
     }
@@ -181,7 +176,7 @@ public class Display{
 
             // To see if inventory is updating
             //g.drawString(String.valueOf(counter), 300, 45);
-            counter += 1;
+            //counter += 1;
 
         }
 
@@ -240,8 +235,6 @@ public class Display{
             setBackground(Color.ORANGE);      // may use an image for background
 
         }
-
-
 
         // Paint function to update scoreboard. This is called via repaint()
         @Override

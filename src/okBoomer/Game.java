@@ -95,6 +95,7 @@ public class Game implements Runnable, StateManager {
         endState = new EndState(handler);
         State.setCurrentState(menuState); // Set State to MenuState for the first launch
         Jukebox.stopMusic(); // Stop any music if playing in the case of replay game
+        Jukebox.playMusic("/res/audio/bomberman1_menu.wav");
     }
 
     // The tick method a.k.a update all game variables, positions of objects, etc
@@ -106,9 +107,10 @@ public class Game implements Runnable, StateManager {
         // State | if any state exist then we call the currentState's tick function
         if (State.getState() != null){
             State.getState().tick();
-            //Jukebox.playMusic();
+            // Debuggin block
             if (State.getState() instanceof GameState){
                 display.returnDisplay();
+                //System.out.println("Game.tick() GameState");
             }
             else if (State.getState() instanceof MenuState){
                 //System.out.println("Game.tick() MenuState");

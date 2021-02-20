@@ -1,8 +1,7 @@
 package states;
 
-import gfx.AudioPlayer;
+import sfx.AudioPlayer;
 import interfaces.StateManager;
-import okBoomer.Game;
 import okBoomer.Handler;
 import java.awt.Graphics;
 
@@ -24,10 +23,6 @@ USAGE:
                                        // its subclasses, in this case, gameState.
     4. Game class init() -> State.setState(gameState);
 */
-
-
-
-import java.awt.*;
 
 public abstract class State implements StateManager {
     public static AudioPlayer stateMusic = new AudioPlayer("/res/audio/bomberman1_menu.wav");

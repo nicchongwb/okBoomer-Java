@@ -1,7 +1,7 @@
 package states;
 
 import display.Display;
-import gfx.AudioPlayer;
+import sfx.AudioPlayer;
 import interfaces.Board;
 import entities.creatures.Player;
 import entities.items.Bomb;

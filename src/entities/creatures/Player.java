@@ -1,7 +1,7 @@
 package entities.creatures;
 
 import gfx.Assets;
-import gfx.AudioPlayer;
+import sfx.AudioPlayer;
 //import gfx.FadeAnimation;
 import interfaces.Board;
 import okBoomer.Handler;

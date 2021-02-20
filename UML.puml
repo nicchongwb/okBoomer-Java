@@ -361,7 +361,7 @@ interface okBoomer.ClickListener {
 }
 class tiles.CornerTile3 {
 }
-class gfx.MouseManager {
+class Input.MouseManager {
 - boolean leftPressed
 - int mouseX
 - UIManager uiManager
@@ -451,8 +451,8 @@ entities.items.Item <|-- entities.items.BombCollectable
 okBoomer.Runnable <|.. okBoomer.Game
 tiles.Tile <|-- tiles.PathTile
 tiles.Tile <|-- tiles.CornerTile3
-java.awt.event.MouseListener <|.. gfx.MouseManager
-java.awt.event.MouseMotionListener <|.. gfx.MouseManager
+java.awt.event.MouseListener <|.. Input.MouseManager
+java.awt.event.MouseMotionListener <|.. Input.MouseManager
 tiles.Tile <|-- tiles.TopTile
 interfaces.Board <|.. states.GameState
 states.State <|-- states.GameState

@@ -1,4 +1,6 @@
-package gfx;
+package Input;
+
+import gfx.UIManager;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

@@ -15,7 +15,7 @@ class gfx.UIManager {
 + ArrayList<UIObject> getObjects()
 + void setObjects(ArrayList<UIObject>)
 }
-class gfx.AudioPlayer {
+class sfx.AudioPlayer {
 - Clip clip
 + void setTrack(String)
 + void play()
@@ -415,7 +415,7 @@ class states.EndState {
 }
 class tiles.CornerTile3 {
 }
-class gfx.MouseManager {
+class Input.MouseManager {
 - boolean leftPressed
 - int mouseX
 - UIManager uiManager
@@ -517,8 +517,8 @@ interfaces.StateManager <|.. okBoomer.Game
 tiles.Tile <|-- tiles.PathTile
 states.State <|-- states.EndState
 tiles.Tile <|-- tiles.CornerTile3
-java.awt.event.MouseListener <|.. gfx.MouseManager
-java.awt.event.MouseMotionListener <|.. gfx.MouseManager
+java.awt.event.MouseListener <|.. Input.MouseManager
+java.awt.event.MouseMotionListener <|.. Input.MouseManager
 tiles.Tile <|-- tiles.TopTile
 interfaces.Board <|.. states.GameState
 states.State <|-- states.GameState

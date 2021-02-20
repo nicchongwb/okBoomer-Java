@@ -1,20 +1,18 @@
 package okBoomer;
 
 import Input.KeyManager;
+import Input.MouseManager;
 import display.Display;
 import entities.creatures.Player;
 import gfx.*;
 import interfaces.Jukebox;
 import interfaces.StateManager;
+import sfx.AudioPlayer;
 import states.*;
 import states.State;
-import okBoomer.Handler;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.security.Key;
-import java.util.Arrays;
 
 import static display.Display.getP1Name;
 import static display.Display.getP2Name;
@@ -158,9 +156,6 @@ public class Game implements Runnable, StateManager {
 
 
             }if (State.getState() instanceof EndState) {
-                //Start audio for end state
-                State.stateMusic.stop();
-                State.setMusic("/res/audio/bomberman1_menu.wav");
 
                 display.clearDisplay();
                 g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/background.png"), 0, 0, null);

@@ -1,7 +1,7 @@
 package okBoomer;
 
 import Input.KeyManager;
-import gfx.MouseManager;
+import Input.MouseManager;
 
 public class Handler {
     private Game game;

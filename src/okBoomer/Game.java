@@ -149,10 +149,7 @@ public class Game implements Runnable, StateManager {
             if (State.getState() instanceof MenuState) {
 
                 g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/background.png"), 0, 0, null);
-                Font fnt0 = new Font("arial", Font.BOLD, 50);
-                g.setFont(fnt0);
-                g.setColor(Color.white);
-                g.drawString("OK, BOOMER", width/4, 100);
+                g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/title.png"), 80, -60, null);
 
 
                 State.getState().render(g);
@@ -165,12 +162,12 @@ public class Game implements Runnable, StateManager {
 
                 display.clearDisplay();
                 g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/background.png"), 0, 0, null);
+                g.drawImage(Toolkit.getDefaultToolkit().getImage("src/res/sprites/gameover.png"), 80, -100, null);
 
                 State.getState().render(g);
+
                 Font fnt0 = new Font("arial", Font.BOLD, 50);
                 g.setFont(fnt0);
-                g.setColor(Color.red);
-                g.drawString("Game Over", 190, 100);
                 g.setColor(Color.green);
 
                 //Print out winner's name
@@ -183,9 +180,9 @@ public class Game implements Runnable, StateManager {
                 int x2 = 0 + (this.width - metrics.stringWidth(player2_wins)) / 2;
 
                 if(whoDied == "p1"){
-                    g.drawString(player2_wins, x2, 177);
+                    g.drawString(player2_wins, x2, 190);
                 }else if(whoDied == "p2"){
-                    g.drawString(player1_wins, x1, 177);
+                    g.drawString(player1_wins, x1, 190);
                 }
 
                 //When replay button is clicked, initialise new game

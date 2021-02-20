@@ -37,7 +37,6 @@ public interface StateManager {
     // initMenuUI -> initialise UI elements and click for the Menu State
     static void initMenuUI(Handler handler, UIManager uiManager){
         // Add Start Button object to UIManager's ArrayList
-        System.out.println("making start button...");
         uiManager.addObject(new UIImageButton(200,200,256,128,Assets.btn_start, new ClickListener(){
 
             // Override onClick() to perform specific actions upon clicking START button
@@ -55,11 +54,8 @@ public interface StateManager {
                 myPanel.add(P2Field);
 
                 int result = JOptionPane.showConfirmDialog(null, myPanel,
-                        "Please Enter your name", JOptionPane.OK_CANCEL_OPTION);
+                        "Please enter your name", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
-
-                    System.out.println("Player 1: " + P1Field.getText());
-                    System.out.println("Player 2: " + P2Field.getText());
 
                     String p1fieldName = P1Field.getText();
                     String p2fieldName = P2Field.getText();
@@ -77,7 +73,6 @@ public interface StateManager {
                     switchState(handler, "GameState");
 
                 }else if(result == JOptionPane.CANCEL_OPTION){
-                    System.out.println("Cancel");
                     handler.getMouseManager().setUIManager(uiManager);
 
                 }
@@ -87,13 +82,11 @@ public interface StateManager {
 
     // initEndUI -> initialise UI elements and click for the End State
     static void initEndUI(Handler handler, UIManager uiManager){
-        System.out.println("making replay and quit button...");
         uiManager.addObject(new UIImageButton(200,200,256,128,Assets.btn_replay, new ClickListener(){
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
                 switchState(handler, "GameState");
-                System.out.println("play again button");
             }
         }));
 
@@ -101,7 +94,6 @@ public interface StateManager {
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
-                System.out.println("quit button");
                 System.exit(0);
             }
         }));
@@ -114,13 +106,9 @@ public interface StateManager {
 
         // Check for Current State of game and issue necessary methods
         if (State.getState() instanceof EndState) {
-
-            System.out.println("ENDSTATE");
             initEndUI(handler, uiManager);
         }
         else if (State.getState() instanceof MenuState) {
-
-            System.out.println("MENUSTATE");
             initMenuUI(handler, uiManager);
         }
     }

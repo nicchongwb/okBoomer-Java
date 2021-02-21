@@ -52,7 +52,7 @@ public class GameState extends State implements Board{
         Jukebox.playMusic("/res/audio/Invincible2.wav");
 
         world = new World("src/res/worlds/world1.txt");
-        maxWorldX = (world.getWidth()-1);
+        maxWorldX = (world.getHeight()-1);
         maxWorldY = (world.getWidth()-1);
 
         board = new int[world.getWidth()][world.getHeight()];

@@ -13,6 +13,9 @@ import states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static display.Display.getP1Name;
 import static display.Display.getP2Name;
@@ -72,6 +75,13 @@ public class Game implements Runnable, StateManager {
         mouseManager = new MouseManager();
     }
 
+    //
+    public String player1_win_lose = "";
+    public String player2_win_lose = "";
+    public boolean player1_winORlose;
+    public boolean player2_winORlose;
+
+
     // Other methods
 
     // The init method to initialise assets in our game before we process to run our game
@@ -102,6 +112,7 @@ public class Game implements Runnable, StateManager {
         // Update KeyManager
         keyManager.tick();
 
+
         // State | if any state exist then we call the currentState's tick function
         if (State.getState() != null){
             State.getState().tick();
@@ -114,6 +125,7 @@ public class Game implements Runnable, StateManager {
                 //System.out.println("Game.tick() MenuState");
             }
             else if (State.getState() instanceof EndState){
+
                 //System.out.println("Game.tick() EndState");
             }
         }
@@ -176,11 +188,18 @@ public class Game implements Runnable, StateManager {
                 int x1 = 0 + (this.width - metrics.stringWidth(player1_wins)) / 2;
                 int x2 = 0 + (this.width - metrics.stringWidth(player2_wins)) / 2;
 
+                //Display on screen
                 if(whoDied == "p1"){
                     g.drawString(player2_wins, x2, 190);
+
+
+
                 }else if(whoDied == "p2"){
                     g.drawString(player1_wins, x1, 190);
+
                 }
+
+
 
                 //When replay button is clicked, initialise new game
                 if (playAgain == true) {
@@ -212,7 +231,45 @@ public class Game implements Runnable, StateManager {
                 display.updateScoreboard(p1Health, p2Health);
                 display.updateInventory(p1BombHeld, p2BombHeld, p1BombPart, p2BombPart);
 
+                int max_length = 35;
+                //int total_length = getP1Name().length() + getP2Name().length();
+                String spaces = "";
+                String spaces_right = "";
+                String spaces_left = "";
+
+                if(getP1Name().length() > getP2Name().length()){
+                    int diff = getP1Name().length() - getP2Name().length();
+                    for (int i =0; i<=diff; i++){
+                        spaces_left +=" ";
+                    }
+                }else if (getP1Name().length() < getP2Name().length()) {
+                    int diff = getP2Name().length() - getP1Name().length();
+                    for (int i = 0; i <= diff; i++) {
+                        spaces_right += " ";
+                    }
+                }
+
+                for(int i = 0; i<max_length; i++){
+                    spaces += " ";
+
+                }
+
                 if (p2Health == 0){
+                    System.out.println("player2 die");
+
+                    //Append to leaderboard.txt
+                    String player1_win_player2_lose = getP1Name()  +spaces_left+spaces+ getP2Name() + spaces_right+ "\n";
+                    try {
+                        BufferedWriter out = new BufferedWriter(new FileWriter("src/states/leaderboard.txt", true));
+                        out.write(player1_win_player2_lose);
+                        out.close();
+
+
+                    }catch(IOException e) {
+                        System.out.println("Something went wrong" + e);
+                    }
+
+                    //Switch to end state
                     State.setCurrentState(endState);
                     StateManager.switchState(handler, "EndState");
                     StateManager.initUIManager(handler, uiManager);
@@ -220,10 +277,21 @@ public class Game implements Runnable, StateManager {
                     Player.playerCount = 0;
                     whoDied = "p2";
                 }else if (p1Health ==0){
+                    System.out.println("player1 die");
+                    String player1_lose_player2_win = getP2Name() +spaces_left+ spaces+ getP1Name()+ spaces_right+"\n";
+                    try {
+                        BufferedWriter out = new BufferedWriter(new FileWriter("src/states/leaderboard.txt", true));
+                        out.write(player1_lose_player2_win);
+                        out.close();
+
+
+                    }catch(IOException e) {
+                        System.out.println("Something went wrong" + e);
+                    }
+                    //Switch to end state
                     State.setCurrentState(endState);
                     StateManager.switchState(handler, "EndState");
                     StateManager.initUIManager(handler, uiManager);
-
                     playAgain = true;
                     Player.playerCount = 0;
                     whoDied = "p1";

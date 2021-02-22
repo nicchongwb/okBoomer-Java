@@ -176,7 +176,7 @@ public class GameState extends State implements Board{
         bombsound = new AudioPlayer("/res/audio/bomb2.wav"); // Sound effect for bombing player
         bombsound.playonce();
         removePlantedBomb(targetPlayer);
-        targetPlayer.setHealth(targetPlayer.getHealth() - 1);
+        targetPlayer.setHealth(targetPlayer.getHealth() - 10);
     }
 
     public static void removePlantedBomb(Player targetPlayer){

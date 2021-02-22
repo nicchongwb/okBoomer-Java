@@ -22,6 +22,7 @@ public class Assets {
     public static BufferedImage[] btn_start;
     public static BufferedImage[] btn_replay;
     public static BufferedImage[] btn_quit;
+    public static BufferedImage[] btn_history;
     public static BufferedImage RightTile, LeftTile, TopTile, BottomTile, CornerTile1, CornerTile2, CornerTile3, CornerTile4, BlueTile, PathTile;
     public static BufferedImage BombTile, BombPart;
     public static BufferedImage[] player1_down, player1_left, player1_right, player1_up, player2_down, player2_left, player2_right, player2_up ;
@@ -35,6 +36,7 @@ public class Assets {
             SpriteSheet startbtn = new SpriteSheet(ImageLoader.loadImage("/res/sprites/start-button.png"));
             SpriteSheet replaybtn = new SpriteSheet(ImageLoader.loadImage("/res/sprites/replay-button.png"));
             SpriteSheet quitbtn = new SpriteSheet(ImageLoader.loadImage("/res/sprites/quit-button.png"));
+            SpriteSheet historybtn = new SpriteSheet(ImageLoader.loadImage("/res/sprites/history.png"));
             SpriteSheet bgtiles = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombermantilesnew.png"));
             SpriteSheet character = new SpriteSheet(ImageLoader.loadImage("/res/sprites/characternew.png"));
             SpriteSheet bombItem = new SpriteSheet(ImageLoader.loadImage("/res/sprites/bombs2.bmp"));
@@ -56,6 +58,11 @@ public class Assets {
             btn_quit = new BufferedImage[2];
             btn_quit[0] = quitbtn.crop( 0, height*2, width*2, height);
             btn_quit[1] = quitbtn.crop(0, height*3, width*2, height);
+
+            //quit button
+            btn_history = new BufferedImage[2];
+            btn_history[0] = historybtn.crop( 0, height*2, width*2, height);
+            btn_history[1] = historybtn.crop(0, height*3, width*2, height);
 
             //background
             RightTile = bgtiles.crop(width * 3, height, width, height);

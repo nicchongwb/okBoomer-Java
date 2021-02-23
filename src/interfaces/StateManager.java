@@ -191,7 +191,89 @@ public interface StateManager {
             }
         }));
 
-        uiManager.addObject(new UIImageButton(200,350,256,128, Assets.btn_quit, new ClickListener(){
+        // Add History Button object to UIManager's ArrayList
+        uiManager.addObject(new UIImageButton(200,270,256,128,Assets.btn_history, new ClickListener(){
+
+            // Override onClick() to perform specific actions upon clicking START button
+            @Override
+            public void onClick() {
+                handler.getMouseManager().setUIManager(null);
+                System.out.println("history button");
+
+                String[] options = {"OK"};
+                javax.swing.UIManager UI= new javax.swing.UIManager();
+                UI.put("OptionPane.background",Color.black);
+                UI.put("Panel.background",Color.black);
+                UI.put("OptionPane.minimumSize",new Dimension(500,100));
+                JScrollPane scrollpane = new JScrollPane();
+
+                BufferedReader reader;
+
+                String[] categories = {};
+
+                int n = 0;
+                try {
+                    reader = new BufferedReader(new FileReader("src/states/leaderboard.txt"));
+                    String line = reader.readLine();
+                    while (line != null) {
+                        // read next line
+                        line = reader.readLine();
+
+                        String newarr[] = new String[n + 1];
+
+                        // insert the elements from old array to new array
+                        for (int i = 0; i < n; i++){
+                            newarr[i] = categories[i];
+
+                        }
+
+                        newarr[n] = line;
+                        System.arraycopy(categories, 0, newarr, 0, categories.length);
+                        categories = newarr;
+                        n +=1;
+
+                    }
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                for (String element: categories) {
+                    System.out.println(element);
+                }
+
+
+
+                JList list = new JList(categories);
+                list.getClass().getName();
+                DefaultListCellRenderer renderer =  (DefaultListCellRenderer)list.getCellRenderer();
+                renderer.setHorizontalAlignment(JLabel.CENTER);
+
+                list.setBackground(Color.black);
+                list.setForeground(Color.green);
+
+
+                scrollpane = new JScrollPane(list);
+
+                JPanel panel = new JPanel();
+
+                scrollpane.getViewport().add(list);
+                panel.add(scrollpane);
+                javax.swing.ImageIcon invisible_icon = new javax.swing.ImageIcon("nothing");
+
+
+                int result = JOptionPane.showOptionDialog(null, scrollpane, "History", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, invisible_icon, options , options[0]);
+
+
+                if(result == 0){
+                    handler.getMouseManager().setUIManager(uiManager);
+                }
+
+
+            }
+        }));
+
+        uiManager.addObject(new UIImageButton(200,400,256,128, Assets.btn_quit, new ClickListener(){
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);

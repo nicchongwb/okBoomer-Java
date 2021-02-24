@@ -1,17 +1,8 @@
 ##################
       WINNER--------------------------LOSER       
 mobby                                   maddy
-maddy                                   mobby
-Bob                                      Harry
-Harry                                      Bob
-MAry                                     Sam
+Mary                                     Sam
 Sam                                     MAry
-Bob                                      Harry
-Harry                                      Bob
-MAry                                     Sam
-Sam                                     MAry
-Bob                                      Harry
-Harry                                      Bob
-MAry                                     Sam
-Sam                                     MAry
-nic                                   reuben    
+nic                                   reuben
+kewl                                     kid
+cooler2                                   cool1   

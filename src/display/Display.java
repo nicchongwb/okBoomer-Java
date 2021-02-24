@@ -1,12 +1,8 @@
 package display;
 
 import gfx.Assets;
-import states.EndState;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.io.IOException;
 
 // Display class to create window display/etc in Launcher
 public class Display{
@@ -26,12 +22,12 @@ public class Display{
 
 
     // Variables for Polygon drawing
-    int LeftBgX[] = {0, 352, 288, 0};
-    int LeftBgY[] = {0, 0, 60, 60};
-    int RightBgX[] = {352, 640, 640, 288};
-    int RightBgY[] = {0, 0, 60, 60};
-    Color cyanColor = new Color(0x0da595);
-    Color brownColor = new Color(0xe1c672);
+    private int LeftBgX[] = {0, 352, 288, 0};
+    private int LeftBgY[] = {0, 0, 60, 60};
+    private int RightBgX[] = {352, 640, 640, 288};
+    private int RightBgY[] = {0, 0, 60, 60};
+    private Color cyanColor = new Color(0x0da595);
+    private Color brownColor = new Color(0xe1c672);
 
     // Constructor
     public Display(String title, int width, int height){
@@ -173,7 +169,6 @@ public class Display{
             g.drawString("Bombs: " + String.valueOf(p2BombHeld) + "/3", 464, 30);
             g.drawString("Bombs Parts: " + String.valueOf(p2BombPart) + "/2", 464, 45);
 
-
             // To see if inventory is updating
             //g.drawString(String.valueOf(counter), 300, 45);
             //counter += 1;
@@ -181,32 +176,17 @@ public class Display{
         }
 
         // Getter and Setter
-        public int getP1BombHeld() {
-            return p1BombHeld;
-        }
 
         public void setP1BombHeld(int p1BombHeld) {
             this.p1BombHeld = p1BombHeld;
-        }
-
-        public int getP2BombHeld() {
-            return p2BombHeld;
         }
 
         public void setP2BombHeld(int p2BombHeld) {
             this.p2BombHeld = p2BombHeld;
         }
 
-        public int getP1BombPart() {
-            return p1BombPart;
-        }
-
         public void setP1BombPart(int p1BombPart) {
             this.p1BombPart = p1BombPart;
-        }
-
-        public int getP2BombPart() {
-            return p2BombPart;
         }
 
         public void setP2BombPart(int p2BombPart) {
@@ -276,16 +256,9 @@ public class Display{
 
 
         // Getter and Setter
-        public int getP1Health() {
-            return p1Health;
-        }
 
         public void setP1Health(int p1Health) {
             this.p1Health = p1Health;
-        }
-
-        public int getP2Health() {
-            return p2Health;
         }
 
         public void setP2Health(int p2Health) {
@@ -301,14 +274,6 @@ public class Display{
 
     public JFrame getFrame(){
         return frame;
-    }
-
-    public ScoreboardDisplay getScoreboard() {
-        return scoreboard;
-    }
-
-    public InventoryDisplay getInventory(){
-        return inventory;
     }
 
     public void updateScoreboard(int p1Health, int p2Health) {

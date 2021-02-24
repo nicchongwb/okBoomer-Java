@@ -42,7 +42,7 @@ public class Bomb extends Item implements ActionListener{
         this.bombID = bombID;
     }
 
-    public void setDamage(int damage) {
+    private void setDamage(int damage) {
         this.damage = damage;
     }
 

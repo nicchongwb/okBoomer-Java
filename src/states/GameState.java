@@ -42,8 +42,7 @@ public class GameState extends State implements Board{
     private ItemTimer timer = new ItemTimer();
 
     // Audio
-    private static AudioPlayer bombsound;   // variable for playing sound
-    private AudioPlayer gamemusic;
+    public static AudioPlayer bombsound;   // variable for playing sound
 
     // Constructors
     public GameState(Handler handler){
@@ -126,7 +125,7 @@ public class GameState extends State implements Board{
 
 
     /* Method to spawn items */
-    public void spawnItem(int itemid){
+    private void spawnItem(int itemid){
 
         // If there are more than 3 bomb parts on the map, do not spawn anymore.
         if(bombList.size()<3){
@@ -179,7 +178,7 @@ public class GameState extends State implements Board{
         targetPlayer.setHealth(targetPlayer.getHealth() - 1);
     }
 
-    public static void removePlantedBomb(Player targetPlayer){
+    private static void removePlantedBomb(Player targetPlayer){
         for(int i = 0; i < plantedBombList.size(); i++){
             if (plantedBombList.get(i).getX() == targetPlayer.getNewX() && plantedBombList.get(i).getY() == targetPlayer.getNewY()){
                 plantedBombList.remove(i);
@@ -189,7 +188,7 @@ public class GameState extends State implements Board{
     }
 
     // Reset bombID - in order to remove by index in the arraylist
-    public static void resetBombID(){
+    private static void resetBombID(){
         for(int i = 0; i < plantedBombList.size(); i++){
             plantedBombList.get(i).setBombID(i);
         }

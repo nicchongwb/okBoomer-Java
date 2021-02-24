@@ -14,8 +14,6 @@ import states.State;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
 
 import static display.Display.getP1Name;
 import static display.Display.getP2Name;
@@ -33,8 +31,8 @@ public class Game implements Runnable, StateManager {
     public static UIManager uiManager;
 
     // Variables for Display
-    public int width, height; // Easier to access width,height used
-    public String title;
+    private int width, height; // Easier to access width,height used
+    private String title;
 
     // Variables for Thread
     private boolean running = false; // Running variable for game loop run()
@@ -43,19 +41,19 @@ public class Game implements Runnable, StateManager {
     // Variables for rendering
     private BufferStrategy bs; // Buffer = hidden screen, to buffer number images before rendering them out to screen
     private Graphics g; // Allows us to draw things(shapes,lines,images) to canvas, basically our paintbrush
-    int x = 0; // Test variable for game tick/update refresh rate
+    private int x = 0; // Test variable for game tick/update refresh rate
 
     // States
-    public State gameState;
-    public State menuState;
-    public State endState;
+    private State gameState;
+    private State menuState;
+    private State endState;
 
     // Input
     private KeyManager keyManager;
     private MouseManager mouseManager;
 
-    public boolean playAgain = false;
-    public String whoDied;
+    private boolean playAgain = false;
+    private String whoDied;
 
     //Handler
     private Handler handler;
@@ -76,11 +74,23 @@ public class Game implements Runnable, StateManager {
     }
 
     //
-    public String player1_win_lose = "";
-    public String player2_win_lose = "";
-    public boolean player1_winORlose;
-    public boolean player2_winORlose;
+    private String player1_win_lose = "";
+    private String player2_win_lose = "";
+    private boolean player1_winORlose;
+    private boolean player2_winORlose;
 
+    // Getter and Setters
+    public State getGameState() {
+        return gameState;
+    }
+
+    public State getMenuState() {
+        return menuState;
+    }
+
+    public State getEndState() {
+        return endState;
+    }
 
     // Other methods
 

@@ -1,0 +1,127 @@
+@startuml
+class tiles.CornerTile2 {
+}
+class gfx.UIManager {
+}
+abstract class entities.Entity {
+}
+class tiles.Tile {
+}
+interface interfaces.ClickListener {
+}
+class gfx.Animation {
+}
+class tiles.LeftTile {
+}
+class tiles.RightTile {
+}
+class utils.ItemTimer {
+}
+interface interfaces.Board {
+}
+class gfx.Assets {
+}
+class tiles.BlueTile {
+}
+class gfx.ImageLoader {
+}
+class tiles.CornerTile4 {
+}
+class Input.MouseManager {
+}
+class display.Display {
+}
+class display.Display.InventoryDisplay {
+}
+class display.Display.ScoreboardDisplay {
+}
+class states.MenuState {
+}
+class tiles.CornerTile1 {
+}
+class entities.items.Bomb {
+}
+abstract class states.State {
+}
+abstract class gfx.UIObject {
+}
+class utils.Utils {
+}
+class sfx.AudioPlayer {
+}
+class okBoomer.Handler {
+}
+class tiles.BottomTile {
+}
+abstract class entities.items.Item {
+}
+interface interfaces.Jukebox {
+}
+class gfx.UIImageButton {
+}
+abstract class entities.creatures.Creature {
+}
+class worlds.World {
+}
+class entities.creatures.Player {
+}
+class okBoomer.Launcher {
+}
+class Input.KeyManager {
+}
+class entities.items.BombCollectable {
+}
+class okBoomer.Game {
+}
+class tiles.PathTile {
+}
+interface interfaces.StateManager {
+}
+class states.EndState {
+}
+class tiles.CornerTile3 {
+}
+class tiles.TopTile {
+}
+class gfx.SpriteSheet {
+}
+class states.GameState {
+}
+
+
+tiles.Tile <|-- tiles.CornerTile2
+entities.JPanel <|-- entities.Entity
+tiles.Tile <|-- tiles.LeftTile
+tiles.Tile <|-- tiles.RightTile
+java.util.TimerTask <|-- utils.ItemTimer
+tiles.Tile <|-- tiles.BlueTile
+tiles.Tile <|-- tiles.CornerTile4
+java.awt.event.MouseListener <|.. Input.MouseManager
+java.awt.event.MouseMotionListener <|.. Input.MouseManager
+display.Display +.. display.Display.InventoryDisplay
+display.JPanel <|-- display.Display.InventoryDisplay
+display.Display +.. display.Display.ScoreboardDisplay
+display.JPanel <|-- display.Display.ScoreboardDisplay
+states.State <|-- states.MenuState
+tiles.Tile <|-- tiles.CornerTile1
+java.awt.event.ActionListener <|.. entities.items.Bomb
+entities.items.Item <|-- entities.items.Bomb
+interfaces.StateManager <|.. states.State
+tiles.Tile <|-- tiles.BottomTile
+entities.Entity <|-- entities.items.Item
+interfaces.ClickListener <|.. gfx.UIImageButton
+gfx.UIObject <|-- gfx.UIImageButton
+entities.Entity <|-- entities.creatures.Creature
+interfaces.Board <|.. entities.creatures.Player
+entities.creatures.Creature <|-- entities.creatures.Player
+java.awt.event.KeyListener <|.. Input.KeyManager
+entities.items.Item <|-- entities.items.BombCollectable
+okBoomer.Runnable <|.. okBoomer.Game
+interfaces.StateManager <|.. okBoomer.Game
+tiles.Tile <|-- tiles.PathTile
+states.State <|-- states.EndState
+tiles.Tile <|-- tiles.CornerTile3
+tiles.Tile <|-- tiles.TopTile
+interfaces.Board <|.. states.GameState
+states.State <|-- states.GameState
+@enduml

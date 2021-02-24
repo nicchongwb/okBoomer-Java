@@ -7,9 +7,9 @@ public abstract class Creature extends Entity {
 
     // DEFAULT_BOMB need to edit
     //public static final int DEFAULT_BOMB = 10;
-    public static final int DEFAULT_HEALTH = 10;
-    public static final int DEFAULT_SPEED = 64; // Change to 64 after Alicia's map
-    public static final int DEFAULT_CREATURE_WIDTH = 64,
+    private static final int DEFAULT_HEALTH = 10;
+    private static final int DEFAULT_SPEED = 64; // Change to 64 after Alicia's map
+    protected static final int DEFAULT_CREATURE_WIDTH = 64,
                             DEFAULT_CREATURE_HEIGHT = 64;
 
     // Creature characteristics/attributes
@@ -48,7 +48,7 @@ public abstract class Creature extends Entity {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    private void setSpeed(int speed) {
         this.speed = speed;
     }
 
@@ -56,7 +56,7 @@ public abstract class Creature extends Entity {
         return xMove;
     }
 
-    public void setxMove(int xMove) {
+    private void setxMove(int xMove) {
         this.xMove = xMove;
     }
 
@@ -64,7 +64,7 @@ public abstract class Creature extends Entity {
         return yMove;
     }
 
-    public void setyMove(int yMove) {
+    private void setyMove(int yMove) {
         this.yMove = yMove;
     }
 

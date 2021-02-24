@@ -1,9 +1,7 @@
 package interfaces;
 
-import states.GameState;
-import states.MenuState;
 import states.State;
-import okBoomer.Game;
+
 
 // Interface to control Music change
 public interface Jukebox {

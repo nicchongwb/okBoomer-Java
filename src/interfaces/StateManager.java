@@ -14,15 +14,11 @@ import states.MenuState;
 import states.State;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public interface StateManager {
     /* Method to switch the State of game
@@ -30,13 +26,13 @@ public interface StateManager {
     *  state = targetState to switch to: MenuState, GameState, EndState*/
     static void switchState(Handler handler, String state){
         if (state == "MenuState"){
-            State.setCurrentState(handler.getGame().menuState);
+            State.setCurrentState(handler.getGame().getMenuState());
         }
         if (state == "GameState"){
-            State.setCurrentState(handler.getGame().gameState);
+            State.setCurrentState(handler.getGame().getGameState());
         }
         if (state == "EndState"){
-            State.setCurrentState(handler.getGame().endState);
+            State.setCurrentState(handler.getGame().getEndState());
         }
 
     }

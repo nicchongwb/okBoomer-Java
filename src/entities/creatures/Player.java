@@ -2,17 +2,14 @@ package entities.creatures;
 
 import gfx.Assets;
 import sfx.AudioPlayer;
-//import gfx.FadeAnimation;
 import interfaces.Board;
 import okBoomer.Handler;
 import states.GameState;
 import gfx.Animation;
 import entities.items.Bomb;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-//import static interfaces.Board.canPlayerMove;
 
 /* Usage: GameState class -> private Player player;
 GameState constructor -> player = new Player(x,y);
@@ -22,8 +19,8 @@ GameState render() -> player.render(g);
  */
 
 public class Player extends Creature implements Board {
-    public static final int DEFAULT_BOMB = 0;
-    public static final int MAX_BOMB = 3;
+    private static final int DEFAULT_BOMB = 0;
+    private static final int MAX_BOMB = 3;
 
     public static int playerCount = 0;
     private static int pixToMove = 32; // Amount of pixels to move
@@ -115,7 +112,7 @@ public class Player extends Creature implements Board {
         return newX;
     }
 
-    public void setNewX(int newX) {
+    private void setNewX(int newX) {
         this.newX = newX;
     }
 
@@ -123,7 +120,7 @@ public class Player extends Creature implements Board {
         return newY;
     }
 
-    public void setNewY(int newY) {
+    private void setNewY(int newY) {
         this.newY = newY;
     }
 
@@ -147,7 +144,7 @@ public class Player extends Creature implements Board {
         return this.checkBombed = true;
     }
 
-    public boolean setBombedTimer(){
+    private boolean setBombedTimer(){
         return this.bombTimer = false;
     }
 
@@ -224,7 +221,7 @@ public class Player extends Creature implements Board {
         }
     }
 
-    public BufferedImage getBombedAnimationFrame() {
+    private BufferedImage getBombedAnimationFrame() {
         if (checkBombed) {
             if (pid == 0) {
                 if (p1facing == 0) {

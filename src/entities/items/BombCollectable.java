@@ -44,8 +44,8 @@ public class BombCollectable extends Item{
         return this.numBombsSpawned;
     }
 
-    // nicholas i think you will need to call this after the player picks up the bomb
-    public void minusBombsSpawned(){
+    // nicholas i think you will need to call this after the player picks up the bomb: OK NOTED WITH THANKS
+    private void minusBombsSpawned(){
         this.numBombsSpawned--;
     }
 

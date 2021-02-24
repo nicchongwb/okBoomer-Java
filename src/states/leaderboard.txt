@@ -5,4 +5,7 @@ Mary                                     Sam
 Sam                                     MAry
 nic                                   reuben
 kewl                                     kid
-cooler2                                   cool1   
+cooler2                                   cool1
+Java                                     C++
+Java                                     C++
+Hacker                                      System A

@@ -8,7 +8,6 @@ import display.Display;
 import gfx.Assets;
 import gfx.UIImageButton;
 import gfx.UIManager;
-import javafx.util.Pair;
 import okBoomer.Handler;
 import states.EndState;
 import states.MenuState;
@@ -51,7 +50,6 @@ public interface StateManager {
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
-                System.out.println("start button");
                 JTextField P1Field = new JTextField(10);
                 JTextField P2Field = new JTextField(10);
                 JPanel myPanel = new JPanel();
@@ -102,7 +100,6 @@ public interface StateManager {
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
-                System.out.println("history button");
 
                 String[] options = {"OK"};
                 javax.swing.UIManager UI= new javax.swing.UIManager();
@@ -141,12 +138,6 @@ public interface StateManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                for (String element: categories) {
-                    System.out.println(element);
-                }
-
-
 
                 JList list = new JList(categories);
                 list.getClass().getName();
@@ -198,7 +189,6 @@ public interface StateManager {
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
-                System.out.println("history button");
 
                 String[] options = {"OK"};
                 javax.swing.UIManager UI= new javax.swing.UIManager();
@@ -237,11 +227,6 @@ public interface StateManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                for (String element: categories) {
-                    System.out.println(element);
-                }
-
 
 
                 JList list = new JList(categories);

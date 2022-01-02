@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-# okBoomer
-=======
+
 # OkBoomer
 
 Game desription:
@@ -13,5 +11,13 @@ Then, they can proceed to plant a hidden bomb on whichever square that they may 
 The objective of the game is to wipe out the other player by planting bombs and coercing them into stepping on the tile with the hidden bomb.
 ```
 
+## Gameplay
+[![OkBoomer](https://img.youtube.com/vi/5XWaX_R7YgM/0.jpg)](https://www.youtube.com/watch?v=5XWaX_R7YgM&feature=youtu.be)
 
->>>>>>> java
+## Team:
+Nicholas - [@nicchongwb](https://github.com/nicchongwb)
+Alicia - [@BestCrochet](https://github.com/bestcrochet)
+Jia Jia - [@jiajiatan](https://github.com/jiajiatan)
+Vanna - [@thnxcvanna](https://github.com/thxcvanna)
+Raina - [@rainyraina](https://github.com/rainyraina)
+Joey - [@joeychua2000](https://github.com/joeychua2000)

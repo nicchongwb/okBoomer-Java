@@ -1,9 +1,4 @@
-# ict1009-team44-2021
-
-Game title:
-```
-Ok, Boomer game
-```
+# OkBoomer
 
 Game desription:
 ```

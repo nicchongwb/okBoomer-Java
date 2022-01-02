@@ -17,9 +17,9 @@ The objective of the game is to wipe out the other player by planting bombs and 
 Part of Object Oriented Programming module where the team is tasked to design and develop a multiplayer game in Java via OOP paradigm.
 
 ## Team:
-Nicholas - [@nicchongwb](https://github.com/nicchongwb)
-Alicia - [@BestCrochet](https://github.com/bestcrochet)
-Jia Jia - [@jiajiatan](https://github.com/jiajiatan)
-Vanna - [@thnxcvanna](https://github.com/thxcvanna)
-Raina - [@rainyraina](https://github.com/rainyraina)
-Joey - [@joeychua2000](https://github.com/joeychua2000)
+- Nicholas - [@nicchongwb](https://github.com/nicchongwb)
+- Alicia - [@BestCrochet](https://github.com/bestcrochet)
+- Jia Jia - [@jiajiatan](https://github.com/jiajiatan)
+- Vanna - [@thnxcvanna](https://github.com/thxcvanna)
+- Raina - [@rainyraina](https://github.com/rainyraina)
+- Joey - [@joeychua2000](https://github.com/joeychua2000)

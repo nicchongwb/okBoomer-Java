@@ -1,0 +1,524 @@
+@startuml
+class tiles.CornerTile2 {
+}
+class gfx.UIManager {
+- Handler handler
++ ArrayList<UIObject> objects
++ void tick()
++ void render(Graphics)
++ void onMouseMove(MouseEvent)
++ void onMouseRelease(MouseEvent)
++ void addObject(UIObject)
++ void removeObject(UIObject)
++ Handler getHandler()
++ void setHandler(Handler)
++ ArrayList<UIObject> getObjects()
++ void setObjects(ArrayList<UIObject>)
+}
+abstract class entities.Entity {
+# Handler handler
+# int x
+# int width
+# int prevX
++ {abstract}void tick()
++ {abstract}void render(Graphics)
++ int getX()
++ void setX(int)
++ int getY()
++ void setY(int)
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
++ int getPrevX()
++ void setPrevX(int)
++ int getPrevY()
++ void setPrevY(int)
+}
+class tiles.Tile {
++ {static} Tile[] tiles
++ {static} Tile CornerTile1
++ {static} Tile TopTile
++ {static} Tile CornerTile2
++ {static} Tile LeftTile
++ {static} Tile RightTile
++ {static} Tile CornerTile3
++ {static} Tile BottomTile
++ {static} Tile CornerTile4
++ {static} Tile BlueTile
++ {static} Tile PathTile
++ {static} int TILEWIDTH
+# BufferedImage texture
+# int id
++ void tick()
++ void render(Graphics,int,int)
++ boolean isSolid()
++ int getId()
+}
+interface interfaces.ClickListener {
+~ void onClick()
+}
+class gfx.Animation {
+- int speed
+- long lastTime
+- BufferedImage[] frames
++ void tick()
++ BufferedImage getCurrentFrame()
+}
+class tiles.LeftTile {
+}
+class tiles.RightTile {
+}
+class utils.ItemTimer {
+- boolean hasStarted
+- boolean rdyToSpawn
+- int spawnRate
+- int period
++ void startTimer()
++ void run()
++ boolean hasRunStarted()
++ boolean readyToSpawn()
++ void setRdyToSpawn(boolean)
++ void sethasRunStarted(boolean)
+}
+interface interfaces.Board {
+~ {static} boolean canPlayerMove(int,int,int,int,int,Player)
+~ {static} void checkPrevandUpdateBoard(int,int,int,int,int,int)
+}
+class gfx.Assets {
+- {static} int width
++ {static} BufferedImage[] btn_start
++ {static} BufferedImage[] btn_replay
++ {static} BufferedImage[] btn_quit
++ {static} BufferedImage[] btn_history
++ {static} BufferedImage RightTile
++ {static} BufferedImage BombTile
++ {static} BufferedImage[] player1_down
++ {static} BufferedImage[] player1_downbombed
++ {static} void init()
+}
+class tiles.BlueTile {
+}
+class gfx.ImageLoader {
++ {static} BufferedImage loadImage(String)
+}
+class tiles.CornerTile4 {
+}
+class Input.MouseManager {
+- boolean leftPressed
+- int mouseX
+- UIManager uiManager
++ void setUIManager(UIManager)
++ boolean isLeftPressed()
++ boolean isRightPressed()
++ int getMouseX()
++ int getMouseY()
++ void mouseClicked(MouseEvent)
++ void mousePressed(MouseEvent)
++ void mouseReleased(MouseEvent)
++ void mouseEntered(MouseEvent)
++ void mouseExited(MouseEvent)
++ void mouseDragged(MouseEvent)
++ void mouseMoved(MouseEvent)
+}
+class display.Display {
+- JFrame frame
+- Canvas canvas
+- InventoryDisplay inventory
+- ScoreboardDisplay scoreboard
+- String title
+- int width
+- int counter
+- {static} String p1Name_input
+- int[] LeftBgX
+- int[] LeftBgY
+- int[] RightBgX
+- int[] RightBgY
+- Color cyanColor
+- Color brownColor
++ {static} void setP1Name(String)
++ {static} void setP2Name(String)
++ {static} String getP1Name()
++ {static} String getP2Name()
+- void createDisplay()
++ void createInvScore()
++ void clearDisplay()
++ void returnDisplay()
++ Canvas getCanvas()
++ JFrame getFrame()
++ void updateScoreboard(int,int)
++ void updateInventory(int,int,int,int)
+}
+class display.Display.InventoryDisplay {
+- int p1BombHeld
+- int p1BombPart
++ void paintComponent(Graphics)
++ void paint(Graphics)
++ void setP1BombHeld(int)
++ void setP2BombHeld(int)
++ void setP1BombPart(int)
++ void setP2BombPart(int)
+}
+class display.Display.ScoreboardDisplay {
+- int p1Health
++ void paintComponent(Graphics)
++ void paint(Graphics)
++ void setP1Health(int)
++ void setP2Health(int)
+}
+class states.MenuState {
++ void tick()
++ void render(Graphics)
++ int getP1Health()
++ int getP2Health()
++ int getP1BombHeld()
++ int getP2BombHeld()
++ int getP1BombPart()
++ int getP2BombPart()
+}
+class tiles.CornerTile1 {
+}
+class entities.items.Bomb {
+- int damage
+- {static} int DEFAULT_DAMAGE
+- {static} int bombID
+- BufferedImage bombImg
+- ArrayList<Bomb> plantBombList
+- float alpha
+- Timer timer
+- int DELAY
+- int INITIAL_DELAY
++ int getDamage()
++ void setBombID(int)
+- void setDamage(int)
++ int getBombID()
++ ArrayList<Bomb> getPlantedBombList()
+- void initTimer()
+- void endTimer()
++ void tick()
++ void render(Graphics)
+- void drawImage(Graphics)
++ void actionPerformed(ActionEvent)
+}
+abstract class states.State {
++ {static} AudioPlayer stateMusic
+- {static} State currentState
+# Handler handler
++ {static} void setCurrentState(State)
++ {static} State getState()
++ {abstract}void tick()
++ {abstract}void render(Graphics)
++ {abstract}int getP1Health()
++ {abstract}int getP2Health()
++ {abstract}int getP1BombHeld()
++ {abstract}int getP2BombHeld()
++ {abstract}int getP1BombPart()
++ {abstract}int getP2BombPart()
++ {static} void setMusic(String)
+}
+abstract class gfx.UIObject {
+# float x
+# int width
+# Rectangle bounds
+# boolean hovering
++ {abstract}void tick()
++ {abstract}void render(Graphics)
++ {abstract}void onClick()
++ void onMouseMove(MouseEvent)
++ void onMouseRelease(MouseEvent)
++ float getX()
++ void setX(float)
++ float getY()
++ void setY(float)
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
++ boolean isHovering()
++ void setHovering(boolean)
+}
+class utils.Utils {
++ {static} String loadFileAsString(String)
++ {static} int parseInt(String)
+}
+class sfx.AudioPlayer {
+- Clip clip
++ void setTrack(String)
++ void play()
++ void playonce()
++ void stop()
++ void close()
+}
+class okBoomer.Handler {
+- Game game
++ Game getGame()
++ void setGame(Game)
++ KeyManager getKeyManager()
++ MouseManager getMouseManager()
+}
+class tiles.BottomTile {
+}
+abstract class entities.items.Item {
+# {static} int DEFAULT_ITEM_WIDTH
+}
+interface interfaces.Jukebox {
+~ {static} void playMusic(String)
+~ {static} void stopMusic()
+}
+class gfx.UIImageButton {
+- BufferedImage[] images
+- ClickListener clicker
++ void tick()
++ void render(Graphics)
++ void onClick()
+}
+abstract class entities.creatures.Creature {
+- {static} int DEFAULT_HEALTH
+- {static} int DEFAULT_SPEED
+# {static} int DEFAULT_CREATURE_WIDTH
+# int health
+# int speed
+# int xMove
++ void move()
++ int getHealth()
++ void setHealth(int)
++ float getSpeed()
+- void setSpeed(int)
++ int getxMove()
+- void setxMove(int)
++ int getyMove()
+- void setyMove(int)
+}
+class worlds.World {
+- int width
+- int spawnX
+- int[][] tileArr
++ void tick()
++ void render(Graphics)
++ Tile getTile(int,int)
+- void loadWorld(String)
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
+}
+class entities.creatures.Player {
+- {static} int DEFAULT_BOMB
+- {static} int MAX_BOMB
++ {static} int playerCount
+- {static} int pixToMove
+- Animation p1animDown
+- Animation p1animDownbombed
+- {static} int p1facing
+- {static} int p2facing
+- String name
+- int pid
+- Handler handler
+- Bomb bomb
+- Player player
+- int bombHeld
+- boolean checkBombed
+- boolean bombTimer
+- long lastTrueTime
+- int bombCollectable
+- {static} boolean alrPressedp1
+- {static} boolean alrPressedp2
+- int newX
+- int newY
+- AudioPlayer collectsound
++ String getName()
++ void setName(String)
++ {static} void setIfPressed1(boolean)
++ {static} void setIfPressed2(boolean)
++ {static} boolean getIfPressed1()
++ {static} boolean getIfPressed2()
++ int getNewX()
+- void setNewX(int)
++ int getNewY()
+- void setNewY(int)
++ int getPid()
++ int getBomb()
++ void setBomb(int)
++ int getBombCollectable()
++ boolean setBombed()
+- boolean setBombedTimer()
++ void tick()
++ void render(Graphics)
+- BufferedImage getCurrentAnimationFrame()
+- BufferedImage getBombedAnimationFrame()
+- boolean bombTimer()
+- void getInput()
++ void addBombPart()
+}
+class okBoomer.Launcher {
+- {static} int width
+- {static} int height
+- {static} String title
++ {static} void main(String[])
+}
+class Input.KeyManager {
+- boolean[] keys
++ boolean p1Up
++ boolean p2Up
++ void tick()
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
++ void keyTyped(KeyEvent)
+}
+class entities.items.BombCollectable {
+- ArrayList<BombCollectable> bombsSpawnedList
+- int numBombsSpawned
+- int bombID
+- BufferedImage bombPart
++ void tick()
++ void render(Graphics)
++ int getBombsSpawned()
+- void minusBombsSpawned()
++ ArrayList<BombCollectable> getBombsSpawnedList()
+}
+class okBoomer.Game {
+- Display display
++ {static} UIManager uiManager
+- int width
+- String title
+- boolean running
+- Thread thread
+- BufferStrategy bs
+- Graphics g
+- int x
+- State gameState
+- State menuState
+- State endState
+- KeyManager keyManager
+- MouseManager mouseManager
+- boolean playAgain
+- String whoDied
+- Handler handler
+- {static} AudioPlayer bombsound
++ {static} boolean toPlay
+- String player1_win_lose
+- String player2_win_lose
+- boolean player1_winORlose
+- boolean player2_winORlose
++ State getGameState()
++ State getMenuState()
++ State getEndState()
+- void init()
+- void tick()
+- void render()
++ void run()
++ KeyManager getKeyManager()
++ MouseManager getMouseManager()
++ void start()
++ void stop()
+}
+class tiles.PathTile {
+}
+interface interfaces.StateManager {
+~ {static} void switchState(Handler,String)
+~ {static} void initMenuUI(Handler,UIManager)
+~ {static} void initEndUI(Handler,UIManager)
+~ {static} void initUIManager(Handler,UIManager)
+}
+class states.EndState {
++ void tick()
++ void render(Graphics)
++ int getP1Health()
++ int getP2Health()
++ int getP1BombHeld()
++ int getP2BombHeld()
++ int getP1BombPart()
++ int getP2BombPart()
+}
+class tiles.CornerTile3 {
+}
+class tiles.TopTile {
+}
+class gfx.SpriteSheet {
+- BufferedImage sheet
+# BufferedImage crop(int,int,int,int)
+}
+class states.GameState {
+- {static} World world
+- {static} int maxWorldX
+- {static} int maxWorldY
+- {static} int minWorldX
+- {static} int minWorldY
++ {static} int[][] board
+- {static} int MAX_PLANTED_BOMB
+- Player player1
+- Player player2
+- Bomb bomb
+- BombCollectable bombPart
++ {static} ArrayList<BombCollectable> bombList
++ {static} ArrayList<Bomb> plantedBombList
+- ItemTimer timer
++ {static} AudioPlayer bombsound
++ void tick()
++ void render(Graphics)
+- void spawnItem(int)
++ {static} void bombPlayer(Player)
+- {static} void removePlantedBomb(Player)
+- {static} void resetBombID()
++ {static} void plantBomb(Player,Bomb)
++ {static} void collectBombPart(Player)
++ {static} int getMaxWorldX()
++ {static} void setMaxWorldX(int)
++ {static} int getMaxWorldY()
++ {static} void setMaxWorldY(int)
++ {static} int getMinWorldX()
++ {static} void setMinWorldX(int)
++ {static} int getMinWorldY()
++ {static} void setMinWorldY(int)
++ int[][] getBoard()
++ {static} int getTileId(int,int)
++ {static} void setTileId(int,int,int)
++ Player getPlayer1()
++ Player getPlayer2()
++ {static} World getWorld()
++ Bomb getBomb()
++ int getP1Health()
++ int getP2Health()
++ int getP1BombHeld()
++ int getP2BombHeld()
++ int getP1BombPart()
++ int getP2BombPart()
+}
+
+
+tiles.Tile <|-- tiles.CornerTile2
+entities.JPanel <|-- entities.Entity
+tiles.Tile <|-- tiles.LeftTile
+tiles.Tile <|-- tiles.RightTile
+java.util.TimerTask <|-- utils.ItemTimer
+tiles.Tile <|-- tiles.BlueTile
+tiles.Tile <|-- tiles.CornerTile4
+java.awt.event.MouseListener <|.. Input.MouseManager
+java.awt.event.MouseMotionListener <|.. Input.MouseManager
+display.Display +.. display.Display.InventoryDisplay
+display.JPanel <|-- display.Display.InventoryDisplay
+display.Display +.. display.Display.ScoreboardDisplay
+display.JPanel <|-- display.Display.ScoreboardDisplay
+states.State <|-- states.MenuState
+tiles.Tile <|-- tiles.CornerTile1
+java.awt.event.ActionListener <|.. entities.items.Bomb
+entities.items.Item <|-- entities.items.Bomb
+interfaces.StateManager <|.. states.State
+tiles.Tile <|-- tiles.BottomTile
+entities.Entity <|-- entities.items.Item
+interfaces.ClickListener <|.. gfx.UIImageButton
+gfx.UIObject <|-- gfx.UIImageButton
+entities.Entity <|-- entities.creatures.Creature
+interfaces.Board <|.. entities.creatures.Player
+entities.creatures.Creature <|-- entities.creatures.Player
+java.awt.event.KeyListener <|.. Input.KeyManager
+entities.items.Item <|-- entities.items.BombCollectable
+okBoomer.Runnable <|.. okBoomer.Game
+interfaces.StateManager <|.. okBoomer.Game
+tiles.Tile <|-- tiles.PathTile
+states.State <|-- states.EndState
+tiles.Tile <|-- tiles.CornerTile3
+tiles.Tile <|-- tiles.TopTile
+interfaces.Board <|.. states.GameState
+states.State <|-- states.GameState
+@enduml
